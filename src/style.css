@@ -7,3 +7,47 @@ body {
 * {
   font-family: Helvetica, Arial, sans-serif;
 }
+
+body {
+  display: flex;
+  justify-content: center;
+  height: 100vh;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+
+}
+
+#input-container {
+  padding: 5px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+#todo-input {
+  display: flex;
+  border: 3px, solid, gray;
+  border-radius: 10px;
+  width: 80%;
+}
+
+#todo-input:focus {
+  border-color: black;
+}
+
+#add-todo-button {
+  border-radius: 10px;
+  background-color: black;
+  color: white;
+}
+
+.todo-element {
+  margin: 5px;
+  padding: 5px;
+  border-radius: 10px;
+  background-color: black;
+  color: white;
+}

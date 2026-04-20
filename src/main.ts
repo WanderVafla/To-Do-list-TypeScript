@@ -11,13 +11,15 @@ const todosContainer = document.getElementById(
 const addTask = () => {
   if (!input.value.trim()) {
     alert('Your taks is enmty!')
+    return;
   }
-  const newTaskElement = document.createElement('p')
+  const newTaskElement = document.createElement('div')
+  newTaskElement.className = "todo-element";
   newTaskElement.textContent = input.value
 
-  todosContainer?.insertAdjacentElement('beforebegin', newTaskElement)
+  todosContainer?.insertAdjacentElement('afterbegin', newTaskElement)
 
-  input.value = '';
+  input.value = ''
 }
 
 sendButton?.addEventListener('click', addTask)
