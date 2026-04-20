@@ -1,14 +1,28 @@
 import './style.css'
 
-const input = document.getElementById('todo-input') as HTMLInputElement
-const sendButton = document.getElementById(
-  'add-todo-button',
-) as HTMLButtonElement
-const todosContainer = document.getElementById(
-  'todo-elements',
-) as HTMLDivElement
+const input = document.querySelector<HTMLInputElement>('#todo-input')
+const sendButton = document.querySelector('#add-todo-button')
+const todosContainer = document.querySelector('#todo-elements')
 
-const addTask = (): void => {
+if (!input || !sendButton || !todosContainer) {
+  throw new Error('Warning some html are missing')
+}
+
+// function addTask() {
+//   if (!input.value.trim()) {
+//     alert('Your task is empty!')
+//     return
+//   }
+//   const newTaskElement = document.createElement('div')
+//   newTaskElement.className = 'todo-element'
+//   newTaskElement.textContent = input.value
+
+//   todosContainer.insertAdjacentElement('afterbegin', newTaskElement)
+
+//   input.value = ''
+// }
+
+const addTask = () => {
   if (!input.value.trim()) {
     alert('Your task is empty!')
     return
@@ -17,7 +31,7 @@ const addTask = (): void => {
   newTaskElement.className = 'todo-element'
   newTaskElement.textContent = input.value
 
-  todosContainer?.insertAdjacentElement('afterbegin', newTaskElement)
+  todosContainer.insertAdjacentElement('afterbegin', newTaskElement)
 
   input.value = ''
 }
