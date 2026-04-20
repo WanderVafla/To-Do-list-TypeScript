@@ -8,14 +8,14 @@ const todosContainer = document.getElementById(
   'todo-elements',
 ) as HTMLDivElement
 
-const addTask = () => {
+const addTask = (): void => {
   if (!input.value.trim()) {
-    alert('Your taks is enmty!')
+    alert('Your task is empty!')
     return
   }
-  const newTaskElement = document.createElement('div')
-  newTaskElement.className = 'todo-element'
-  newTaskElement.textContent = input.value
+  const newTaskElement = document.createElement('div');
+  newTaskElement.className = 'todo-element';
+  newTaskElement.textContent = input.value;
 
   todosContainer?.insertAdjacentElement('afterbegin', newTaskElement)
 
