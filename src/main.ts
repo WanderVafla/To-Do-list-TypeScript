@@ -16,6 +16,8 @@ const addTask = () => {
   newTaskElement.textContent = input.value
 
   todosContainer?.insertAdjacentElement('beforebegin', newTaskElement)
+
+  input.value = '';
 }
 
 sendButton?.addEventListener('click', addTask)
