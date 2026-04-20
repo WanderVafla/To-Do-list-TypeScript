@@ -8,20 +8,6 @@ if (!input || !sendButton || !todosContainer) {
   throw new Error('Warning some html are missing')
 }
 
-// function addTask() {
-//   if (!input.value.trim()) {
-//     alert('Your task is empty!')
-//     return
-//   }
-//   const newTaskElement = document.createElement('div')
-//   newTaskElement.className = 'todo-element'
-//   newTaskElement.textContent = input.value
-
-//   todosContainer.insertAdjacentElement('afterbegin', newTaskElement)
-
-//   input.value = ''
-// }
-
 const addTask = () => {
   if (!input.value.trim()) {
     alert('Your task is empty!')
@@ -32,14 +18,20 @@ const addTask = () => {
   newTaskElement.textContent = input.value
 
   todosContainer.insertAdjacentElement('afterbegin', newTaskElement)
-
+  const tasksToSave = todosContainer.innerHTML
+  localStorage.setItem('Tasks', tasksToSave)
   input.value = ''
 }
 
-sendButton?.addEventListener('click', addTask)
-input.addEventListener('keypress', (event) => {
-  if (event.key === 'Enter') {
-    addTask()
+sendButton.addEventListener('click', addTask)
+input.addEventListener('keypress', (event) =>
+  event.key === 'Enter' ? addTask() : '',
+)
+
+window.addEventListener('DOMContentLoaded', () => {
+  const savedTasks: string | null = localStorage.getItem('Tasks')
+  if (savedTasks) {
+    todosContainer.innerHTML = savedTasks
   }
 })
 
