@@ -13,9 +13,9 @@ const addTask = (): void => {
     alert('Your task is empty!')
     return
   }
-  const newTaskElement = document.createElement('div');
-  newTaskElement.className = 'todo-element';
-  newTaskElement.textContent = input.value;
+  const newTaskElement = document.createElement('div')
+  newTaskElement.className = 'todo-element'
+  newTaskElement.textContent = input.value
 
   todosContainer?.insertAdjacentElement('afterbegin', newTaskElement)
 
