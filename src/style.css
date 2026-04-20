@@ -19,7 +19,7 @@ main {
   flex-direction: column;
 }
 
-#input-container {
+.input-container {
   padding: 5px;
   display: flex;
   flex-direction: row;
