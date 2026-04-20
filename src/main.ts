@@ -50,7 +50,10 @@ window.addEventListener('DOMContentLoaded', () => {
   if (savedTasks) {
     const jsonTaskjs = JSON.parse(savedTasks)
     for (const task of jsonTaskjs) {
-      todosContainer.insertAdjacentElement('afterbegin', createTaskEll(task.name))
+      todosContainer.insertAdjacentElement(
+        'afterbegin',
+        createTaskEll(task.name),
+      )
     }
   }
 })
