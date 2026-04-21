@@ -12,9 +12,9 @@ const tasksArr: Task[] = []
 
 interface Task {
   name: string
-  complited: boolean
+  completed: boolean
 }
-const createTaskEll = (name: string, complited = false): HTMLDivElement => {
+const createTaskEll = (name: string, completed = false): HTMLDivElement => {
   const taskContainer = document.createElement('div')
   taskContainer.className = 'todo-element'
   taskContainer.dataset.index = `${tasksArr.length}`
@@ -23,7 +23,7 @@ const createTaskEll = (name: string, complited = false): HTMLDivElement => {
   checkboxInput.type = 'checkbox'
   checkboxInput.className = 'checkbox'
   checkboxInput.name = 'task-checkbox'
-  checkboxInput.checked = complited
+  checkboxInput.checked = completed
 
   taskContainer.appendChild(checkboxInput)
 
@@ -43,7 +43,7 @@ const addTask = () => {
   todosContainer.insertAdjacentElement('afterbegin', createTaskEll(input.value))
   tasksArr.push({
     name: input.value,
-    complited: false,
+    completed: false,
   })
   localStorage.setItem('Tasks', JSON.stringify(tasksArr))
 
@@ -64,10 +64,10 @@ todosContainer.addEventListener('change', (event) => {
     const containerIndex = Number(container.dataset.index)
     const taskItem = tasksArr[containerIndex]
     if (target.checked) {
-      taskItem.complited = true
+      taskItem.completed = true
       localStorage.setItem('Tasks', JSON.stringify(tasksArr))
     } else {
-      taskItem.complited = false
+      taskItem.completed = false
       localStorage.setItem('Tasks', JSON.stringify(tasksArr))
     }
   }
@@ -81,7 +81,7 @@ window.addEventListener('DOMContentLoaded', () => {
     for (const task of jsonTaskjs) {
       todosContainer.insertAdjacentElement(
         'afterbegin',
-        createTaskEll(task.name, task.complited),
+        createTaskEll(task.name, task.completed),
       )
       tasksArr.push(task)
     }
