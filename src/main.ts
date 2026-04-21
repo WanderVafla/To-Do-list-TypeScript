@@ -18,17 +18,18 @@ const createTaskEll = (name: string, completed = false): HTMLDivElement => {
   const taskContainer = document.createElement('div')
   taskContainer.className = 'todo-element'
   taskContainer.dataset.index = `${tasksArr.length}`
+  taskContainer.dataset.completed = `${completed}`
 
   const checkboxInput = document.createElement('input')
   checkboxInput.type = 'checkbox'
-  checkboxInput.className = 'checkbox'
   checkboxInput.name = 'task-checkbox'
   checkboxInput.checked = completed
 
   taskContainer.appendChild(checkboxInput)
-
+  
   const textNode = document.createTextNode(name)
   taskContainer.appendChild(textNode)
+  
 
   return taskContainer
 }
@@ -65,9 +66,11 @@ todosContainer.addEventListener('change', (event) => {
     const taskItem = tasksArr[containerIndex]
     if (target.checked) {
       taskItem.completed = true
+      container.dataset.completed = "true"
       localStorage.setItem('Tasks', JSON.stringify(tasksArr))
     } else {
       taskItem.completed = false
+      container.dataset.completed = "false"
       localStorage.setItem('Tasks', JSON.stringify(tasksArr))
     }
   }

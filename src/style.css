@@ -26,18 +26,19 @@ main {
   justify-content: space-between;
 }
 
-#todo-input {
+
+input[type="text"] {
   display: flex;
   border: 3px solid gray;
   border-radius: 10px;
   width: 80%;
 }
 
-#todo-input:focus {
+input:focus {
   border-color: black;
 }
 
-#add-todo-button {
+button {
   border-radius: 10px;
   background-color: black;
   color: white;
@@ -50,3 +51,9 @@ main {
   background-color: black;
   color: white;
 }
+
+.todo-element[data-completed="true"] {
+  background-color: gray;
+  text-decoration: line-through;
+}
+
