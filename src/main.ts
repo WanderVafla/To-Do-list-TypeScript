@@ -7,13 +7,20 @@ const todosContainer = document.querySelector('#todo-elements')
 if (!input || !sendButton || !todosContainer) {
   throw new Error('Warning some html are missing')
 }
-
+// array with all tasks parameters
 const tasksArr: Task[] = []
-
+// parameter of task
 interface Task {
   name: string
   completed: boolean
 }
+// teamplate for task element
+/* 
+<div class="todo-element" data-index="34" data-completed="true">
+  <input type="checkbox" name="task-checkbox">
+  (task name)
+</div>
+*/
 const createTaskEll = (name: string, completed = false): HTMLDivElement => {
   const taskContainer = document.createElement('div')
   taskContainer.className = 'todo-element'
@@ -26,21 +33,21 @@ const createTaskEll = (name: string, completed = false): HTMLDivElement => {
   checkboxInput.checked = completed
 
   taskContainer.appendChild(checkboxInput)
-  
+
   const textNode = document.createTextNode(name)
   taskContainer.appendChild(textNode)
-  
 
   return taskContainer
 }
 
 const addTask = () => {
+  // checking if string is empty
   if (!input.value.trim()) {
     alert('Your task is empty!')
     input.value = ''
     return
   }
-
+  // add a new taks element in DOM
   todosContainer.insertAdjacentElement('afterbegin', createTaskEll(input.value))
   tasksArr.push({
     name: input.value,
@@ -50,18 +57,18 @@ const addTask = () => {
 
   input.value = ''
 }
-
+// Listenners for add a new task in list
 sendButton.addEventListener('click', addTask)
 input.addEventListener('keypress', (event) => {
   if (event.key === 'Enter') {
     addTask()
   }
 })
-
+// Function for update a localStorage
 const updateStorage = (key: string, value: string) => {
   localStorage.setItem(key, value)
 }
-
+// Listenner for task checkbox
 todosContainer.addEventListener('change', (event) => {
   const target = event.target as HTMLInputElement
   const container = target.closest<HTMLDivElement>('[data-index]')
@@ -70,17 +77,16 @@ todosContainer.addEventListener('change', (event) => {
     const taskItem = tasksArr[containerIndex]
     if (target.checked) {
       taskItem.completed = true
-      container.dataset.completed = "true"
+      container.dataset.completed = 'true'
       updateStorage('Tasks', JSON.stringify(tasksArr))
     } else {
       taskItem.completed = false
-      container.dataset.completed = "false"
+      container.dataset.completed = 'false'
       updateStorage('Tasks', JSON.stringify(tasksArr))
     }
   }
-  console.log(tasksArr)
 })
-
+// loading a data from localStorage after load a DOM elements
 window.addEventListener('DOMContentLoaded', () => {
   const savedTasks: string | null = localStorage.getItem('Tasks')
   if (savedTasks) {
@@ -92,7 +98,6 @@ window.addEventListener('DOMContentLoaded', () => {
       )
       tasksArr.push(task)
     }
-    console.log(tasksArr)
   }
 })
 

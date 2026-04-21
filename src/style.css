@@ -26,7 +26,6 @@ main {
   justify-content: space-between;
 }
 
-
 input[type="text"] {
   display: flex;
   border: 3px solid gray;
@@ -56,4 +55,3 @@ button {
   background-color: gray;
   text-decoration: line-through;
 }
-
