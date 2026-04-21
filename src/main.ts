@@ -12,10 +12,17 @@ interface Task {
   name: string
 }
 const createTaskEll = (name: string): HTMLDivElement => {
-  const newTaskElement = document.createElement('div')
-  newTaskElement.className = 'todo-element'
-  newTaskElement.textContent = name
-  return newTaskElement
+  const taskContainer = document.createElement('div')
+  taskContainer.className = 'todo-element'
+
+  const checkboxInput = document.createElement('input')
+  checkboxInput.type = 'checkbox'
+  taskContainer.appendChild(checkboxInput)
+
+  const textNode = document.createTextNode(name)
+  taskContainer.appendChild(textNode)
+
+  return taskContainer
 }
 
 const tasksArr: Task[] = []
@@ -24,10 +31,6 @@ const addTask = () => {
     alert('Your task is empty!')
     return
   }
-
-  const newTaskElement = document.createElement('div')
-  newTaskElement.className = 'todo-element'
-  newTaskElement.textContent = input.value
 
   todosContainer.insertAdjacentElement('afterbegin', createTaskEll(input.value))
   tasksArr.push({
