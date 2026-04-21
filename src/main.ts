@@ -75,15 +75,9 @@ todosContainer.addEventListener('change', (event) => {
   if (container) {
     const containerIndex = Number(container.dataset.index)
     const taskItem = tasksArr[containerIndex]
-    if (target.checked) {
-      taskItem.completed = true
-      container.dataset.completed = 'true'
+      taskItem.completed = target.checked
+      container.dataset.completed = String(target.checked)
       updateStorage('Tasks', JSON.stringify(tasksArr))
-    } else {
-      taskItem.completed = false
-      container.dataset.completed = 'false'
-      updateStorage('Tasks', JSON.stringify(tasksArr))
-    }
   }
 })
 // loading a data from localStorage after load a DOM elements
