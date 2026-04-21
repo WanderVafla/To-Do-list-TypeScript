@@ -84,8 +84,8 @@ todosContainer.addEventListener('change', (event) => {
 window.addEventListener('DOMContentLoaded', () => {
   const savedTasks: string | null = localStorage.getItem('Tasks')
   if (savedTasks) {
-    const jsonTaskjs = JSON.parse(savedTasks)
-    for (const task of jsonTaskjs) {
+    const jsonTasks = JSON.parse(savedTasks) as Task[]
+    for (const task of jsonTasks) {
       todosContainer.insertAdjacentElement(
         'afterbegin',
         createTaskEll(task.name, task.completed),
