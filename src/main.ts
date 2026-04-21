@@ -8,38 +8,53 @@ if (!input || !sendButton || !todosContainer) {
   throw new Error('Warning some html are missing')
 }
 
-// function addTask() {
-//   if (!input.value.trim()) {
-//     alert('Your task is empty!')
-//     return
-//   }
-//   const newTaskElement = document.createElement('div')
-//   newTaskElement.className = 'todo-element'
-//   newTaskElement.textContent = input.value
+interface Task {
+  name: string
+}
+const createTaskEll = (name: string): HTMLDivElement => {
+  const newTaskElement = document.createElement('div')
+  newTaskElement.className = 'todo-element'
+  newTaskElement.textContent = name
+  return newTaskElement
+}
 
-//   todosContainer.insertAdjacentElement('afterbegin', newTaskElement)
-
-//   input.value = ''
-// }
-
+const tasksArr: Task[] = []
 const addTask = () => {
   if (!input.value.trim()) {
     alert('Your task is empty!')
     return
   }
+
   const newTaskElement = document.createElement('div')
   newTaskElement.className = 'todo-element'
   newTaskElement.textContent = input.value
 
-  todosContainer.insertAdjacentElement('afterbegin', newTaskElement)
+  todosContainer.insertAdjacentElement('afterbegin', createTaskEll(input.value))
+  tasksArr.push({
+    name: input.value,
+  })
+  localStorage.setItem('Tasks', JSON.stringify(tasksArr))
 
   input.value = ''
 }
 
-sendButton?.addEventListener('click', addTask)
+sendButton.addEventListener('click', addTask)
 input.addEventListener('keypress', (event) => {
   if (event.key === 'Enter') {
     addTask()
+  }
+})
+
+window.addEventListener('DOMContentLoaded', () => {
+  const savedTasks: string | null = localStorage.getItem('Tasks')
+  if (savedTasks) {
+    const jsonTaskjs = JSON.parse(savedTasks)
+    for (const task of jsonTaskjs) {
+      todosContainer.insertAdjacentElement(
+        'afterbegin',
+        createTaskEll(task.name),
+      )
+    }
   }
 })
 
