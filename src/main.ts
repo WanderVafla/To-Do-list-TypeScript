@@ -29,6 +29,7 @@ const tasksArr: Task[] = []
 const addTask = () => {
   if (!input.value.trim()) {
     alert('Your task is empty!')
+    input.value = ''
     return
   }
 
