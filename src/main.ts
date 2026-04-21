@@ -46,7 +46,7 @@ const addTask = () => {
     name: input.value,
     completed: false,
   })
-  localStorage.setItem('Tasks', JSON.stringify(tasksArr))
+  updateStorage('Tasks', JSON.stringify(tasksArr))
 
   input.value = ''
 }
@@ -58,6 +58,10 @@ input.addEventListener('keypress', (event) => {
   }
 })
 
+const updateStorage = (key: string, value: string) => {
+  localStorage.setItem(key, value)
+}
+
 todosContainer.addEventListener('change', (event) => {
   const target = event.target as HTMLInputElement
   const container = target.closest<HTMLDivElement>('[data-index]')
@@ -67,11 +71,11 @@ todosContainer.addEventListener('change', (event) => {
     if (target.checked) {
       taskItem.completed = true
       container.dataset.completed = "true"
-      localStorage.setItem('Tasks', JSON.stringify(tasksArr))
+      updateStorage('Tasks', JSON.stringify(tasksArr))
     } else {
       taskItem.completed = false
       container.dataset.completed = "false"
-      localStorage.setItem('Tasks', JSON.stringify(tasksArr))
+      updateStorage('Tasks', JSON.stringify(tasksArr))
     }
   }
   console.log(tasksArr)
