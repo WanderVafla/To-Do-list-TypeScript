@@ -14,7 +14,7 @@ interface Task {
   completed: boolean
 }
 /* 
-  Teamplate for create task element
+  Template for create task element
 
 <div class="todo-element" id="(crypto.randomUUID())" data-completed="(boolen)">
   <input type="checkbox" name="task-checkbox">
@@ -64,15 +64,15 @@ const addTask = () => {
 
   input.value = ''
 }
+const updateStorage = (key: string, value: string) => {
+  localStorage.setItem(key, value)
+}
 sendButton.addEventListener('click', addTask)
 input.addEventListener('keypress', (event) => {
   if (event.key === 'Enter') {
     addTask()
   }
 })
-const updateStorage = (key: string, value: string) => {
-  localStorage.setItem(key, value)
-}
 todosContainer.addEventListener('change', (event) => {
   const target = event.target as HTMLInputElement
   const parent = target.closest<HTMLDivElement>('.todo-element')
