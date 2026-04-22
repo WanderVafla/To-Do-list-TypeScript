@@ -15,15 +15,15 @@ interface Task {
   completed: boolean
 }
 /* 
-  Template are in index.html with id="todo-template"
-
-  Result after function are:
-  <div class="todo-element" id="crypto.randomUUID()" data-completed=(boolen)">
-    <div>
+  Template is in index.html with id="todo-template"
+  
+  Result after function:
+  <div class="todo-element" id="crypto.randomUUID()" data-completed="boolean">
+    <label class="todo-element__label">
       <input type="checkbox" name="task-checkbox">
-      <span id="task-text"  data-action="remove"></span>
-    </div>
-    <button type="button">Remove</button>
+      <span class="todo-element__text"></span>
+    </label>
+    <button type="button" data-action="remove">Remove</button>
   </div>
 */
 const createTaskEll = (
