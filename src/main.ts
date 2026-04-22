@@ -9,7 +9,7 @@ const temp = document.querySelector<HTMLTemplateElement>('#todo-template')
 if (!input || !sendButton || !todosContainer || !temp) {
   throw new Error('Warning some html are missing')
 }
-const tasksArr: Task[] = []
+let tasksArr: Task[] = []
 interface Task {
   id: string
   name: string
@@ -22,7 +22,7 @@ interface Task {
   <div class="todo-element" id="crypto.randomUUID()" data-completed=(boolen)">
     <div>
       <input type="checkbox" name="task-checkbox">
-      <span id="task-text"></span>
+      <span id="task-text"  data-action="remove"></span>
     </div>
     <button type="button">Remove</button>
   </div>
@@ -92,6 +92,17 @@ todosContainer.addEventListener('change', (event) => {
   }
 })
 
+todosContainer.addEventListener('click', (event) => {
+  const target = event.target as HTMLButtonElement
+  if (target.dataset.action === 'remove') {
+    const parent = target.closest<HTMLDivElement>('.todo-element')
+    if (parent) {
+      parent.remove()
+      tasksArr = tasksArr.filter(task => task.id !== parent.id)
+      updateStorage('Tasks', JSON.stringify(tasksArr))
+    }
+  }
+})
 
 window.addEventListener('DOMContentLoaded', () => {
   const savedTasks: string | null = localStorage.getItem('Tasks')
