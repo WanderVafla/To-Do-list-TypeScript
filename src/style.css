@@ -4,6 +4,12 @@ body {
   margin: 0;
 }
 
+:root {
+  --primary-color: black;
+  --second-color: white;
+  --help-color: gray;
+}
+
 * {
   font-family: Helvetica, Arial, sans-serif;
 }
@@ -26,27 +32,32 @@ main {
   justify-content: space-between;
 }
 
-#todo-input {
+input[type="text"] {
   display: flex;
-  border: 3px solid gray;
+  border: 3px solid var(--help-color);
   border-radius: 10px;
   width: 80%;
 }
 
-#todo-input:focus {
-  border-color: black;
+input:focus {
+  border-color: var(--primary-color);
 }
 
-#add-todo-button {
+button {
   border-radius: 10px;
-  background-color: black;
-  color: white;
+  background-color: var(--primary-color);
+  color: var(--second-color);
 }
 
 .todo-element {
   margin: 5px;
   padding: 5px;
   border-radius: 10px;
-  background-color: black;
-  color: white;
+  background-color: var(--primary-color);
+  color: var(--second-color);
+}
+
+.todo-element[data-completed="true"] {
+  background-color: var(--help-color);
+  text-decoration: line-through;
 }
