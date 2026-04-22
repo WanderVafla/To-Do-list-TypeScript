@@ -23,7 +23,11 @@ interface Task {
   (textNode)
 </div>
 */
-const createTaskEll = (name: string, id: string, completed = false): HTMLDivElement => {
+const createTaskEll = (
+  name: string,
+  id: string,
+  completed = false,
+): HTMLDivElement => {
   const taskContainer = document.createElement('div')
   taskContainer.className = 'todo-element'
   // TODO: find what i can use like id!
@@ -39,7 +43,7 @@ const createTaskEll = (name: string, id: string, completed = false): HTMLDivElem
 
   const textNode = document.createTextNode(name)
   taskContainer.appendChild(textNode)
-  
+
   return taskContainer
 }
 
@@ -52,7 +56,10 @@ const addTask = () => {
   }
   // add a new taks element in DOM
   const id = crypto.randomUUID()
-  todosContainer.insertAdjacentElement('afterbegin', createTaskEll(input.value, id))
+  todosContainer.insertAdjacentElement(
+    'afterbegin',
+    createTaskEll(input.value, id),
+  )
   tasksArr.push({
     id: id,
     name: input.value,
@@ -78,13 +85,12 @@ todosContainer.addEventListener('change', (event) => {
   const target = event.target as HTMLInputElement
   const parent = target.closest<HTMLDivElement>('.todo-element')
   if (parent) {
-    const task = tasksArr.find(task => task.id === parent.id)
+    const task = tasksArr.find((task) => task.id === parent.id)
     if (task) {
       task.completed = target.checked
       parent.dataset.completed = String(target.checked)
       updateStorage('Tasks', JSON.stringify(tasksArr))
-      console.log(task);
-      
+      console.log(task)
     }
   }
 })
