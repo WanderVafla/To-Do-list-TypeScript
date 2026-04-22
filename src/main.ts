@@ -11,6 +11,7 @@ if (!input || !sendButton || !todosContainer) {
 const tasksArr: Task[] = []
 // parameter of task
 interface Task {
+  id: string
   name: string
   completed: boolean
 }
@@ -21,10 +22,11 @@ interface Task {
   (task name)
 </div>
 */
-const createTaskEll = (name: string, completed = false): HTMLDivElement => {
+const createTaskEll = (name: string, id: string, completed = false): HTMLDivElement => {
   const taskContainer = document.createElement('div')
   taskContainer.className = 'todo-element'
-  taskContainer.dataset.index = `${tasksArr.length}`
+  // TODO: find what i can use like id!
+  taskContainer.id = id
   taskContainer.dataset.completed = `${completed}`
 
   const checkboxInput = document.createElement('input')
@@ -36,7 +38,7 @@ const createTaskEll = (name: string, completed = false): HTMLDivElement => {
 
   const textNode = document.createTextNode(name)
   taskContainer.appendChild(textNode)
-
+  
   return taskContainer
 }
 
@@ -48,8 +50,10 @@ const addTask = () => {
     return
   }
   // add a new taks element in DOM
-  todosContainer.insertAdjacentElement('afterbegin', createTaskEll(input.value))
+  const id = crypto.randomUUID()
+  todosContainer.insertAdjacentElement('afterbegin', createTaskEll(input.value, id))
   tasksArr.push({
+    id: id,
     name: input.value,
     completed: false,
   })
@@ -71,13 +75,16 @@ const updateStorage = (key: string, value: string) => {
 // Listenner for task checkbox
 todosContainer.addEventListener('change', (event) => {
   const target = event.target as HTMLInputElement
-  const container = target.closest<HTMLDivElement>('[data-index]')
-  if (container) {
-    const containerIndex = Number(container.dataset.index)
-    const taskItem = tasksArr[containerIndex]
-      taskItem.completed = target.checked
-      container.dataset.completed = String(target.checked)
+  const parent = target.closest<HTMLDivElement>('.todo-element')
+  if (parent) {
+    const task = tasksArr.find(task => task.id === parent.id)
+    if (task) {
+      task.completed = target.checked
+      parent.dataset.completed = String(target.checked)
       updateStorage('Tasks', JSON.stringify(tasksArr))
+      console.log(task);
+      
+    }
   }
 })
 // loading a data from localStorage after load a DOM elements
@@ -88,7 +95,7 @@ window.addEventListener('DOMContentLoaded', () => {
     for (const task of jsonTasks) {
       todosContainer.insertAdjacentElement(
         'afterbegin',
-        createTaskEll(task.name, task.completed),
+        createTaskEll(task.name, task.id, task.completed),
       )
       tasksArr.push(task)
     }
