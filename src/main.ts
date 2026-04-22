@@ -33,7 +33,9 @@ const createTaskEll = (
 ): HTMLDivElement => {
   const clonTemp = temp.content.cloneNode(true) as DocumentFragment
   const parentDiv = clonTemp.querySelector<HTMLDivElement>('.todo-element')
-  const taskTextSpan = clonTemp.querySelector<HTMLSpanElement>('.todo-element__text')
+  const taskTextSpan = clonTemp.querySelector<HTMLSpanElement>(
+    '.todo-element__text',
+  )
   const checkbox = clonTemp.querySelector<HTMLInputElement>(
     '[name="task-checkbox"]',
   )
