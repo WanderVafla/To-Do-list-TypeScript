@@ -65,12 +65,12 @@ const addTask = () => {
     name: input.value,
     completed: false,
   })
-  updateStorage('Tasks', JSON.stringify(tasksArr))
+  updateStorage()
 
   input.value = ''
 }
-const updateStorage = (key: string, value: string) => {
-  localStorage.setItem(key, value)
+const updateStorage = () => {
+  localStorage.setItem('Tasks', JSON.stringify(tasksArr))
 }
 sendButton.addEventListener('click', addTask)
 input.addEventListener('keypress', (event) => {
@@ -86,7 +86,7 @@ todosContainer.addEventListener('change', (event) => {
     if (task) {
       task.completed = target.checked
       parent.dataset.completed = String(target.checked)
-      updateStorage('Tasks', JSON.stringify(tasksArr))
+      updateStorage()
       console.log(task)
     }
   }
@@ -99,7 +99,7 @@ todosContainer.addEventListener('click', (event) => {
     if (parent) {
       parent.remove()
       tasksArr = tasksArr.filter(task => task.id !== parent.id)
-      updateStorage('Tasks', JSON.stringify(tasksArr))
+      updateStorage()
     }
   }
 })
