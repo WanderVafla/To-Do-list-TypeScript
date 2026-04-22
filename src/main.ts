@@ -16,7 +16,7 @@ interface Task {
 }
 /* 
   Template is in index.html with id="todo-template"
-  
+
   Result after function:
   <div class="todo-element" id="crypto.randomUUID()" data-completed="boolean">
     <label class="todo-element__label">
@@ -33,19 +33,17 @@ const createTaskEll = (
 ): HTMLDivElement => {
   const clonTemp = temp.content.cloneNode(true) as DocumentFragment
   const parentDiv = clonTemp.querySelector<HTMLDivElement>('.todo-element')
-  const taksTextSpan = clonTemp.querySelector<HTMLSpanElement>('#task-text')
+  const taskTextSpan = clonTemp.querySelector<HTMLSpanElement>('.todo-element__text')
   const checkbox = clonTemp.querySelector<HTMLInputElement>(
     '[name="task-checkbox"]',
   )
-  if (!taksTextSpan || !parentDiv || !checkbox) {
+  if (!taskTextSpan || !parentDiv || !checkbox) {
     throw new Error('Warning some html of todo-template are missing')
   }
   parentDiv.id = id
   parentDiv.dataset.completed = String(completed)
   checkbox.checked = completed
-  taksTextSpan.textContent = name
-
-  console.log(clonTemp)
+  taskTextSpan.textContent = name
   return parentDiv
 }
 
