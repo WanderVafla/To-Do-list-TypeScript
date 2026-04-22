@@ -15,11 +15,12 @@ interface Task {
   name: string
   completed: boolean
 }
-// teamplate for task element
 /* 
-<div class="todo-element" data-index="34" data-completed="true">
+  Teamplate a task element
+
+<div class="todo-element" id="(crypto.randomUUID())" data-completed="(boolen)">
   <input type="checkbox" name="task-checkbox">
-  (task name)
+  (textNode)
 </div>
 */
 const createTaskEll = (name: string, id: string, completed = false): HTMLDivElement => {
