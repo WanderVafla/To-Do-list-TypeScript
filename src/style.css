@@ -82,6 +82,10 @@ button {
   justify-content: space-between;
 }
 
+.todo-element__label {
+  align-content: center;
+}
+
 .todo-element[data-completed="true"] {
   background-color: var(--help-color);
 }
