@@ -96,4 +96,6 @@ button {
 
 #delete-all {
   position: absolute;
+  top: 0;
+  left: 0;
 }
