@@ -5,7 +5,6 @@ const sendButton = document.querySelector('#add-todo-button')
 const todosContainer = document.querySelector('#todo-elements')
 const temp = document.querySelector<HTMLTemplateElement>('#todo-template')
 
-
 if (!input || !sendButton || !todosContainer || !temp) {
   throw new Error('Warning some html are missing')
 }
@@ -35,16 +34,18 @@ const createTaskEll = (
   const clonTemp = temp.content.cloneNode(true) as DocumentFragment
   const parentDiv = clonTemp.querySelector<HTMLDivElement>('.todo-element')
   const taksTextSpan = clonTemp.querySelector<HTMLSpanElement>('#task-text')
-  const checkbox = clonTemp.querySelector<HTMLInputElement>('[name="task-checkbox"]')
+  const checkbox = clonTemp.querySelector<HTMLInputElement>(
+    '[name="task-checkbox"]',
+  )
   if (!taksTextSpan || !parentDiv || !checkbox) {
-    throw new Error("Warning some html of todo-template are missing")
+    throw new Error('Warning some html of todo-template are missing')
   }
   parentDiv.id = id
   parentDiv.dataset.completed = String(completed)
   checkbox.checked = completed
   taksTextSpan.textContent = name
 
-  console.log(clonTemp);
+  console.log(clonTemp)
   return parentDiv
 }
 
@@ -98,7 +99,7 @@ todosContainer.addEventListener('click', (event) => {
     const parent = target.closest<HTMLDivElement>('.todo-element')
     if (parent) {
       parent.remove()
-      tasksArr = tasksArr.filter(task => task.id !== parent.id)
+      tasksArr = tasksArr.filter((task) => task.id !== parent.id)
       updateStorage()
     }
   }
