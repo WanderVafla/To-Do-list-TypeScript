@@ -68,6 +68,7 @@ button {
 #todo-elements:empty {
   display: none;
 }
+
 .todo-element {
   display: flex;
   margin: 5px;
@@ -81,6 +82,10 @@ button {
   justify-content: space-between;
 }
 
+.todo-element__label {
+  align-content: center;
+}
+
 .todo-element[data-completed="true"] {
   background-color: var(--help-color);
 }
@@ -91,4 +96,9 @@ button {
 
 .todo-element[data-completed="true"] button[data-action="remove"] {
   background-color: var(--help-color);
+}
+
+#delete-all {
+  margin-top: 1rem;
+  align-self: center;
 }
