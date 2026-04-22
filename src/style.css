@@ -14,7 +14,6 @@ body {
   font-family: Helvetica, Arial, sans-serif;
 }
 
-
 body {
   display: flex;
   justify-content: center;
@@ -61,10 +60,14 @@ button {
 }
 
 #todo-elements {
+  padding: 5px;
   border: 5px solid var(--help-color);
-  border-radius: 25px;
+  border-radius: 30px;
 }
 
+#todo-elements:empty {
+  display: none;
+}
 .todo-element {
   display: flex;
   margin: 5px;
@@ -76,9 +79,6 @@ button {
   color: var(--second-color);
   font-size: large;
   justify-content: space-between;
-}
-
-.todo-element__label {
 }
 
 .todo-element[data-completed="true"] {
