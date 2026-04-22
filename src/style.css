@@ -14,6 +14,7 @@ body {
   font-family: Helvetica, Arial, sans-serif;
 }
 
+
 body {
   display: flex;
   justify-content: center;
@@ -23,13 +24,20 @@ body {
 main {
   display: flex;
   flex-direction: column;
+  width: 50%;
+  justify-content: center;
 }
 
+h1 {
+  text-align: center;
+  font-size: 50px;
+}
 .input-container {
   padding: 5px;
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  gap: 10px;
+  justify-content: center;
 }
 
 input[type="text"] {
@@ -37,6 +45,8 @@ input[type="text"] {
   border: 3px solid var(--help-color);
   border-radius: 10px;
   width: 80%;
+  height: 35px;
+  font-size: large;
 }
 
 input:focus {
@@ -50,14 +60,25 @@ button {
   text-decoration: none;
 }
 
+#todo-elements {
+  border: 5px solid var(--help-color);
+  border-radius: 25px;
+}
+
 .todo-element {
   display: flex;
   margin: 5px;
   padding: 5px;
+  min-height: 30px;
+  max-height: 50px;
   border-radius: 10px;
   background-color: var(--primary-color);
   color: var(--second-color);
+  font-size: large;
   justify-content: space-between;
+}
+
+.todo-element__label {
 }
 
 .todo-element[data-completed="true"] {
@@ -66,4 +87,8 @@ button {
 
 .todo-element[data-completed="true"] .todo-element__text {
   text-decoration: line-through;
+}
+
+.todo-element[data-completed="true"] button[data-action="remove"] {
+  background-color: var(--help-color);
 }
