@@ -64,6 +64,6 @@ button {
   background-color: var(--help-color);
 }
 
-.todo-element[data-completed="true"] span {
+.todo-element[data-completed="true"] .todo-element__text {
   text-decoration: line-through;
 }
