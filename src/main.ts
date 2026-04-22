@@ -3,8 +3,10 @@ import './style.css'
 const input = document.querySelector<HTMLInputElement>('#todo-input')
 const sendButton = document.querySelector('#add-todo-button')
 const todosContainer = document.querySelector('#todo-elements')
+const temp = document.querySelector<HTMLTemplateElement>('#todo-template')
 
-if (!input || !sendButton || !todosContainer) {
+
+if (!input || !sendButton || !todosContainer || !temp) {
   throw new Error('Warning some html are missing')
 }
 const tasksArr: Task[] = []
@@ -14,34 +16,36 @@ interface Task {
   completed: boolean
 }
 /* 
-  Template for create task element
+  Template are in index.html with id="todo-template"
 
-<div class="todo-element" id="(crypto.randomUUID())" data-completed="(boolen)">
-  <input type="checkbox" name="task-checkbox">
-  (textNode)
-</div>
+  Result after function are:
+  <div class="todo-element" id="crypto.randomUUID()" data-completed=(boolen)">
+    <div>
+      <input type="checkbox" name="task-checkbox">
+      <span id="task-text"></span>
+    </div>
+    <button type="button">Remove</button>
+  </div>
 */
 const createTaskEll = (
   name: string,
   id: string,
   completed = false,
 ): HTMLDivElement => {
-  const taskContainer = document.createElement('div')
-  taskContainer.className = 'todo-element'
-  taskContainer.id = id
-  taskContainer.dataset.completed = `${completed}`
+  const clonTemp = temp.content.cloneNode(true) as DocumentFragment
+  const parentDiv = clonTemp.querySelector<HTMLDivElement>('.todo-element')
+  const taksTextSpan = clonTemp.querySelector<HTMLSpanElement>('#task-text')
+  const checkbox = clonTemp.querySelector<HTMLInputElement>('[name="task-checkbox"]')
+  if (!taksTextSpan || !parentDiv || !checkbox) {
+    throw new Error("Warning some html of todo-template are missing")
+  }
+  parentDiv.id = id
+  parentDiv.dataset.completed = String(completed)
+  checkbox.checked = completed
+  taksTextSpan.textContent = name
 
-  const checkboxInput = document.createElement('input')
-  checkboxInput.type = 'checkbox'
-  checkboxInput.name = 'task-checkbox'
-  checkboxInput.checked = completed
-
-  taskContainer.appendChild(checkboxInput)
-
-  const textNode = document.createTextNode(name)
-  taskContainer.appendChild(textNode)
-
-  return taskContainer
+  console.log(clonTemp);
+  return parentDiv
 }
 
 const addTask = () => {
@@ -50,6 +54,7 @@ const addTask = () => {
     input.value = ''
     return
   }
+  // result ${string}-${string}-${string}-${string}-${string}
   const id = crypto.randomUUID()
   todosContainer.insertAdjacentElement(
     'afterbegin',
@@ -86,6 +91,8 @@ todosContainer.addEventListener('change', (event) => {
     }
   }
 })
+
+
 window.addEventListener('DOMContentLoaded', () => {
   const savedTasks: string | null = localStorage.getItem('Tasks')
   if (savedTasks) {

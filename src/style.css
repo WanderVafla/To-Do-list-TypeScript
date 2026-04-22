@@ -47,17 +47,23 @@ button {
   border-radius: 10px;
   background-color: var(--primary-color);
   color: var(--second-color);
+  text-decoration: none;
 }
 
 .todo-element {
+  display: flex;
   margin: 5px;
   padding: 5px;
   border-radius: 10px;
   background-color: var(--primary-color);
   color: var(--second-color);
+  justify-content: space-between;
 }
 
 .todo-element[data-completed="true"] {
   background-color: var(--help-color);
+}
+
+.todo-element[data-completed="true"] span {
   text-decoration: line-through;
 }
