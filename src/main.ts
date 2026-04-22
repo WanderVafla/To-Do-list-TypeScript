@@ -7,16 +7,14 @@ const todosContainer = document.querySelector('#todo-elements')
 if (!input || !sendButton || !todosContainer) {
   throw new Error('Warning some html are missing')
 }
-// array with all tasks parameters
 const tasksArr: Task[] = []
-// parameter of task
 interface Task {
   id: string
   name: string
   completed: boolean
 }
 /* 
-  Teamplate a task element
+  Teamplate for create task element
 
 <div class="todo-element" id="(crypto.randomUUID())" data-completed="(boolen)">
   <input type="checkbox" name="task-checkbox">
@@ -30,7 +28,6 @@ const createTaskEll = (
 ): HTMLDivElement => {
   const taskContainer = document.createElement('div')
   taskContainer.className = 'todo-element'
-  // TODO: find what i can use like id!
   taskContainer.id = id
   taskContainer.dataset.completed = `${completed}`
 
@@ -48,13 +45,11 @@ const createTaskEll = (
 }
 
 const addTask = () => {
-  // checking if string is empty
   if (!input.value.trim()) {
     alert('Your task is empty!')
     input.value = ''
     return
   }
-  // add a new taks element in DOM
   const id = crypto.randomUUID()
   todosContainer.insertAdjacentElement(
     'afterbegin',
@@ -69,18 +64,15 @@ const addTask = () => {
 
   input.value = ''
 }
-// Listenners for add a new task in list
 sendButton.addEventListener('click', addTask)
 input.addEventListener('keypress', (event) => {
   if (event.key === 'Enter') {
     addTask()
   }
 })
-// Function for update a localStorage
 const updateStorage = (key: string, value: string) => {
   localStorage.setItem(key, value)
 }
-// Listenner for task checkbox
 todosContainer.addEventListener('change', (event) => {
   const target = event.target as HTMLInputElement
   const parent = target.closest<HTMLDivElement>('.todo-element')
@@ -94,7 +86,6 @@ todosContainer.addEventListener('change', (event) => {
     }
   }
 })
-// loading a data from localStorage after load a DOM elements
 window.addEventListener('DOMContentLoaded', () => {
   const savedTasks: string | null = localStorage.getItem('Tasks')
   if (savedTasks) {
