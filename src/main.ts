@@ -4,8 +4,9 @@ const input = document.querySelector<HTMLInputElement>('#todo-input')
 const sendButton = document.querySelector('#add-todo-button')
 const todosContainer = document.querySelector('#todo-elements')
 const temp = document.querySelector<HTMLTemplateElement>('#todo-template')
+const deleteAllButton = document.querySelector<HTMLButtonElement>('#delete-all')
 
-if (!input || !sendButton || !todosContainer || !temp) {
+if (!input || !sendButton || !todosContainer || !temp || !deleteAllButton) {
   throw new Error('Warning some html are missing')
 }
 let tasksArr: Task[] = []
@@ -92,7 +93,7 @@ todosContainer.addEventListener('change', (event) => {
     }
   }
 })
-
+// Remove
 todosContainer.addEventListener('click', (event) => {
   const target = event.target as HTMLButtonElement
   if (target.dataset.action === 'remove') {
@@ -104,7 +105,12 @@ todosContainer.addEventListener('click', (event) => {
     }
   }
 })
-
+// Remove all
+deleteAllButton.addEventListener('click', () => {
+  todosContainer.replaceChildren()
+  tasksArr = []
+  updateStorage()
+})
 window.addEventListener('DOMContentLoaded', () => {
   const savedTasks: string | null = localStorage.getItem('Tasks')
   if (savedTasks) {
