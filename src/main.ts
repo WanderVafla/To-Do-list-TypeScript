@@ -50,8 +50,7 @@ interface Task {
     </label>
     <button type="button" data-action="remove">Remove</button>
     <p class="due-date">
-      <date datetime="2026-05-22">
-      (Text node with date)
+      <date datetime="date">date
     </p>
   </div>
 */
@@ -80,10 +79,8 @@ const createTaskEll = (
   if (due !== '') {
     const dateEl = document.createElement('time')
     dateEl.dateTime = due
+    dateEl.textContent = due
     dueDateP.appendChild(dateEl)
-    const dateText = document.createTextNode(due)
-    dateText.textContent = due
-    dueDateP.appendChild(dateText)
   } else {
     dueDateP.textContent = 'no due date'
   }
