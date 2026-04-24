@@ -89,6 +89,23 @@ button {
   flex: 1;
 }
 
+#overdue-message {
+  padding: 1rem 2rem;
+  display: flex;
+  background-color: red;
+  color: var(--second-color);
+  white-space: pre-line;
+  border: 3px solid var(--help-color);
+  border-radius: 10px;
+  font-size: large;
+  font-weight: 700;
+  width: 60rem;
+  position: absolute;
+}
+#overdue-message:empty {
+  display: none;
+}
+
 .todo-element[data-completed="true"] {
   background-color: var(--help-color);
 }
