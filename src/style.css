@@ -24,7 +24,10 @@ main {
   display: flex;
   flex-direction: column;
   width: 50%;
-  justify-content: center;
+  padding-top: 200px;
+  padding-bottom: 250px;
+
+  /* justify-content: center; */
 }
 
 h1 {
