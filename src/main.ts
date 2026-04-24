@@ -3,16 +3,16 @@ import './style.css'
 const input = document.querySelector<HTMLInputElement>('#todo-input')
 const sendButton = document.querySelector('#add-todo-button')
 const todosContainer = document.querySelector('#todo-elements')
-const temp = document.querySelector<HTMLTemplateElement>('#todo-template')
 const deleteAllButton = document.querySelector<HTMLButtonElement>('#delete-all')
 const dateInput = document.querySelector<HTMLInputElement>('#todo-date-input')
+const todoTemplate = document.querySelector<HTMLTemplateElement>('#todo-template')
 
 // const
 if (
   !input ||
   !sendButton ||
   !todosContainer ||
-  !temp ||
+  !todoTemplate ||
   !deleteAllButton ||
   !dateInput
 ) {
@@ -31,7 +31,7 @@ const getCurrentDate = (): string => {
   return `${dateYear}-${dateMonth}-${dateDay}`
 }
 
-dateInput.min = getCurrentDate()
+// dateInput.min = getCurrentDate()
 
 let tasksArr: Task[] = []
 interface Task {
@@ -55,13 +55,30 @@ interface Task {
     </p>
   </div>
 */
+const checkMessageOverdue = () => {
+  const container = document.querySelector<HTMLParagraphElement>('#overdue-message')
+  if (container) {
+    let text = ''
+    for (const task of tasksArr) {
+      const diffDays = getDaysDueDiff(task.due)
+      if (task.completed === false && diffDays < 0) {
+        // const node = document.createTextNode(task.name)
+        // const breakLine = document.createElement('br')
+        // container.appendChild(node)
+        // container.appendChild(breakLine)
+        text += `${task.name}\n`
+      }
+    }
+    container.textContent = text
+  }
+}
 const createTaskEll = (
   name: string,
   id: string,
   due: string,
   completed = false,
 ): HTMLDivElement => {
-  const clonTemp = temp.content.cloneNode(true) as DocumentFragment
+  const clonTemp = todoTemplate.content.cloneNode(true) as DocumentFragment
   const parentDiv = clonTemp.querySelector<HTMLDivElement>('.todo-element')
   const taskTextSpan = clonTemp.querySelector<HTMLSpanElement>(
     '.todo-element__text',
@@ -141,6 +158,8 @@ todosContainer.addEventListener('change', (event) => {
       task.completed = target.checked
       parent.dataset.completed = String(target.checked)
       updateStorage()
+      checkMessageOverdue()
+
     }
   }
 })
@@ -153,6 +172,8 @@ todosContainer.addEventListener('click', (event) => {
       parent.remove()
       tasksArr = tasksArr.filter((task) => task.id !== parent.id)
       updateStorage()
+      checkMessageOverdue()
+
     }
   }
 })
@@ -161,6 +182,8 @@ deleteAllButton.addEventListener('click', () => {
   todosContainer.replaceChildren()
   tasksArr = []
   updateStorage()
+  checkMessageOverdue()
+
 })
 const getDaysDueDiff = (due: string): number => {
   const targetDate = new Date(due)
@@ -178,6 +201,7 @@ window.addEventListener('DOMContentLoaded', () => {
         'afterbegin',
         createTaskEll(task.name, task.id, task.due, task.completed),
       )
+      checkMessageOverdue()
       tasksArr.push(task)
     }
   }
