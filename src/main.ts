@@ -7,6 +7,7 @@ const temp = document.querySelector<HTMLTemplateElement>('#todo-template')
 const deleteAllButton = document.querySelector<HTMLButtonElement>('#delete-all')
 const dateInput = document.querySelector<HTMLInputElement>('#todo-date-input')
 
+// const
 if (
   !input ||
   !sendButton ||
@@ -22,7 +23,7 @@ if (
   A current day and month should always be in a two-digit format: 
   result: 2026-2-5 > 2026-02-05
 */
-const getCurrnetData = (): string => {
+const getCurrentDate = (): string => {
   const date = new Date()
   const dateYear = date.getFullYear()
   const dateMonth = String(date.getMonth() + 1).padStart(2, '0')
@@ -30,7 +31,7 @@ const getCurrnetData = (): string => {
   return `${dateYear}-${dateMonth}-${dateDay}`
 }
 
-dateInput.min = getCurrnetData()
+dateInput.min = getCurrentDate()
 
 let tasksArr: Task[] = []
 interface Task {
@@ -43,7 +44,7 @@ interface Task {
   Template is in index.html with id="todo-template"
 
   Result after function:
-  <div class="todo-element" id="crypto.randomUUID()" data-completed="boolean">
+  <div class="todo-element" id="crypto.randomUUID()" data-completed="boolean", data-urgency="(critical | high | medium | low)?">
     <label class="todo-element__label">
       <input type="checkbox" name="task-checkbox">
       <span class="todo-element__text"></span>
@@ -81,6 +82,17 @@ const createTaskEll = (
     dateEl.dateTime = due
     dateEl.textContent = due
     dueDateP.appendChild(dateEl)
+
+    const diffDays = getDaysDueDiff(due)
+    if (diffDays < 0) {
+      parentDiv.dataset.urgency = 'critical'
+    } else if (diffDays === 0 || diffDays === 1) {
+      parentDiv.dataset.urgency = 'high'
+    } else if (diffDays >= 2 && diffDays <= 4) {
+      parentDiv.dataset.urgency = 'medium'
+    } else {
+      parentDiv.dataset.urgency = 'low'
+    }
   } else {
     dueDateP.textContent = 'no due date'
   }
@@ -101,7 +113,6 @@ const addTask = () => {
     'afterbegin',
     createTaskEll(input.value, id, dateInput.value),
   )
-
   tasksArr.push({
     id: id,
     name: input.value,
@@ -130,7 +141,6 @@ todosContainer.addEventListener('change', (event) => {
       task.completed = target.checked
       parent.dataset.completed = String(target.checked)
       updateStorage()
-      console.log(task)
     }
   }
 })
@@ -152,6 +162,13 @@ deleteAllButton.addEventListener('click', () => {
   tasksArr = []
   updateStorage()
 })
+const getDaysDueDiff = (due: string): number => {
+  const targetDate = new Date(due)
+  const currentDate = new Date(getCurrentDate())
+  const diffTime = targetDate.getTime() - currentDate.getTime()
+  // Calculate the difference in days
+  return Math.ceil(diffTime / (1000 * 60 * 60 * 24))
+}
 window.addEventListener('DOMContentLoaded', () => {
   const savedTasks: string | null = localStorage.getItem('Tasks')
   if (savedTasks) {

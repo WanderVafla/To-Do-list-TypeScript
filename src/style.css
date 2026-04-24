@@ -24,7 +24,8 @@ main {
   display: flex;
   flex-direction: column;
   width: 50%;
-  justify-content: center;
+  padding-top: 12rem;
+  padding-bottom: 15rem;
 }
 
 h1 {
@@ -98,6 +99,23 @@ button {
 
 .todo-element[data-completed="true"] button[data-action="remove"] {
   background-color: var(--help-color);
+}
+
+.todo-element[data-urgency="critical"] {
+  background-color: red;
+}
+
+.todo-element[data-urgency="high"] {
+  background-color: orange;
+}
+
+.todo-element[data-urgency="medium"] {
+  background-color: yellow;
+  color: var(--primary-color);
+}
+
+.todo-element[data-urgency="low"] {
+  background-color: green;
 }
 
 #delete-all {
