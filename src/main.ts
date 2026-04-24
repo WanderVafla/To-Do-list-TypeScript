@@ -1,5 +1,11 @@
 import './style.css'
 
+const RATE = {bg: "red"}
+const VERY_SOON = {bg: "orange"}
+const SOON = {bg: "yellow"}
+const FUTUR = {bg: "green"}
+const COLORS = {second: 'black'}
+
 const input = document.querySelector<HTMLInputElement>('#todo-input')
 const sendButton = document.querySelector('#add-todo-button')
 const todosContainer = document.querySelector('#todo-elements')
@@ -7,6 +13,8 @@ const temp = document.querySelector<HTMLTemplateElement>('#todo-template')
 const deleteAllButton = document.querySelector<HTMLButtonElement>('#delete-all')
 const dateInput = document.querySelector<HTMLInputElement>('#todo-date-input')
 
+
+// const 
 if (
   !input ||
   !sendButton ||
@@ -30,7 +38,7 @@ const getCurrnetData = (): string => {
   return `${dateYear}-${dateMonth}-${dateDay}`
 }
 
-dateInput.min = getCurrnetData()
+// dateInput.min = getCurrnetData()
 
 let tasksArr: Task[] = []
 interface Task {
@@ -84,14 +92,14 @@ const createTaskEll = (
 
     const diffDays = getDaysDueDiff(due)
     if (diffDays < 0) {
-      parentDiv.style.backgroundColor = 'red'
+      parentDiv.style.backgroundColor = RATE.bg
     } else if (diffDays === 0 || diffDays === 1) {
-      parentDiv.style.backgroundColor = 'orange'
+      parentDiv.style.backgroundColor = VERY_SOON.bg
     } else if (diffDays >= 2 && diffDays <= 4) {
-      parentDiv.style.backgroundColor = 'yellow'
-      parentDiv.style.color = 'black'
+      parentDiv.style.backgroundColor = SOON.bg
+      parentDiv.style.color = COLORS.second
     } else {
-      parentDiv.style.backgroundColor = 'green'
+      parentDiv.style.backgroundColor = FUTUR.bg
     }
   } else {
     dueDateP.textContent = 'no due date'
