@@ -166,7 +166,7 @@ const getDaysDueDiff = (due: string): number => {
   const targetDate = new Date(due)
   const currentDate = new Date(getCurrnetData())
   const diffTime = targetDate.getTime() - currentDate.getTime()
-  // Calculate the difference in days    
+  // Calculate the difference in days
   return Math.ceil(diffTime / (1000 * 60 * 60 * 24))
 }
 window.addEventListener('DOMContentLoaded', () => {
