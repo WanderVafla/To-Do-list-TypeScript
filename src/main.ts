@@ -84,13 +84,14 @@ const createTaskEll = (
 
     const diffDays = getDaysDueDiff(due)
     if (diffDays < 0) {
-      parentDiv.style = 'background-color: red'
+      parentDiv.style.backgroundColor = 'red'
     } else if (diffDays === 0 || diffDays === 1) {
-      parentDiv.style = 'background-color: orange'
+      parentDiv.style.backgroundColor = 'orange'
     } else if (diffDays >= 2 && diffDays <= 4) {
-      parentDiv.style = 'background-color: yellow; color: black;'
+      parentDiv.style.backgroundColor = 'yellow'
+      parentDiv.style.color = 'black'
     } else {
-      parentDiv.style = 'background-color: green;'
+      parentDiv.style.backgroundColor = 'green'
     }
   } else {
     dueDateP.textContent = 'no due date'
