@@ -10,7 +10,8 @@
     <main>
       <h1>Web todolist app</h1>
       <div class="input-container">
-        <input id="todo-input" type="text">
+        <input id="todo-input" type="text" aria-label="Task name">
+        <input id="todo-date-input" type="date" aria-label="Due date">
         <button id="add-todo-button" type="button">></button>
       </div>
       <div id="todo-elements"></div>
@@ -23,6 +24,7 @@
           <input type="checkbox" name="task-checkbox">
           <span class="todo-element__text"></span>
         </label>
+        <p class="due-date"></p>
         <button type="button" data-action="remove">Remove</button>
       </div>
     </template>

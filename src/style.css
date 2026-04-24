@@ -84,6 +84,8 @@ button {
 
 .todo-element__label {
   align-content: center;
+  max-width: 500px;
+  flex: 1;
 }
 
 .todo-element[data-completed="true"] {
