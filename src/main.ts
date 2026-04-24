@@ -81,7 +81,7 @@ const createTaskEll = (
     dateEl.dateTime = due
     dateEl.textContent = due
     dueDateP.appendChild(dateEl)
-    
+
     const diffDays = getDaysDueDiff(due)
     if (diffDays < 0) {
       parentDiv.style = 'background-color: red'
@@ -163,7 +163,11 @@ deleteAllButton.addEventListener('click', () => {
 })
 const getDaysDueDiff = (due: string): number => {
   const dateTaskNum: number = Number(due.split('-').reduce((acc, x) => acc + x))
-  const dateCurrNum = Number(getCurrnetData().split('-').reduce((acc, x) => acc + x))
+  const dateCurrNum = Number(
+    getCurrnetData()
+      .split('-')
+      .reduce((acc, x) => acc + x),
+  )
   const daysDiff = dateTaskNum - dateCurrNum
   return daysDiff
 }
