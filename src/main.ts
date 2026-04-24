@@ -1,11 +1,5 @@
 import './style.css'
 
-const RATE = {bg: "red"}
-const VERY_SOON = {bg: "orange"}
-const SOON = {bg: "yellow"}
-const FUTUR = {bg: "green"}
-const COLORS = {second: 'black'}
-
 const input = document.querySelector<HTMLInputElement>('#todo-input')
 const sendButton = document.querySelector('#add-todo-button')
 const todosContainer = document.querySelector('#todo-elements')
