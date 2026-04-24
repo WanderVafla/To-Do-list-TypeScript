@@ -5,7 +5,8 @@ const sendButton = document.querySelector('#add-todo-button')
 const todosContainer = document.querySelector('#todo-elements')
 const deleteAllButton = document.querySelector<HTMLButtonElement>('#delete-all')
 const dateInput = document.querySelector<HTMLInputElement>('#todo-date-input')
-const todoTemplate = document.querySelector<HTMLTemplateElement>('#todo-template')
+const todoTemplate =
+  document.querySelector<HTMLTemplateElement>('#todo-template')
 
 // const
 if (
@@ -56,16 +57,13 @@ interface Task {
   </div>
 */
 const checkMessageOverdue = () => {
-  const container = document.querySelector<HTMLParagraphElement>('#overdue-message')
+  const container =
+    document.querySelector<HTMLParagraphElement>('#overdue-message')
   if (container) {
     let text = ''
     for (const task of tasksArr) {
       const diffDays = getDaysDueDiff(task.due)
       if (task.completed === false && diffDays < 0) {
-        // const node = document.createTextNode(task.name)
-        // const breakLine = document.createElement('br')
-        // container.appendChild(node)
-        // container.appendChild(breakLine)
         text += `${task.name}\n`
       }
     }
@@ -137,6 +135,7 @@ const addTask = () => {
     due: dateInput.value,
   })
   updateStorage()
+  checkMessageOverdue()
 
   input.value = ''
 }
@@ -159,7 +158,6 @@ todosContainer.addEventListener('change', (event) => {
       parent.dataset.completed = String(target.checked)
       updateStorage()
       checkMessageOverdue()
-
     }
   }
 })
@@ -173,7 +171,6 @@ todosContainer.addEventListener('click', (event) => {
       tasksArr = tasksArr.filter((task) => task.id !== parent.id)
       updateStorage()
       checkMessageOverdue()
-
     }
   }
 })
@@ -183,7 +180,6 @@ deleteAllButton.addEventListener('click', () => {
   tasksArr = []
   updateStorage()
   checkMessageOverdue()
-
 })
 const getDaysDueDiff = (due: string): number => {
   const targetDate = new Date(due)
@@ -201,9 +197,9 @@ window.addEventListener('DOMContentLoaded', () => {
         'afterbegin',
         createTaskEll(task.name, task.id, task.due, task.completed),
       )
-      checkMessageOverdue()
       tasksArr.push(task)
     }
+    checkMessageOverdue()
   }
 })
 

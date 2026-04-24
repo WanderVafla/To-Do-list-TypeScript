@@ -90,15 +90,16 @@ button {
 }
 
 #overdue-message {
+  padding: 1rem 2rem;
   display: flex;
   background-color: red;
   color: var(--second-color);
   white-space: pre-line;
   border: 3px solid var(--help-color);
   border-radius: 10px;
-  justify-content: center;
   font-size: large;
-  width: 5rem;
+  font-weight: 700;
+  width: 60rem;
   position: absolute;
 }
 #overdue-message:empty {
