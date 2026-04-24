@@ -101,20 +101,20 @@ button {
   background-color: var(--help-color);
 }
 
-.todo-element[data-urgency='critical'] {
+.todo-element[data-urgency="critical"] {
   background-color: red;
 }
 
-.todo-element[data-urgency='high'] {
+.todo-element[data-urgency="high"] {
   background-color: orange;
 }
 
-.todo-element[data-urgency='medium'] {
+.todo-element[data-urgency="medium"] {
   background-color: yellow;
   color: var(--primary-color);
 }
 
-.todo-element[data-urgency='low'] {
+.todo-element[data-urgency="low"] {
   background-color: green;
 }
 

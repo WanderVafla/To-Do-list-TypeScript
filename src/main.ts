@@ -7,8 +7,7 @@ const temp = document.querySelector<HTMLTemplateElement>('#todo-template')
 const deleteAllButton = document.querySelector<HTMLButtonElement>('#delete-all')
 const dateInput = document.querySelector<HTMLInputElement>('#todo-date-input')
 
-
-// const 
+// const
 if (
   !input ||
   !sendButton ||
