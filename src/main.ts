@@ -22,22 +22,15 @@ if (
   A current day and month should always be in a two-digit format: 
   result: 2026-2-5 > 2026-02-05
 */
-const currnetData = (): string => {
+const getCurrnetData = (): string => {
   const date = new Date()
   const dateYear = date.getFullYear()
-  const dateMonth =
-    date.getMonth() + 1 < 9
-      ? `0${(date.getMonth() + 1).toString()}`
-      : (date.getMonth() + 1).toString()
-  const dateDay: string =
-    date.getDate() < 9
-      ? `0${date.getDate().toString()}`
-      : date.getDate().toString()
-  console.log(`${dateYear}-${dateMonth}-${dateDay}`)
+  const dateMonth = String(date.getMonth() + 1).padStart(2, '0')
+  const dateDay = String(date.getDate()).padStart(2, '0')
   return `${dateYear}-${dateMonth}-${dateDay}`
 }
 
-dateInput.min = currnetData()
+dateInput.min = getCurrnetData()
 
 let tasksArr: Task[] = []
 interface Task {
