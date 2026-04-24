@@ -81,6 +81,21 @@ const createTaskEll = (
     dateEl.dateTime = due
     dateEl.textContent = due
     dueDateP.appendChild(dateEl)
+    
+    const diffDays = getDaysDueDiff(due)
+    if (diffDays < 0) {
+      parentDiv.style = 'background-color: red'
+      console.log(`${name}: red(${diffDays})`);
+    } else if (diffDays === 0 || diffDays === 1) {
+      parentDiv.style = 'background-color: orange'
+      console.log(`${name}: orange(${diffDays})`);
+    } else if (diffDays >= 2 && diffDays <= 4) {
+      parentDiv.style = 'background-color: yellow; color: black;'
+      console.log(`${name}: yellow(${diffDays})`);
+    } else {
+      parentDiv.style = 'background-color: green;'
+      console.log(`${name}: green(${diffDays})`);
+    }
   } else {
     dueDateP.textContent = 'no due date'
   }
@@ -101,7 +116,6 @@ const addTask = () => {
     'afterbegin',
     createTaskEll(input.value, id, dateInput.value),
   )
-
   tasksArr.push({
     id: id,
     name: input.value,
@@ -152,6 +166,17 @@ deleteAllButton.addEventListener('click', () => {
   tasksArr = []
   updateStorage()
 })
+  tasksArr.forEach(task => {
+    const date = task.due.split('-').join()
+    console.log(date);
+  })
+const getDaysDueDiff = (due: string): number => {
+  const dateTaskNum: number = Number(due.split('-').reduce((acc, x) => acc + x))
+  const dateCurrNum = Number(getCurrnetData().split('-').reduce((acc, x) => acc + x))
+  const daysDiff = dateTaskNum - dateCurrNum
+  console.log(`${daysDiff}`);
+  return daysDiff
+}
 window.addEventListener('DOMContentLoaded', () => {
   const savedTasks: string | null = localStorage.getItem('Tasks')
   if (savedTasks) {
@@ -163,6 +188,15 @@ window.addEventListener('DOMContentLoaded', () => {
       )
       tasksArr.push(task)
     }
+    // TODO: Find a difference between task due and today
+  //   tasksArr.forEach(task => {
+  //   if (task.due) {
+  //     const dateTaskNum: number = Number(task.due.split('-').reduce((acc, x) => acc + x))
+  //     const dateCurrNum = Number(getCurrnetData().split('-').reduce((acc, x) => acc + x))
+  //     const daysDiff = dateTaskNum - dateCurrNum
+  //     console.log(`${task.name}: ${daysDiff}`);
+  //   }
+  // })
   }
 })
 
