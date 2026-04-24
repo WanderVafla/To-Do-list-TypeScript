@@ -92,6 +92,7 @@ button {
 #overdue-message {
   display: flex;
   background-color: red;
+  color: var(--second-color);
   white-space: pre-line;
   border: 3px solid var(--help-color);
   border-radius: 10px;
