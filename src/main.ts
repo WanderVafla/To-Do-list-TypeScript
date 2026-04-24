@@ -162,14 +162,11 @@ deleteAllButton.addEventListener('click', () => {
   updateStorage()
 })
 const getDaysDueDiff = (due: string): number => {
-  const dateTaskNum: number = Number(due.split('-').reduce((acc, x) => acc + x))
-  const dateCurrNum = Number(
-    getCurrnetData()
-      .split('-')
-      .reduce((acc, x) => acc + x),
-  )
-  const daysDiff = dateTaskNum - dateCurrNum
-  return daysDiff
+  const targetDate = new Date(due)
+  const currentDate = new Date(getCurrnetData())
+  const diffTime = targetDate.getTime() - currentDate.getTime()
+  // Calculate the difference in days    
+  return Math.ceil(diffTime / (1000 * 60 * 60 * 24))
 }
 window.addEventListener('DOMContentLoaded', () => {
   const savedTasks: string | null = localStorage.getItem('Tasks')
