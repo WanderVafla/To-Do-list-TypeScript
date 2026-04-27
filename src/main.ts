@@ -7,6 +7,8 @@ const deleteAllButton = document.querySelector<HTMLButtonElement>('#delete-all')
 const dateInput = document.querySelector<HTMLInputElement>('#todo-date-input')
 const todoTemplate =
   document.querySelector<HTMLTemplateElement>('#todo-template')
+const overdueContainer =
+    document.querySelector<HTMLParagraphElement>('#overdue-message')
 
 // const
 if (
@@ -15,7 +17,8 @@ if (
   !todosContainer ||
   !todoTemplate ||
   !deleteAllButton ||
-  !dateInput
+  !dateInput ||
+  !overdueContainer
 ) {
   throw new Error('Warning some html are missing')
 }
@@ -57,17 +60,13 @@ interface Task {
   </div>
 */
 const checkMessageOverdue = () => {
-  const container =
-    document.querySelector<HTMLParagraphElement>('#overdue-message')
-  if (container) {
     let text = ''
     for (const task of tasksArr) {
       const diffDays = getDaysDueDiff(task.due)
       if (task.completed === false && diffDays < 0) {
         text += `${task.name}\n`
       }
-    }
-    container.textContent = text
+    overdueContainer.textContent = text
   }
 }
 const createTaskEll = (
