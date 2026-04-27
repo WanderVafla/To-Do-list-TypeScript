@@ -3,18 +3,22 @@ import './style.css'
 const input = document.querySelector<HTMLInputElement>('#todo-input')
 const sendButton = document.querySelector('#add-todo-button')
 const todosContainer = document.querySelector('#todo-elements')
-const temp = document.querySelector<HTMLTemplateElement>('#todo-template')
 const deleteAllButton = document.querySelector<HTMLButtonElement>('#delete-all')
 const dateInput = document.querySelector<HTMLInputElement>('#todo-date-input')
+const todoTemplate =
+  document.querySelector<HTMLTemplateElement>('#todo-template')
+const overdueContainer =
+  document.querySelector<HTMLParagraphElement>('#overdue-message')
 
 // const
 if (
   !input ||
   !sendButton ||
   !todosContainer ||
-  !temp ||
+  !todoTemplate ||
   !deleteAllButton ||
-  !dateInput
+  !dateInput ||
+  !overdueContainer
 ) {
   throw new Error('Warning some html are missing')
 }
@@ -31,7 +35,7 @@ const getCurrentDate = (): string => {
   return `${dateYear}-${dateMonth}-${dateDay}`
 }
 
-dateInput.min = getCurrentDate()
+// dateInput.min = getCurrentDate()
 
 let tasksArr: Task[] = []
 interface Task {
@@ -55,13 +59,23 @@ interface Task {
     </p>
   </div>
 */
+const checkMessageOverdue = () => {
+  let text = ''
+  for (const task of tasksArr) {
+    const diffDays = getDaysDueDiff(task.due)
+    if (task.completed === false && diffDays < 0) {
+      text += `${task.name}\n`
+    }
+    overdueContainer.textContent = text
+  }
+}
 const createTaskEll = (
   name: string,
   id: string,
   due: string,
   completed = false,
 ): HTMLDivElement => {
-  const clonTemp = temp.content.cloneNode(true) as DocumentFragment
+  const clonTemp = todoTemplate.content.cloneNode(true) as DocumentFragment
   const parentDiv = clonTemp.querySelector<HTMLDivElement>('.todo-element')
   const taskTextSpan = clonTemp.querySelector<HTMLSpanElement>(
     '.todo-element__text',
@@ -120,6 +134,7 @@ const addTask = () => {
     due: dateInput.value,
   })
   updateStorage()
+  checkMessageOverdue()
 
   input.value = ''
 }
@@ -141,6 +156,7 @@ todosContainer.addEventListener('change', (event) => {
       task.completed = target.checked
       parent.dataset.completed = String(target.checked)
       updateStorage()
+      checkMessageOverdue()
     }
   }
 })
@@ -153,6 +169,7 @@ todosContainer.addEventListener('click', (event) => {
       parent.remove()
       tasksArr = tasksArr.filter((task) => task.id !== parent.id)
       updateStorage()
+      checkMessageOverdue()
     }
   }
 })
@@ -161,6 +178,7 @@ deleteAllButton.addEventListener('click', () => {
   todosContainer.replaceChildren()
   tasksArr = []
   updateStorage()
+  checkMessageOverdue()
 })
 const getDaysDueDiff = (due: string): number => {
   const targetDate = new Date(due)
@@ -180,6 +198,7 @@ window.addEventListener('DOMContentLoaded', () => {
       )
       tasksArr.push(task)
     }
+    checkMessageOverdue()
   }
 })
 

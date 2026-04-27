@@ -7,7 +7,8 @@
     <title>Web todolist project</title>
   </head>
   <body>
-    <main>
+    <p id="overdue-message"></p>
+    <main id="main">
       <h1>Web todolist app</h1>
       <div class="input-container">
         <input id="todo-input" type="text" aria-label="Task name">
@@ -17,7 +18,7 @@
       <div id="todo-elements"></div>
       <button type="button" id="delete-all">Delete All</button>
     </main>
-    
+
     <template id="todo-template">
       <div class="todo-element">
         <label class="todo-element__label">
