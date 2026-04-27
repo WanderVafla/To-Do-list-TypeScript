@@ -8,6 +8,7 @@ body {
   --primary-color: black;
   --second-color: white;
   --help-color: gray;
+  --overdue-color: red;
 }
 
 * {
@@ -92,7 +93,7 @@ button {
 #overdue-message {
   padding: 1rem 2rem;
   display: flex;
-  background-color: red;
+  background-color: var(--overdue-color);
   color: var(--second-color);
   white-space: pre-line;
   border: 3px solid var(--help-color);
@@ -119,7 +120,7 @@ button {
 }
 
 .todo-element[data-urgency="critical"] {
-  background-color: red;
+  background-color: var(--overdue-color);
 }
 
 .todo-element[data-urgency="high"] {
