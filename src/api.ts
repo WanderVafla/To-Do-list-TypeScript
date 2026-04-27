@@ -24,8 +24,9 @@ export const getCurrentDate = (): string => {
   return `${dateYear}-${dateMonth}-${dateDay}`
 }
 
-export const updateStorage = () => {
+export const updateStorage = (overdueContainer: HTMLParagraphElement) => {
   localStorage.setItem('Tasks', JSON.stringify(tasksArr))
+  checkMessageOverdue(overdueContainer)
 }
 
 export const getDaysDueDiff = (due: string): number => {
@@ -72,8 +73,7 @@ export const addTask = (
     completed: false,
     due: dateInput.value,
   })
-  updateStorage()
-  checkMessageOverdue(overdueContainer)
+  updateStorage(overdueContainer)
 
   input.value = ''
 }

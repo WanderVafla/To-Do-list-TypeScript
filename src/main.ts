@@ -74,8 +74,7 @@ todosContainer.addEventListener('change', (event) => {
     if (task) {
       task.completed = target.checked
       parent.dataset.completed = String(target.checked)
-      updateStorage()
-      checkMessageOverdue(overdueContainer)
+      updateStorage(overdueContainer)
     }
   }
 })
@@ -88,8 +87,7 @@ todosContainer.addEventListener('click', (event) => {
       parent.remove()
       const filteredTasksArr = tasksArr.filter((task) => task.id !== parent.id)
       setTasksArr(filteredTasksArr)
-      updateStorage()
-      checkMessageOverdue(overdueContainer)
+      updateStorage(overdueContainer)
     }
   }
 })
@@ -97,8 +95,7 @@ todosContainer.addEventListener('click', (event) => {
 deleteAllButton.addEventListener('click', () => {
   todosContainer.replaceChildren()
   setTasksArr([])
-  updateStorage()
-  checkMessageOverdue(overdueContainer)
+  updateStorage(overdueContainer)
 })
 
 window.addEventListener('DOMContentLoaded', () => {
