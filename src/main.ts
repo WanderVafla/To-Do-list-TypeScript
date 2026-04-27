@@ -12,18 +12,14 @@ import {
 import { createTaskEll } from './elements'
 import { getCurrentDate } from './utils'
 
-export const input = document.querySelector<HTMLInputElement>('#todo-input')
-export const sendButton =
-  document.querySelector<HTMLButtonElement>('#add-todo-button')
-export const todosContainer =
-  document.querySelector<HTMLDivElement>('#todo-elements')
-export const deleteAllButton =
-  document.querySelector<HTMLButtonElement>('#delete-all')
-export const dateInput =
-  document.querySelector<HTMLInputElement>('#todo-date-input')
-export const todoTemplate =
+const input = document.querySelector<HTMLInputElement>('#todo-input')
+const sendButton = document.querySelector<HTMLButtonElement>('#add-todo-button')
+const todosContainer = document.querySelector<HTMLDivElement>('#todo-elements')
+const deleteAllButton = document.querySelector<HTMLButtonElement>('#delete-all')
+const dateInput = document.querySelector<HTMLInputElement>('#todo-date-input')
+const todoTemplate =
   document.querySelector<HTMLTemplateElement>('#todo-template')
-export const overdueContainer =
+const overdueContainer =
   document.querySelector<HTMLParagraphElement>('#overdue-message')
 
 // const
