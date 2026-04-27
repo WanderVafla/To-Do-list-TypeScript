@@ -29,36 +29,43 @@ export const checkMessageOverdue = (overdueContainer: HTMLParagraphElement) => {
     if (task.completed === false && diffDays < 0) {
       text += `${task.name}\n`
     }
-    overdueContainer.textContent = text
   }
+  overdueContainer.textContent = text
 }
 
-export const addTask = (
-  input: HTMLInputElement,
-  todosContainer: HTMLDivElement,
-  todoTemplate: HTMLTemplateElement,
-  dateInput: HTMLInputElement,
-  overdueContainer: HTMLParagraphElement,
-) => {
-  if (!input.value.trim()) {
+export interface TaskArguments {
+  input: HTMLInputElement
+  todosContainer: HTMLDivElement
+  todoTemplate: HTMLTemplateElement
+  dateInput: HTMLInputElement
+  overdueContainer: HTMLParagraphElement
+}
+
+export const addTask = (args: TaskArguments) => {
+  if (!args.input.value.trim()) {
     alert('Your task is empty!')
-    input.value = ''
+    args.input.value = ''
     return
   }
   // result ${string}-${string}-${string}-${string}-${string}
   const id = crypto.randomUUID()
 
-  todosContainer.insertAdjacentElement(
+  args.todosContainer.insertAdjacentElement(
     'afterbegin',
-    createTaskEll(todoTemplate, input.value, id, dateInput.value),
+    createTaskEll(
+      args.todoTemplate,
+      args.input.value,
+      id,
+      args.dateInput.value,
+    ),
   )
   tasksArr.push({
     id: id,
-    name: input.value,
+    name: args.input.value,
     completed: false,
-    due: dateInput.value,
+    due: args.dateInput.value,
   })
-  updateStorage(overdueContainer)
+  updateStorage(args.overdueContainer)
 
-  input.value = ''
+  args.input.value = ''
 }

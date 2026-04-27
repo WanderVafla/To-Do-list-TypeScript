@@ -5,6 +5,7 @@ import {
   checkMessageOverdue,
   setTasksArr,
   type Task,
+  type TaskArguments,
   tasksArr,
   updateStorage,
 } from './api'
@@ -37,16 +38,23 @@ if (
 ) {
   throw new Error('Warning some html are missing')
 }
-
+// Set minimal date for input calendare
 dateInput.min = getCurrentDate()
-
+// For addTask() function
+const taskArrguments: TaskArguments = {
+  input,
+  todosContainer,
+  todoTemplate,
+  dateInput,
+  overdueContainer,
+}
 // Button add
 sendButton.addEventListener('click', () => {
-  addTask(input, todosContainer, todoTemplate, dateInput, overdueContainer)
+  addTask(taskArrguments)
 })
 input.addEventListener('keypress', (event) => {
   if (event.key === 'Enter') {
-    addTask(input, todosContainer, todoTemplate, dateInput, overdueContainer)
+    addTask(taskArrguments)
   }
 })
 // Checkbox
