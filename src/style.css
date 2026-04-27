@@ -9,6 +9,9 @@ body {
   --second-color: white;
   --help-color: gray;
   --overdue-color: red;
+  --preoverdue-color: orange;
+  --soon-due-color: yellow;
+  --not-soon-due-color: green;
 }
 
 * {
@@ -124,16 +127,16 @@ button {
 }
 
 .todo-element[data-urgency="high"] {
-  background-color: orange;
+  background-color: var(--preoverdue-color);
 }
 
 .todo-element[data-urgency="medium"] {
-  background-color: yellow;
+  background-color: var(--soon-due-color);
   color: var(--primary-color);
 }
 
 .todo-element[data-urgency="low"] {
-  background-color: green;
+  background-color: var(--not-soon-due-color);
 }
 
 #delete-all {
