@@ -8,7 +8,7 @@ const dateInput = document.querySelector<HTMLInputElement>('#todo-date-input')
 const todoTemplate =
   document.querySelector<HTMLTemplateElement>('#todo-template')
 const overdueContainer =
-    document.querySelector<HTMLParagraphElement>('#overdue-message')
+  document.querySelector<HTMLParagraphElement>('#overdue-message')
 
 // const
 if (
@@ -60,12 +60,12 @@ interface Task {
   </div>
 */
 const checkMessageOverdue = () => {
-    let text = ''
-    for (const task of tasksArr) {
-      const diffDays = getDaysDueDiff(task.due)
-      if (task.completed === false && diffDays < 0) {
-        text += `${task.name}\n`
-      }
+  let text = ''
+  for (const task of tasksArr) {
+    const diffDays = getDaysDueDiff(task.due)
+    if (task.completed === false && diffDays < 0) {
+      text += `${task.name}\n`
+    }
     overdueContainer.textContent = text
   }
 }
