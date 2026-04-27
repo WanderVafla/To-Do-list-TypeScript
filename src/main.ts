@@ -8,7 +8,7 @@ import {
   type TaskArguments,
   tasksArr,
   updateStorage,
-} from './api'
+} from './taskManager'
 import { createTaskEll } from './elements'
 import { getCurrentDate } from './utils'
 
@@ -22,7 +22,6 @@ const todoTemplate =
 const overdueContainer =
   document.querySelector<HTMLParagraphElement>('#overdue-message')
 
-// const
 if (
   !input ||
   !sendButton ||
