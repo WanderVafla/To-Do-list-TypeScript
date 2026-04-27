@@ -1,5 +1,20 @@
-import { getDaysDueDiff } from './api'
+import { getDaysDueDiff } from './utils'
 
+/* 
+  Template is in index.html with id="todo-template"
+
+  Result after function:
+  <div class="todo-element" id="crypto.randomUUID()" data-completed="boolean", data-urgency="(critical | high | medium | low)?">
+    <label class="todo-element__label">
+      <input type="checkbox" name="task-checkbox">
+      <span class="todo-element__text"></span>
+    </label>
+    <button type="button" data-action="remove">Remove</button>
+    <p class="due-date">
+      <date datetime="date">date
+    </p>
+  </div>
+*/
 export const createTaskEll = (
   todoTemplate: HTMLTemplateElement,
   name: string,

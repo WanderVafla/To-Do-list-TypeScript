@@ -3,13 +3,13 @@ import './style.css'
 import {
   addTask,
   checkMessageOverdue,
-  getCurrentDate,
   setTasksArr,
   type Task,
   tasksArr,
   updateStorage,
 } from './api'
 import { createTaskEll } from './elements'
+import { getCurrentDate } from './utils'
 
 export const input = document.querySelector<HTMLInputElement>('#todo-input')
 export const sendButton =
@@ -39,22 +39,6 @@ if (
 }
 
 dateInput.min = getCurrentDate()
-
-/* 
-  Template is in index.html with id="todo-template"
-
-  Result after function:
-  <div class="todo-element" id="crypto.randomUUID()" data-completed="boolean", data-urgency="(critical | high | medium | low)?">
-    <label class="todo-element__label">
-      <input type="checkbox" name="task-checkbox">
-      <span class="todo-element__text"></span>
-    </label>
-    <button type="button" data-action="remove">Remove</button>
-    <p class="due-date">
-      <date datetime="date">date
-    </p>
-  </div>
-*/
 
 // Button add
 sendButton.addEventListener('click', () => {
