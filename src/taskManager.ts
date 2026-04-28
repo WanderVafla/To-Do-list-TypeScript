@@ -1,7 +1,7 @@
-import { createTaskEll } from './elements'
-import { getDaysDueDiff } from './utils'
 import { GetTask, PostTask } from './api'
+import { createTaskEll } from './elements'
 import type { Task, TaskPostType } from './types'
+import { getDaysDueDiff } from './utils'
 /* 
   A current day and month should always be in a two-digit format: 
   result: 2026-2-5 > 2026-02-05
@@ -15,14 +15,12 @@ export let tasksArr: Task[] = []
 //   due: string
 // }
 
-
 export const setTasksArr = (array: Task[]) => {
   tasksArr = array
 }
 
 export const updateTasksArr = async () => {
   tasksArr = await GetTask()
-  
 }
 
 export const updateStorage = async (overdueContainer: HTMLParagraphElement) => {
@@ -33,10 +31,10 @@ export const updateStorage = async (overdueContainer: HTMLParagraphElement) => {
 export const checkMessageOverdue = (overdueContainer: HTMLParagraphElement) => {
   let text = ''
   for (const task of tasksArr) {
-    const diffDays = getDaysDueDiff(task.due_date)    
-      if (task.done === false &&  diffDays !== null && diffDays < 0) {        
-        text += `${task.title}\n`
-      }
+    const diffDays = getDaysDueDiff(task.due_date)
+    if (task.done === false && diffDays !== null && diffDays < 0) {
+      text += `${task.title}\n`
+    }
   }
   overdueContainer.textContent = text
 }
@@ -55,24 +53,21 @@ export const addTask = async (args: TaskArguments) => {
     args.input.value = ''
     return
   }
-    const task: TaskPostType = {
-      title: args.input.value,
-      content: args.input.value,
-      due_date: args.dateInput.value !== "" ? args.dateInput.value : null,
-      done: false
-    }
+  const task: TaskPostType = {
+    title: args.input.value,
+    content: args.input.value,
+    due_date: args.dateInput.value !== '' ? args.dateInput.value : null,
+    done: false,
+  }
   // result ${string}-${string}-${string}-${string}-${string}
   // const id = crypto.randomUUID()
-  await PostTask(task).then(_ => updateTasksArr())
-  
-    args.todosContainer.insertAdjacentElement(
-      'afterbegin',
-      createTaskEll(
-        args.todoTemplate,
-        tasksArr[tasksArr.length - 1]
-      )
-    )
+  await PostTask(task).then((_) => updateTasksArr())
+
+  args.todosContainer.insertAdjacentElement(
+    'afterbegin',
+    createTaskEll(args.todoTemplate, tasksArr[tasksArr.length - 1]),
+  )
   updateStorage(args.overdueContainer)
-      
+
   args.input.value = ''
 }

@@ -14,5 +14,5 @@ export const getDaysDueDiff = (due: string): number | null => {
     // Calculate the difference in days
     return Math.ceil(diffTime / (1000 * 60 * 60 * 24))
   }
-  return null;
+  return null
 }

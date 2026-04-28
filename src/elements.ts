@@ -18,7 +18,7 @@ import { getDaysDueDiff } from './utils'
 */
 export const createTaskEll = (
   todoTemplate: HTMLTemplateElement,
-  task: Task
+  task: Task,
 ): HTMLDivElement => {
   const clonTemp = todoTemplate.content.cloneNode(true) as DocumentFragment
   const parentDiv = clonTemp.querySelector<HTMLDivElement>('.todo-element')

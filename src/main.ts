@@ -8,7 +8,6 @@ import {
   setTasksArr,
   type TaskArguments,
   tasksArr,
-  updateStorage,
   updateTasksArr,
 } from './taskManager'
 import type { UpdateTaskData } from './types'
@@ -36,7 +35,7 @@ if (
   throw new Error('Warning some html are missing')
 }
 // Set minimal date for input calendare
-// dateInput.min = getCurrentDate()
+dateInput.min = getCurrentDate()
 // For addTask() function
 const taskArrguments: TaskArguments = {
   input,
@@ -65,28 +64,28 @@ todosContainer.addEventListener('change', (event) => {
       parent.dataset.completed = String(target.checked)
       const checkboxStatus: UpdateTaskData = { done: task.done }
       checkMessageOverdue(overdueContainer)
-      PatchTask(parent.id, checkboxStatus).then(_ => updateTasksArr())
+      PatchTask(parent.id, checkboxStatus).then((_) => updateTasksArr())
     }
   }
 })
 // Remove
-todosContainer.addEventListener('click',(event) => {
+todosContainer.addEventListener('click', (event) => {
   const target = event.target as HTMLButtonElement
   if (target.dataset.action === 'remove') {
     const parent = target.closest<HTMLDivElement>('.todo-element')
-    if (parent) {        
-        parent.remove()
-        checkMessageOverdue(overdueContainer)
-        DeleteTask(parent.id.toString()).then(_ => updateTasksArr())
+    if (parent) {
+      parent.remove()
+      checkMessageOverdue(overdueContainer)
+      DeleteTask(parent.id.toString()).then((_) => updateTasksArr())
     }
   }
 })
 // Remove all
 deleteAllButton.addEventListener('click', () => {
   todosContainer.replaceChildren()
-  DeleteTask().then(_ => updateTasksArr())
-  console.log("deleted all!");
-  
+  DeleteTask().then((_) => updateTasksArr())
+  console.log('deleted all!')
+
   checkMessageOverdue(overdueContainer)
 })
 
@@ -94,17 +93,13 @@ window.addEventListener('DOMContentLoaded', async () => {
   const tasks = await GetTask()
   setTasksArr(tasks)
   for (const task of tasksArr) {
-      todosContainer.insertAdjacentElement(
-        'afterbegin',
-        createTaskEll(
-          todoTemplate,
-          task
-        ),
-      )
-    }
-    checkMessageOverdue(overdueContainer)
-  console.log("Task list is loaded!");
-  
+    todosContainer.insertAdjacentElement(
+      'afterbegin',
+      createTaskEll(todoTemplate, task),
+    )
+  }
+  checkMessageOverdue(overdueContainer)
+  console.log('Task list is loaded!')
 })
 
 console.log('Hello from typescript')
