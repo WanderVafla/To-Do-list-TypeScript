@@ -1,34 +1,42 @@
 import { createTaskEll } from './elements'
 import { getDaysDueDiff } from './utils'
-
+import { GetTask, PostTask } from './api'
+import type { Task, TaskPostType } from './types'
 /* 
   A current day and month should always be in a two-digit format: 
   result: 2026-2-5 > 2026-02-05
 */
 export let tasksArr: Task[] = []
-export interface Task {
-  id: string
-  name: string
-  completed: boolean
-  due: string
-}
+
+// export interface Task {
+//   id: string
+//   name: string
+//   completed: boolean
+//   due: string
+// }
+
 
 export const setTasksArr = (array: Task[]) => {
   tasksArr = array
 }
 
-export const updateStorage = (overdueContainer: HTMLParagraphElement) => {
-  localStorage.setItem('Tasks', JSON.stringify(tasksArr))
+export const updateTasksArr = async () => {
+  tasksArr = await GetTask()
+  
+}
+
+export const updateStorage = async (overdueContainer: HTMLParagraphElement) => {
+  tasksArr = await GetTask()
   checkMessageOverdue(overdueContainer)
 }
 
 export const checkMessageOverdue = (overdueContainer: HTMLParagraphElement) => {
   let text = ''
   for (const task of tasksArr) {
-    const diffDays = getDaysDueDiff(task.due)
-    if (task.completed === false && diffDays < 0) {
-      text += `${task.name}\n`
-    }
+    const diffDays = getDaysDueDiff(task.due_date)    
+      if (task.done === false &&  diffDays !== null && diffDays < 0) {        
+        text += `${task.title}\n`
+      }
   }
   overdueContainer.textContent = text
 }
@@ -41,31 +49,30 @@ export interface TaskArguments {
   overdueContainer: HTMLParagraphElement
 }
 
-export const addTask = (args: TaskArguments) => {
+export const addTask = async (args: TaskArguments) => {
   if (!args.input.value.trim()) {
     alert('Your task is empty!')
     args.input.value = ''
     return
   }
+    const task: TaskPostType = {
+      title: args.input.value,
+      content: args.input.value,
+      due_date: args.dateInput.value !== "" ? args.dateInput.value : null,
+      done: false
+    }
   // result ${string}-${string}-${string}-${string}-${string}
-  const id = crypto.randomUUID()
-
-  args.todosContainer.insertAdjacentElement(
-    'afterbegin',
-    createTaskEll(
-      args.todoTemplate,
-      args.input.value,
-      id,
-      args.dateInput.value,
-    ),
-  )
-  tasksArr.push({
-    id: id,
-    name: args.input.value,
-    completed: false,
-    due: args.dateInput.value,
-  })
+  // const id = crypto.randomUUID()
+  await PostTask(task).then(_ => updateTasksArr())
+  
+    args.todosContainer.insertAdjacentElement(
+      'afterbegin',
+      createTaskEll(
+        args.todoTemplate,
+        tasksArr[tasksArr.length - 1]
+      )
+    )
   updateStorage(args.overdueContainer)
-
+      
   args.input.value = ''
 }

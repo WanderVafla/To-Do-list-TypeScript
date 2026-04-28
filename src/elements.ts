@@ -1,3 +1,4 @@
+import type { Task } from './types'
 import { getDaysDueDiff } from './utils'
 
 /* 
@@ -17,10 +18,7 @@ import { getDaysDueDiff } from './utils'
 */
 export const createTaskEll = (
   todoTemplate: HTMLTemplateElement,
-  name: string,
-  id: string,
-  due: string,
-  completed = false,
+  task: Task
 ): HTMLDivElement => {
   const clonTemp = todoTemplate.content.cloneNode(true) as DocumentFragment
   const parentDiv = clonTemp.querySelector<HTMLDivElement>('.todo-element')
@@ -34,28 +32,30 @@ export const createTaskEll = (
   if (!taskTextSpan || !parentDiv || !checkbox || !dueDateP) {
     throw new Error('Warning some html of todo-template are missing')
   }
-  parentDiv.id = id
-  parentDiv.dataset.completed = String(completed)
-  checkbox.checked = completed
-  taskTextSpan.textContent = name
-  if (due !== '') {
+  parentDiv.id = task.id.toString()
+  parentDiv.dataset.completed = String(task.done)
+  checkbox.checked = task.done
+  taskTextSpan.textContent = task.title
+  if (task.due_date !== '') {
     const dateEl = document.createElement('time')
-    dateEl.dateTime = due
-    dateEl.textContent = due
+    dateEl.dateTime = task.due_date
+    dateEl.textContent = task.due_date
     dueDateP.appendChild(dateEl)
 
-    const diffDays = getDaysDueDiff(due)
-    if (diffDays < 0) {
-      parentDiv.dataset.urgency = 'critical'
-    } else if (diffDays === 0 || diffDays === 1) {
-      parentDiv.dataset.urgency = 'high'
-    } else if (diffDays >= 2 && diffDays <= 4) {
-      parentDiv.dataset.urgency = 'medium'
+    const diffDays = getDaysDueDiff(task.due_date)
+    if (diffDays) {
+      if (diffDays < 0) {
+        parentDiv.dataset.urgency = 'critical'
+      } else if (diffDays === 0 || diffDays === 1) {
+        parentDiv.dataset.urgency = 'high'
+      } else if (diffDays >= 2 && diffDays <= 4) {
+        parentDiv.dataset.urgency = 'medium'
+      } else {
+        parentDiv.dataset.urgency = 'low'
+      }
     } else {
-      parentDiv.dataset.urgency = 'low'
+      dueDateP.textContent = 'no due date'
     }
-  } else {
-    dueDateP.textContent = 'no due date'
   }
 
   return parentDiv
