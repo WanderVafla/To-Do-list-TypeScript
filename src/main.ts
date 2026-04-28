@@ -1,6 +1,6 @@
 import './style.css'
 
-import { DeleteAllTask, DeleteTask, GetTask, PatchTask } from './api'
+import { deleteAllTask, deleteTask, getTask, patchTask } from './api'
 import { createTaskEll } from './elements'
 import {
   addTask,
@@ -64,7 +64,7 @@ todosContainer.addEventListener('change', (event) => {
       parent.dataset.completed = String(target.checked)
       const checkboxStatus: UpdateTaskData = { done: task.done }
       checkMessageOverdue(overdueContainer)
-      PatchTask(parent.id, checkboxStatus).then((_) => updateTasksArr())
+      patchTask(parent.id, checkboxStatus).then((_) => updateTasksArr())
     }
   }
 })
@@ -76,20 +76,20 @@ todosContainer.addEventListener('click', (event) => {
     if (parent) {
       parent.remove()
       checkMessageOverdue(overdueContainer)
-      DeleteTask(parent.id.toString()).then((_) => updateTasksArr())
+      deleteTask(parent.id.toString()).then((_) => updateTasksArr())
     }
   }
 })
 // Remove all
 deleteAllButton.addEventListener('click', () => {
   todosContainer.replaceChildren()
-  DeleteAllTask().then((_) => updateTasksArr())
+  deleteAllTask().then((_) => updateTasksArr())
   console.log('deleted all!')
   checkMessageOverdue(overdueContainer)
 })
 
 window.addEventListener('DOMContentLoaded', async () => {
-  const tasks = await GetTask()
+  const tasks = await getTask()
   setTasksArr(tasks)
   for (const task of tasksArr) {
     todosContainer.insertAdjacentElement(

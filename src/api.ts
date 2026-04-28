@@ -2,7 +2,7 @@ import type { Task, TaskPostType, UpdateTaskData } from './types'
 
 const url = 'https://api.todos.in.jt-lab.ch/todos'
 
-export async function GetTask(): Promise<Task[]> {
+export async function getTask(): Promise<Task[]> {
   try {
     const request = await fetch(url, { method: 'GET' })
     if (!request.ok) {
@@ -17,7 +17,7 @@ export async function GetTask(): Promise<Task[]> {
   }
 }
 
-export async function PostTask(task: TaskPostType) {
+export async function postTask(task: TaskPostType) {
   try {
     const request = await fetch(url, {
       method: 'POST',
@@ -38,7 +38,7 @@ export async function PostTask(task: TaskPostType) {
   }
 }
 
-export async function DeleteTask(id?: string) {
+export async function deleteTask(id?: string) {
   try {
     let urdId = `${url}?id=eq.${id}`
     if (!id) {
@@ -60,7 +60,7 @@ export async function DeleteTask(id?: string) {
   }
 }
 
-export async function DeleteAllTask(id?: string) {
+export async function deleteAllTask(id?: string) {
   try {
     const request = await fetch(url, {
       method: 'DELETE',
@@ -78,7 +78,7 @@ export async function DeleteAllTask(id?: string) {
   }
 }
 
-export async function PatchTask(id: string, taskUpdate: UpdateTaskData) {
+export async function patchTask(id: string, taskUpdate: UpdateTaskData) {
   try {
     const urdId = `${url}?id=eq.${id}`
     console.log(urdId)

@@ -1,4 +1,4 @@
-import { GetTask, PostTask } from './api'
+import { getTask, postTask } from './api'
 import { createTaskEll } from './elements'
 import type { Task, TaskPostType } from './types'
 import { getDaysDueDiff } from './utils'
@@ -20,11 +20,11 @@ export const setTasksArr = (array: Task[]) => {
 }
 
 export const updateTasksArr = async () => {
-  tasksArr = await GetTask()
+  tasksArr = await getTask()
 }
 
 export const updateStorage = async (overdueContainer: HTMLParagraphElement) => {
-  tasksArr = await GetTask()
+  tasksArr = await getTask()
   checkMessageOverdue(overdueContainer)
 }
 
@@ -61,13 +61,13 @@ export const addTask = async (args: TaskArguments) => {
   }
   // result ${string}-${string}-${string}-${string}-${string}
   // const id = crypto.randomUUID()
-  await PostTask(task).then((_) => updateTasksArr())
+  await postTask(task).then((_) => updateTasksArr())
 
   args.todosContainer.insertAdjacentElement(
     'afterbegin',
     createTaskEll(args.todoTemplate, tasksArr[tasksArr.length - 1]),
   )
-  updateStorage(args.overdueContainer)
+  checkMessageOverdue(args.overdueContainer)
 
   args.input.value = ''
 }
