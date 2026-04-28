@@ -60,6 +60,24 @@ export async function DeleteTask(id?: string) {
   }
 }
 
+export async function DeleteAllTask(id?: string) {
+  try {
+    const request = await fetch(url, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+    if (request.status === 204) {
+      return
+    }
+    const errorData = await request.json()
+    console.error(errorData)
+  } catch (error) {
+    console.error(error)
+  }
+}
+
 export async function PatchTask(id: string, taskUpdate: UpdateTaskData) {
   try {
     const urdId = `${url}?id=eq.${id}`

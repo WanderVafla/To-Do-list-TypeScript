@@ -1,6 +1,6 @@
 import './style.css'
 
-import { DeleteTask, GetTask, PatchTask } from './api'
+import { DeleteAllTask, DeleteTask, GetTask, PatchTask } from './api'
 import { createTaskEll } from './elements'
 import {
   addTask,
@@ -83,9 +83,8 @@ todosContainer.addEventListener('click', (event) => {
 // Remove all
 deleteAllButton.addEventListener('click', () => {
   todosContainer.replaceChildren()
-  DeleteTask().then((_) => updateTasksArr())
+  DeleteAllTask().then((_) => updateTasksArr())
   console.log('deleted all!')
-
   checkMessageOverdue(overdueContainer)
 })
 
