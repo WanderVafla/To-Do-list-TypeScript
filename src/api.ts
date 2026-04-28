@@ -60,7 +60,7 @@ export async function deleteTask(id?: string) {
   }
 }
 
-export async function deleteAllTask(id?: string) {
+export async function deleteAllTask() {
   try {
     const request = await fetch(url, {
       method: 'DELETE',
