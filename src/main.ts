@@ -84,7 +84,6 @@ todosContainer.addEventListener('click', (event) => {
 deleteAllButton.addEventListener('click', () => {
   todosContainer.replaceChildren()
   deleteAllTask().then((_) => updateTasksArr())
-  console.log('deleted all!')
   checkMessageOverdue(overdueContainer)
 })
 

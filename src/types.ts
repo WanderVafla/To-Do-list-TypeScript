@@ -5,7 +5,7 @@ export interface Task {
   due_date: string
   done: boolean
 }
-// Database give auto id 
+// Database give auto id
 export interface TaskPostType {
   title: string
   content: string

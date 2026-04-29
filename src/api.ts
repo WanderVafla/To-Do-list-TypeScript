@@ -22,20 +22,17 @@ export async function postTask(task: TaskPostType) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Prefer': 'return=representation'
+        Prefer: 'return=representation',
       },
       body: JSON.stringify(task),
     })
-    
+
     if (!request.ok) {
       throw new Error('Error POST request!')
     }
     if (request.status === 201) {
       if (request.body) {
-
         const newItem: Promise<Task> = await request.json()
-        console.log(Array.isArray(newItem) ? newItem[0] : newItem);
-        
         return Array.isArray(newItem) ? newItem[0] : newItem
       }
       return
@@ -88,7 +85,6 @@ export async function deleteAllTask() {
 export async function patchTask(id: string, taskUpdate: UpdateTaskData) {
   try {
     const urdId = `${url}?id=eq.${id}`
-    console.log(urdId)
 
     const request = await fetch(urdId, {
       method: 'PATCH',
@@ -98,7 +94,6 @@ export async function patchTask(id: string, taskUpdate: UpdateTaskData) {
       body: JSON.stringify(taskUpdate),
     })
     if (request.status === 204) {
-      console.log('Toggled')
       return
     }
     const response = await request.json()

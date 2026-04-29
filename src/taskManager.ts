@@ -63,7 +63,7 @@ export const addTask = async (args: TaskArguments) => {
   // const id = crypto.randomUUID()
   const addedItem: Task | undefined = await postTask(task)
   if (!addedItem) {
-    return console.error("Item is undefined!")
+    return console.error('Item is undefined!')
   }
 
   args.todosContainer.insertAdjacentElement(
