@@ -61,13 +61,12 @@ export const addTask = async (args: TaskArguments) => {
     due_date: args.dateInput.value !== '' ? args.dateInput.value : null,
     done: false,
   }
-  // result ${string}-${string}-${string}-${string}-${string}
-  // const id = crypto.randomUUID()
+
   const addedItem: Task | undefined = await postTask(task)
   if (!addedItem) {
     return console.error('Item is undefined!')
   }
-
+  updateTasksArr()
   args.todosContainer.insertAdjacentElement(
     'afterbegin',
     createTaskEll(args.todoTemplate, addedItem),
