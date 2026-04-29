@@ -61,11 +61,14 @@ export const addTask = async (args: TaskArguments) => {
   }
   // result ${string}-${string}-${string}-${string}-${string}
   // const id = crypto.randomUUID()
-  await postTask(task).then((_) => updateTasksArr())
+  const addedItem: Task | undefined = await postTask(task)
+  if (!addedItem) {
+    return console.error("Item is undefined!")
+  }
 
   args.todosContainer.insertAdjacentElement(
     'afterbegin',
-    createTaskEll(args.todoTemplate, tasksArr[tasksArr.length - 1]),
+    createTaskEll(args.todoTemplate, addedItem),
   )
   checkMessageOverdue(args.overdueContainer)
 

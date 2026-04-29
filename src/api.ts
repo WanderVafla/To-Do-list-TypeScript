@@ -9,7 +9,6 @@ export async function getTask(): Promise<Task[]> {
       throw new Error('Error GET request!')
     }
     const response = await request.json()
-    console.log(response)
     return response
   } catch (error) {
     console.error(error)
@@ -23,14 +22,22 @@ export async function postTask(task: TaskPostType) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        accept: 'application/json',
+        'Prefer': 'return=representation'
       },
       body: JSON.stringify(task),
     })
+    
     if (!request.ok) {
       throw new Error('Error POST request!')
     }
     if (request.status === 201) {
+      if (request.body) {
+
+        const newItem: Promise<Task> = await request.json()
+        console.log(Array.isArray(newItem) ? newItem[0] : newItem);
+        
+        return Array.isArray(newItem) ? newItem[0] : newItem
+      }
       return
     }
   } catch (error) {
