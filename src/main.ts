@@ -75,8 +75,8 @@ todosContainer.addEventListener('click', (event) => {
     const parent = target.closest<HTMLDivElement>('.todo-element')
     if (parent) {
       parent.remove()
-      checkMessageOverdue(overdueContainer)
       deleteTask(parent.id.toString()).then((_) => updateTasksArr())
+      checkMessageOverdue(overdueContainer)
     }
   }
 })
