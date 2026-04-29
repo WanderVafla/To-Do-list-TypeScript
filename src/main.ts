@@ -35,7 +35,7 @@ if (
   throw new Error('Warning some html are missing')
 }
 // Set minimal date for input calendare
-// dateInput.min = getCurrentDate()
+dateInput.min = getCurrentDate()
 // For addTask() function
 const taskArrguments: TaskArguments = {
   input,
