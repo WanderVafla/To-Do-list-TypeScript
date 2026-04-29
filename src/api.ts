@@ -42,7 +42,7 @@ export async function postTask(task: TaskPostType) {
   }
 }
 
-export async function deleteTask(id?: string) {
+export async function deleteTask(id: string) {
   try {
     let urdId = `${url}?id=eq.${id}`
     if (!id) {
