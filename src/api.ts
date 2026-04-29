@@ -1,71 +1,104 @@
-import { createTaskEll } from './elements'
-import { getDaysDueDiff } from './utils'
+import type { Task, TaskPostType } from './types'
 
-/* 
-  A current day and month should always be in a two-digit format: 
-  result: 2026-2-5 > 2026-02-05
-*/
-export let tasksArr: Task[] = []
-export interface Task {
-  id: string
-  name: string
-  completed: boolean
-  due: string
-}
+const url = 'https://api.todos.in.jt-lab.ch/todos'
 
-export const setTasksArr = (array: Task[]) => {
-  tasksArr = array
-}
-
-export const updateStorage = (overdueContainer: HTMLParagraphElement) => {
-  localStorage.setItem('Tasks', JSON.stringify(tasksArr))
-  checkMessageOverdue(overdueContainer)
-}
-
-export const checkMessageOverdue = (overdueContainer: HTMLParagraphElement) => {
-  let text = ''
-  for (const task of tasksArr) {
-    const diffDays = getDaysDueDiff(task.due)
-    if (task.completed === false && diffDays < 0) {
-      text += `${task.name}\n`
+export async function getTask(): Promise<Task[]> {
+  try {
+    const request = await fetch(url, { method: 'GET' })
+    if (!request.ok) {
+      throw new Error('Error GET request!')
     }
+    const response = await request.json()
+    return response
+  } catch (error) {
+    console.error(error)
+    return []
   }
-  overdueContainer.textContent = text
 }
 
-export interface TaskArguments {
-  input: HTMLInputElement
-  todosContainer: HTMLDivElement
-  todoTemplate: HTMLTemplateElement
-  dateInput: HTMLInputElement
-  overdueContainer: HTMLParagraphElement
+export async function postTask(task: TaskPostType) {
+  try {
+    const request = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Prefer: 'return=representation',
+      },
+      body: JSON.stringify(task),
+    })
+
+    if (!request.ok) {
+      throw new Error('Error POST request!')
+    }
+    if (request.status === 201) {
+      if (request.body) {
+        const newItem: Promise<Task> = await request.json()
+        return Array.isArray(newItem) ? newItem[0] : newItem
+      }
+      return
+    }
+  } catch (error) {
+    console.error(error)
+  }
 }
 
-export const addTask = (args: TaskArguments) => {
-  if (!args.input.value.trim()) {
-    alert('Your task is empty!')
-    args.input.value = ''
-    return
+export async function deleteTask(id: string) {
+  try {
+    let urdId = `${url}?id=eq.${id}`
+    if (!id) {
+      urdId = url
+    }
+    const request = await fetch(urdId, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+    if (request.status === 204) {
+      return
+    }
+    const errorData = await request.json()
+    console.error(errorData)
+  } catch (error) {
+    console.error(error)
   }
-  // result ${string}-${string}-${string}-${string}-${string}
-  const id = crypto.randomUUID()
+}
 
-  args.todosContainer.insertAdjacentElement(
-    'afterbegin',
-    createTaskEll(
-      args.todoTemplate,
-      args.input.value,
-      id,
-      args.dateInput.value,
-    ),
-  )
-  tasksArr.push({
-    id: id,
-    name: args.input.value,
-    completed: false,
-    due: args.dateInput.value,
-  })
-  updateStorage(args.overdueContainer)
+export async function deleteAllTask() {
+  try {
+    const request = await fetch(url, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+    if (request.status === 204) {
+      return
+    }
+    const errorData = await request.json()
+    console.error(errorData)
+  } catch (error) {
+    console.error(error)
+  }
+}
 
-  args.input.value = ''
+export async function patchTask(id: string, taskUpdate: Partial<TaskPostType>) {
+  try {
+    const urdId = `${url}?id=eq.${id}`
+
+    const request = await fetch(urdId, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(taskUpdate),
+    })
+    if (request.status === 204) {
+      return
+    }
+    const response = await request.json()
+    console.error(response)
+  } catch (error) {
+    console.error(error)
+  }
 }

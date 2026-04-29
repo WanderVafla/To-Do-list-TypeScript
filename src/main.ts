@@ -1,15 +1,16 @@
 import './style.css'
 
+import { deleteAllTask, deleteTask, getTask, patchTask } from './api'
+import { createTaskEll } from './elements'
 import {
   addTask,
   checkMessageOverdue,
   setTasksArr,
-  type Task,
   type TaskArguments,
   tasksArr,
-  updateStorage,
-} from './api'
-import { createTaskEll } from './elements'
+  updateTasksArr,
+} from './taskManager'
+import type { TaskPostType } from './types'
 import { getCurrentDate } from './utils'
 
 const input = document.querySelector<HTMLInputElement>('#todo-input')
@@ -22,7 +23,6 @@ const todoTemplate =
 const overdueContainer =
   document.querySelector<HTMLParagraphElement>('#overdue-message')
 
-// const
 if (
   !input ||
   !sendButton ||
@@ -58,11 +58,13 @@ todosContainer.addEventListener('change', (event) => {
   const target = event.target as HTMLInputElement
   const parent = target.closest<HTMLDivElement>('.todo-element')
   if (parent) {
-    const task = tasksArr.find((task) => task.id === parent.id)
+    const task = tasksArr.find((task) => task.id.toString() === parent.id)
     if (task) {
-      task.completed = target.checked
+      task.done = target.checked
       parent.dataset.completed = String(target.checked)
-      updateStorage(overdueContainer)
+      const checkboxStatus: Partial<TaskPostType> = { done: task.done }
+      checkMessageOverdue(overdueContainer)
+      patchTask(parent.id, checkboxStatus).then((_) => updateTasksArr())
     }
   }
 })
@@ -73,38 +75,29 @@ todosContainer.addEventListener('click', (event) => {
     const parent = target.closest<HTMLDivElement>('.todo-element')
     if (parent) {
       parent.remove()
-      const filteredTasksArr = tasksArr.filter((task) => task.id !== parent.id)
-      setTasksArr(filteredTasksArr)
-      updateStorage(overdueContainer)
+      deleteTask(parent.id.toString()).then((_) => updateTasksArr())
+      checkMessageOverdue(overdueContainer)
     }
   }
 })
 // Remove all
 deleteAllButton.addEventListener('click', () => {
   todosContainer.replaceChildren()
-  setTasksArr([])
-  updateStorage(overdueContainer)
+  deleteAllTask().then((_) => updateTasksArr())
+  checkMessageOverdue(overdueContainer)
 })
 
-window.addEventListener('DOMContentLoaded', () => {
-  const savedTasks: string | null = localStorage.getItem('Tasks')
-  if (savedTasks) {
-    const jsonTasks = JSON.parse(savedTasks) as Task[]
-    for (const task of jsonTasks) {
-      todosContainer.insertAdjacentElement(
-        'afterbegin',
-        createTaskEll(
-          todoTemplate,
-          task.name,
-          task.id,
-          task.due,
-          task.completed,
-        ),
-      )
-      tasksArr.push(task)
-    }
-    checkMessageOverdue(overdueContainer)
+window.addEventListener('DOMContentLoaded', async () => {
+  const tasks = await getTask()
+  setTasksArr(tasks)
+  for (const task of tasksArr) {
+    todosContainer.insertAdjacentElement(
+      'afterbegin',
+      createTaskEll(todoTemplate, task),
+    )
   }
+  checkMessageOverdue(overdueContainer)
+  console.log('Task list is loaded!')
 })
 
 console.log('Hello from typescript')
