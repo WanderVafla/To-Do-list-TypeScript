@@ -31,9 +31,11 @@ export const updateStorage = async (overdueContainer: HTMLParagraphElement) => {
 export const checkMessageOverdue = (overdueContainer: HTMLParagraphElement) => {
   let text = ''
   for (const task of tasksArr) {
-    const diffDays = getDaysDueDiff(task.due_date)
-    if (task.done === false && diffDays !== null && diffDays < 0) {
-      text += `${task.title}\n`
+    if (task.due_date) {
+      const diffDays = getDaysDueDiff(task.due_date)
+      if (task.done === false && diffDays !== null && diffDays < 0) {
+        text += `${task.title}\n`
+      }
     }
   }
   overdueContainer.textContent = text

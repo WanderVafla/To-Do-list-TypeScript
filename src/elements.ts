@@ -36,7 +36,7 @@ export const createTaskEll = (
   parentDiv.dataset.completed = String(task.done)
   checkbox.checked = task.done
   taskTextSpan.textContent = task.title
-  if (task.due_date !== '') {
+  if (task.due_date) {
     const dateEl = document.createElement('time')
     dateEl.dateTime = task.due_date
     dateEl.textContent = task.due_date

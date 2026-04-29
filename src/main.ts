@@ -10,7 +10,7 @@ import {
   tasksArr,
   updateTasksArr,
 } from './taskManager'
-import type { UpdateTaskData } from './types'
+import type { TaskPostType } from './types'
 import { getCurrentDate } from './utils'
 
 const input = document.querySelector<HTMLInputElement>('#todo-input')
@@ -35,7 +35,7 @@ if (
   throw new Error('Warning some html are missing')
 }
 // Set minimal date for input calendare
-dateInput.min = getCurrentDate()
+// dateInput.min = getCurrentDate()
 // For addTask() function
 const taskArrguments: TaskArguments = {
   input,
@@ -62,7 +62,7 @@ todosContainer.addEventListener('change', (event) => {
     if (task) {
       task.done = target.checked
       parent.dataset.completed = String(target.checked)
-      const checkboxStatus: UpdateTaskData = { done: task.done }
+      const checkboxStatus: Partial<TaskPostType> = { done: task.done }
       checkMessageOverdue(overdueContainer)
       patchTask(parent.id, checkboxStatus).then((_) => updateTasksArr())
     }

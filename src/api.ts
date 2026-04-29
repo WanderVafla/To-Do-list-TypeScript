@@ -1,4 +1,4 @@
-import type { Task, TaskPostType, UpdateTaskData } from './types'
+import type { Task, TaskPostType } from './types'
 
 const url = 'https://api.todos.in.jt-lab.ch/todos'
 
@@ -82,7 +82,7 @@ export async function deleteAllTask() {
   }
 }
 
-export async function patchTask(id: string, taskUpdate: UpdateTaskData) {
+export async function patchTask(id: string, taskUpdate: Partial<TaskPostType>) {
   try {
     const urdId = `${url}?id=eq.${id}`
 
