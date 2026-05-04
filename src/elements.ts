@@ -79,9 +79,9 @@ export const createCategorieEle = (
   title.textContent = categorieItemType.title
   container.style.backgroundColor = categorieItemType.color
   if (checkColorDark(container.style.backgroundColor)) {
-    container.style.color = 'white'
-  } else {
     container.style.color = 'black'
+  } else {
+    container.style.color = 'white'
   }
 
   return container

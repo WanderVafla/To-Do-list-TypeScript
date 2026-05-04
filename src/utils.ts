@@ -20,10 +20,9 @@ export const getDaysDueDiff = (due: string): number | null => {
 export const checkColorDark = (rgb: string): boolean => {
   const regex = /\d{1,3}.\s\d{1,3}.\s\d{1,3}/g
   const parsetColorRgb = String(regex.exec(rgb)).split(', ')
-  if (Number(parsetColorRgb[0]) <= 150) {
-    return true
-  }
-  return false
+  const [r, g, b] = parsetColorRgb.map(Number)
+  const luminance = (0.299 * r + 0.587 * g + 0.144 * b) / 255
+  return luminance > 0.5
 }
 
 export const rgbToHex = (rgb: string): string => {

@@ -1,8 +1,8 @@
 import './style.css'
 
 import {
-  deleteCategory,
   deleteAllTask,
+  deleteCategory,
   deleteTask,
   getCategories,
   getTask,
@@ -186,13 +186,6 @@ const toggleVisibilityEls = (
   return false
 }
 
-const handleColorInput = (event: Event) => {
-  const target = event.target as HTMLElement
-  if (target.className === 'category-color-input') {
-    
-  }
-}
-
 categoriesElsContainer.addEventListener('click', (event) => {
   const target = event.target as HTMLButtonElement
   const parent = target.closest<HTMLSpanElement>('.categorie-element')
@@ -232,9 +225,7 @@ categoriesElsContainer.addEventListener('click', (event) => {
       target.textContent = 'save'
       colorInput.value = `#${rgbToHex(parent.style.backgroundColor)}`
       colorText.textContent = `#${rgbToHex(parent.style.backgroundColor)}`
-      colorInput.addEventListener(
-        'input', changeInputColor
-    )
+      colorInput.addEventListener('input', changeInputColor)
       colorText.addEventListener('focusout', () => changeTextColor)
       return
     }
@@ -251,9 +242,9 @@ categoriesElsContainer.addEventListener('click', (event) => {
       }
       parent.style.backgroundColor = colorInput.value
       if (checkColorDark(parent.style.backgroundColor)) {
-        parent.style.color = 'white'
-      } else {
         parent.style.color = 'black'
+      } else {
+        parent.style.color = 'white'
       }
       patchCategorie(parent.id, newColor)
     }
