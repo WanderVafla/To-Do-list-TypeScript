@@ -164,31 +164,6 @@ const toggleVisibilityEls = (
   console.log(buttonTarget.parentElement)
   const parentTarget = buttonTarget.parentElement
   if (container.style.display === 'none') {
-    // const statElemets: StateElemet[] = []
-    // for (const element of children) {
-    //   console.log(element)
-    //   const name = (): string | undefined => {
-    //     if (element.className) {
-    //       return element.className
-    //     }
-
-    //     if (element.id) {
-    //       return element.id
-    //     }
-
-    //     element.id = crypto.randomUUID()
-    //     return element.id
-    //   }
-    //   const statElement: StateElemet = {
-    //     name: name(),
-    //     display: window.getComputedStyle(element).display,
-    //   }
-    //   statElemets.push(statElement)
-    // }
-    // localStorage.setItem(
-    //   `StatsElemetnsCategorie${parent.id}`,
-    //   JSON.stringify(statElemets),
-    // )
     buttonTarget.textContent = 'save'
 
     children.forEach((element) => {
