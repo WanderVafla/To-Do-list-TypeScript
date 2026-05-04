@@ -30,11 +30,7 @@ export const rgbToHex = (rgb: string): string => {
   const regex = /\d{1,3}.\s\d{1,3}.\s\d{1,3}/g
   const parsetColorRgb = String(regex.exec(rgb))
     .split(', ')
-    .map((color) =>
-      Number(color).toString(16).length === 1
-        ? `0${Number(color).toString(16)}`
-        : Number(color).toString(16),
-    )
+    .map((color) => Number(color).toString(16).padStart(2, '0'))
     .join('')
   return parsetColorRgb
 }
