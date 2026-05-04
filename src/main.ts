@@ -24,7 +24,7 @@ import type {
   TaskArguments,
   TaskPostType,
 } from './types'
-import { getCurrentDate } from './utils'
+import { checkColorDark, getCurrentDate } from './utils'
 
 const input = document.querySelector<HTMLInputElement>('#todo-input')
 const sendButton = document.querySelector<HTMLButtonElement>('#add-todo-button')
@@ -79,7 +79,7 @@ if (
   !categorieItemTemplate ||
   !addCategorieButton ||
   !categorieNameInput ||
-  !categoryColorInput || 
+  !categoryColorInput ||
   !categoryColorText
 ) {
   throw new Error('Warning some html are missing')
@@ -224,30 +224,27 @@ categoriesElsContainer.addEventListener('click', (event) => {
         'input',
         () => (colorText.textContent = colorInput.value),
       )
-      colorText.addEventListener(
-        'focusout',
-        () => {
-          if (regexHex.test(colorText.textContent)) {
-            colorInput.value = colorText.textContent
-          }
-        },
-      )
+      colorText.addEventListener('focusout', () => {
+        if (regexHex.test(colorText.textContent)) {
+          colorInput.value = colorText.textContent
+        }
+      })
       return
     }
-    
+
     target.textContent = 'edit'
-    // TODO: add regex for check if text is hex color
-    
-    
-    
     if (regexHex.test(colorText.textContent)) {
-      console.log('a');
-      
+      console.log('a')
+
       const newColor: Partial<CategorieItemPostType> = {
         color: colorInput.value,
       }
       parent.style.backgroundColor = colorInput.value
-      
+      if (checkColorDark(parent.style.backgroundColor)) {
+        parent.style.color = 'white'
+      } else {
+        parent.style.color = 'black'
+      }
       patchCategorie(parent.id, newColor)
     }
   } else if (target.dataset.action === 'remove-categorie') {

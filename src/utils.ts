@@ -16,3 +16,12 @@ export const getDaysDueDiff = (due: string): number | null => {
   }
   return null
 }
+
+export const checkColorDark = (rgb: string): boolean => {
+  const regex = /\d{1,3}.\s\d{1,3}.\s\d{1,3}/g
+  const parsetColorRgb = String(regex.exec(rgb)).split(', ')
+  if (Number(parsetColorRgb[0]) <= 150) {
+    return true
+  }
+  return false
+}
