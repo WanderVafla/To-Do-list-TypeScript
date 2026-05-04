@@ -139,12 +139,22 @@ openCategoriesButton.addEventListener('click', () => {
 closeCategoriesButton.addEventListener('click', () => {
   categoriesDialog.close()
 })
+/* 
+  Visisbility of categorie elements when you change name of color
+  there is two hided containers for each categorie item 
+  firs: for change color
+  second: for chenge name
 
+  parent: for hide all elements into categorie item
+  container: for do visible container what we need
+  buttonTarget: button action we need them for toggle state
+  hideOptionel: other container what we not want to hide
+  */
 const toggleVisibilityEls = (
   parent: HTMLElement,
   container: HTMLElement,
   buttonTarget: HTMLButtonElement,
-  hideOtionel?: HTMLElement,
+  hideOpionel?: HTMLElement,
 ): boolean => {
   const children = parent.querySelectorAll<HTMLElement>('*')
   if (container.style.display === 'none') {
@@ -163,7 +173,7 @@ const toggleVisibilityEls = (
   }
 
   children.forEach((element) => {
-    if (element !== hideOtionel) {
+    if (element !== hideOpionel) {
       element.style.display = 'block'
     }
   })
@@ -190,7 +200,6 @@ categoriesElsContainer.addEventListener('click', (event) => {
     const colorText = parent.querySelector<HTMLParagraphElement>(
       '.category-color-text',
     )
-    // const nameP = parent.querySelector<HTMLParagraphElement>('.categorie-name')
     if (!colorInput || !colorEditDiv || !colorText || !nameEditDiv) {
       throw new Error('Error color input')
     }
@@ -217,7 +226,6 @@ categoriesElsContainer.addEventListener('click', (event) => {
     }
 
     target.textContent = 'edit'
-    // colorEditDiv.style.display = 'none'
     // TODO: add regex for check if text is hex color
     if (colorInput.value.trim()) {
       const newColor: Partial<CategorieItemPostType> = {
