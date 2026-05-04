@@ -50,10 +50,7 @@ export async function postTask(task: TaskPostType) {
 
 export async function deleteTask(id: string) {
   try {
-    let urdId = `${todoUrl}?id=eq.${id}`
-    if (!id) {
-      urdId = todoUrl
-    }
+    const urdId = `${todoUrl}?id=eq.${id}`
     const request = await fetch(urdId, {
       method: 'DELETE',
       headers: {
@@ -124,12 +121,9 @@ export async function getCategories(): Promise<CategorieItemType[]> {
   }
 }
 
-export async function deletCategorie(id: string) {
+export async function deleteCategory(id: string) {
   try {
-    let urdId = `${categorieUrl}?id=eq.${id}`
-    if (!id) {
-      urdId = todoUrl
-    }
+    const urdId = `${categorieUrl}?id=eq.${id}`
     const request = await fetch(urdId, {
       method: 'DELETE',
       headers: {
