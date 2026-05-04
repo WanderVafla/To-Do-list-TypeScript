@@ -1,7 +1,7 @@
 import './style.css'
 
 import {
-  deletCategorie,
+  deleteCategory,
   deleteAllTask,
   deleteTask,
   getCategories,
@@ -186,6 +186,13 @@ const toggleVisibilityEls = (
   return false
 }
 
+const handleColorInput = (event: Event) => {
+  const target = event.target as HTMLElement
+  if (target.className === 'category-color-input') {
+    
+  }
+}
+
 categoriesElsContainer.addEventListener('click', (event) => {
   const target = event.target as HTMLButtonElement
   const parent = target.closest<HTMLSpanElement>('.categorie-element')
@@ -209,6 +216,12 @@ categoriesElsContainer.addEventListener('click', (event) => {
       throw new Error('Error color input')
     }
     const regexHex = /^#?([A-Fa-f0-9]{2}){3}$/
+    const changeInputColor = () => (colorText.textContent = colorInput.value)
+    const changeTextColor = () => {
+      if (regexHex.test(colorText.textContent)) {
+        colorInput.value = colorText.textContent
+      }
+    }
     const visibility = toggleVisibilityEls(
       parent,
       colorEditDiv,
@@ -220,16 +233,14 @@ categoriesElsContainer.addEventListener('click', (event) => {
       colorInput.value = `#${rgbToHex(parent.style.backgroundColor)}`
       colorText.textContent = `#${rgbToHex(parent.style.backgroundColor)}`
       colorInput.addEventListener(
-        'input',
-        () => (colorText.textContent = colorInput.value),
-      )
-      colorText.addEventListener('focusout', () => {
-        if (regexHex.test(colorText.textContent)) {
-          colorInput.value = colorText.textContent
-        }
-      })
+        'input', changeInputColor
+    )
+      colorText.addEventListener('focusout', () => changeTextColor)
       return
     }
+
+    colorInput.removeEventListener('input', changeInputColor)
+    colorInput.removeEventListener('focusout', changeTextColor)
 
     target.textContent = 'edit'
     if (regexHex.test(colorText.textContent)) {
@@ -248,7 +259,7 @@ categoriesElsContainer.addEventListener('click', (event) => {
     }
   } else if (target.dataset.action === 'remove-categorie') {
     parent.remove()
-    deletCategorie(parent.id)
+    deleteCategory(parent.id)
   } else if (target.dataset.action === 'rename-categorie') {
     const nameEditInput = parent.querySelector<HTMLInputElement>(
       '.category-name-input',
