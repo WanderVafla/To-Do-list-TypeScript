@@ -20,17 +20,17 @@
       <button type="button" id="delete-all">Delete All</button>
     </main>
     <dialog id="categories-dialog">
-      <div id="categories-dialog-control-container">
+      <div id="categories-dialog-buttons-container">
         <button id="add-categorie-button" type="button">+</button>
         <button id="close-categories-button" type="button">x</button>
       </div>
-      <div id="categories-elements">
+      <div id="adding-container" style="display: flex;">
         <input id="category-name-input" type="text" aria-label="Input name categorie">
-        <div style="display: flex; flex-direction: row;">
-          <input id="category-color-input" type="color" value="#ffffff" aria-label="color categorie in hex">
-            <p id="category-color-text" contenteditable="true"></p>
-        </div>
+        <input id="category-color-input" type="color" value="#ffffff" aria-label="color categorie in hex">
+        <label for="category-color-input"></label>
       </div>
+      <div id="categories-elements">
+        </div>
     </dialog>
 
     <template id="todo-template">
@@ -48,15 +48,17 @@
       <span class="categorie-element">
         <p class="categorie-name">Name Category</p>
         <div class="color-edit-container" style="display: none;">
-          <input class="category-color-input" type="color" aria-label="color category in hex">
-          <p class="category-color-text" contenteditable="true">#ffffff</p>
+            <input class="category-color-input" type="color" aria-label="color category in hex">
+            <span class="category-color-text" contenteditable="true">#ffffff</span>
         </div>
         <div class="name-edit-container" style="display: none;">
           <input class="category-name-input" type="text" aria-label="rename category">
         </div>
-        <button class="delete-categorie" data-action="rename-categorie" type="button">rename</button>
-        <button class="edit-color-categorie" data-action="edit-color" type="button">edit</button>
-        <button class="delete-categorie" data-action="remove-categorie" type="button">remove</button>
+        <span class="buttons-action-categorie">
+          <button data-action="rename-categorie" type="button">rename</button>
+          <button data-action="edit-color" type="button">edit</button>
+          <button data-action="remove-categorie" type="button">remove</button>
+        </span>
       </span>
     </template>
     <script type="module" src="/src/main.ts"></script>

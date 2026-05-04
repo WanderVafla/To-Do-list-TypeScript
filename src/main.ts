@@ -58,8 +58,8 @@ const categorieNameInput = document.querySelector<HTMLInputElement>(
 const categoryColorInput = document.querySelector<HTMLInputElement>(
   '#category-color-input',
 )
-const categoryColorText = document.querySelector<HTMLParagraphElement>(
-  '#category-color-text',
+const categoryColorText = document.querySelector<HTMLLabelElement>(
+  'label[for="category-color-input"]',
 )
 if (
   !input ||
