@@ -1,4 +1,4 @@
-import type { Task } from './types'
+import type { CategorieItemType, Task } from './types'
 import { getDaysDueDiff } from './utils'
 
 /* 
@@ -17,10 +17,10 @@ import { getDaysDueDiff } from './utils'
   </div>
 */
 export const createTaskEll = (
-  todoTemplate: HTMLTemplateElement,
+  template: HTMLTemplateElement,
   task: Task,
 ): HTMLDivElement => {
-  const clonTemp = todoTemplate.content.cloneNode(true) as DocumentFragment
+  const clonTemp = template.content.cloneNode(true) as DocumentFragment
   const parentDiv = clonTemp.querySelector<HTMLDivElement>('.todo-element')
   const taskTextSpan = clonTemp.querySelector<HTMLSpanElement>(
     '.todo-element__text',
@@ -59,4 +59,25 @@ export const createTaskEll = (
   }
 
   return parentDiv
+}
+
+export const createCategorieEle = (
+  template: HTMLTemplateElement,
+  categorieItemType: CategorieItemType,
+): HTMLSpanElement => {
+  const clonTemp = template.content.cloneNode(true) as DocumentFragment
+  const container =
+    clonTemp.querySelector<HTMLSpanElement>('.categorie-element')
+  const title = clonTemp.querySelector<HTMLParagraphElement>('.categorie-name')
+  const colorInput = clonTemp.querySelector<HTMLInputElement>(
+    '.category-color-input',
+  )
+  if (!title || !colorInput || !container) {
+    throw new Error('Error when creating categorie element')
+  }
+  container.id = categorieItemType.id.toString()
+  title.textContent = categorieItemType.title
+  container.style.backgroundColor = categorieItemType.color
+
+  return container
 }

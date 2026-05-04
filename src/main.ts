@@ -1,16 +1,29 @@
 import './style.css'
 
-import { deleteAllTask, deleteTask, getTask, patchTask } from './api'
-import { createTaskEll } from './elements'
+import {
+  deletCategorie,
+  deleteAllTask,
+  deleteTask,
+  getCategories,
+  getTask,
+  patchCategorie,
+  patchTask,
+  postNewCategorie,
+} from './api'
+import { createCategorieEle, createTaskEll } from './elements'
 import {
   addTask,
   checkMessageOverdue,
+  rgbToHex,
   setTasksArr,
-  type TaskArguments,
   tasksArr,
   updateTasksArr,
 } from './taskManager'
-import type { TaskPostType } from './types'
+import type {
+  CategorieItemPostType,
+  TaskArguments,
+  TaskPostType,
+} from './types'
 import { getCurrentDate } from './utils'
 
 const input = document.querySelector<HTMLInputElement>('#todo-input')
@@ -22,7 +35,32 @@ const todoTemplate =
   document.querySelector<HTMLTemplateElement>('#todo-template')
 const overdueContainer =
   document.querySelector<HTMLParagraphElement>('#overdue-message')
-
+const openCategoriesButton = document.querySelector<HTMLButtonElement>(
+  '#open-categories-button',
+)
+const closeCategoriesButton = document.querySelector<HTMLButtonElement>(
+  '#close-categories-button',
+)
+const categoriesDialog =
+  document.querySelector<HTMLDialogElement>('#categories-dialog')
+const categoriesElsContainer = document.querySelector<HTMLDivElement>(
+  '#categories-elements',
+)
+const categorieItemTemplate = document.querySelector<HTMLTemplateElement>(
+  '#categorie-element-template',
+)
+const addCategorieButton = document.querySelector<HTMLButtonElement>(
+  '#add-categorie-button',
+)
+const categorieNameInput = document.querySelector<HTMLInputElement>(
+  '#category-name-input',
+)
+const categoryColorInput = document.querySelector<HTMLInputElement>(
+  '#category-color-input',
+)
+const categoryColorText = document.querySelector<HTMLParagraphElement>(
+  '#category-color-text',
+)
 if (
   !input ||
   !sendButton ||
@@ -30,7 +68,16 @@ if (
   !todoTemplate ||
   !deleteAllButton ||
   !dateInput ||
-  !overdueContainer
+  !overdueContainer ||
+  !openCategoriesButton ||
+  !closeCategoriesButton ||
+  !categoriesDialog ||
+  !categoriesElsContainer ||
+  !categorieItemTemplate ||
+  !addCategorieButton ||
+  !categorieNameInput ||
+  !categoryColorInput ||
+  !categoryColorText
 ) {
   throw new Error('Warning some html are missing')
 }
@@ -86,7 +133,154 @@ deleteAllButton.addEventListener('click', () => {
   deleteAllTask().then((_) => updateTasksArr())
   checkMessageOverdue(overdueContainer)
 })
+openCategoriesButton.addEventListener('click', () => {
+  categoriesDialog.show()
+})
+closeCategoriesButton.addEventListener('click', () => {
+  categoriesDialog.close()
+})
 
+const toggleVisibilityEls = (
+  parent: HTMLElement,
+  container: HTMLElement,
+  buttonTarget: HTMLButtonElement,
+  hideOtionel?: HTMLElement,
+): boolean => {
+  const children = parent.querySelectorAll<HTMLElement>('*')
+  if (container.style.display === 'none') {
+    buttonTarget.textContent = 'save'
+
+    children.forEach((element) => {
+      if (element !== buttonTarget) {
+        element.style.display = 'none'
+      }
+    })
+    container.style.display = 'flex'
+    container.querySelectorAll<HTMLElement>('*').forEach((element) => {
+      element.style.display = 'block'
+    })
+    return true
+  }
+
+  children.forEach((element) => {
+    if (element !== hideOtionel) {
+      element.style.display = 'block'
+    }
+  })
+  container.style.display = 'none'
+  return false
+}
+
+categoriesElsContainer.addEventListener('click', (event) => {
+  const target = event.target as HTMLButtonElement
+  const parent = target.closest<HTMLSpanElement>('.categorie-element')
+  if (!parent) {
+    throw new Error('Error parent container')
+  }
+  const colorEditDiv = parent.querySelector<HTMLDivElement>(
+    '.color-edit-container',
+  )
+  const nameEditDiv = parent.querySelector<HTMLDivElement>(
+    '.name-edit-container',
+  )
+  if (target.dataset.action === 'edit-color') {
+    const colorInput = parent.querySelector<HTMLInputElement>(
+      '.category-color-input',
+    )
+    const colorText = parent.querySelector<HTMLParagraphElement>(
+      '.category-color-text',
+    )
+    // const nameP = parent.querySelector<HTMLParagraphElement>('.categorie-name')
+    if (!colorInput || !colorEditDiv || !colorText || !nameEditDiv) {
+      throw new Error('Error color input')
+    }
+
+    const visibility = toggleVisibilityEls(
+      parent,
+      colorEditDiv,
+      target,
+      nameEditDiv,
+    )
+    if (visibility) {
+      target.textContent = 'save'
+      colorInput.value = `#${rgbToHex(parent.style.backgroundColor)}`
+      colorText.textContent = `#${rgbToHex(parent.style.backgroundColor)}`
+      colorInput.addEventListener(
+        'input',
+        () => (colorText.textContent = colorInput.value),
+      )
+      colorText.addEventListener(
+        'focusout',
+        () => (colorInput.value = colorText.textContent),
+      )
+      return
+    }
+
+    target.textContent = 'edit'
+    // colorEditDiv.style.display = 'none'
+    // TODO: add regex for check if text is hex color
+    if (colorInput.value.trim()) {
+      const newColor: Partial<CategorieItemPostType> = {
+        color: colorInput.value,
+      }
+      parent.style.backgroundColor = colorInput.value
+
+      patchCategorie(parent.id, newColor)
+    }
+  } else if (target.dataset.action === 'remove-categorie') {
+    parent.remove()
+    deletCategorie(parent.id)
+  } else if (target.dataset.action === 'rename-categorie') {
+    const nameEditInput = parent.querySelector<HTMLInputElement>(
+      '.category-name-input',
+    )
+    const nameCategorie =
+      parent.querySelector<HTMLParagraphElement>('.categorie-name')
+    if (!nameEditDiv || !nameEditInput || !nameCategorie || !colorEditDiv) {
+      throw new Error('Error rename input')
+    }
+    const visibility = toggleVisibilityEls(
+      parent,
+      nameEditDiv,
+      target,
+      colorEditDiv,
+    )
+    if (visibility) {
+      target.textContent = 'save'
+      nameEditInput.value = nameCategorie.textContent
+      return
+    }
+    const newName: Partial<CategorieItemPostType> = {
+      title: nameEditInput.value,
+    }
+    nameCategorie.textContent = nameEditInput.value
+    patchCategorie(parent.id, newName)
+  }
+})
+
+addCategorieButton.addEventListener('click', async () => {
+  if (categorieNameInput.value.trim()) {
+    const categorieName = categorieNameInput.value
+    const categoriePostType: CategorieItemPostType = {
+      title: categorieName,
+      color: categoryColorInput.value,
+    }
+    const addedCategorie = postNewCategorie(categoriePostType)
+    const categorieEl = createCategorieEle(
+      categorieItemTemplate,
+      await addedCategorie,
+    )
+    categoriesElsContainer.appendChild(categorieEl)
+    categorieNameInput.value = ''
+  }
+})
+categoryColorText.textContent = categoryColorInput.value
+categoryColorInput.addEventListener('input', () => {
+  categoryColorText.textContent = categoryColorInput.value
+})
+categoryColorText.addEventListener('blur', () => {
+  categoryColorInput.value = categoryColorText.textContent
+})
 window.addEventListener('DOMContentLoaded', async () => {
   const tasks = await getTask()
   setTasksArr(tasks)
@@ -95,6 +289,11 @@ window.addEventListener('DOMContentLoaded', async () => {
       'afterbegin',
       createTaskEll(todoTemplate, task),
     )
+  }
+  const catigories = await getCategories()
+  for (const categorie of catigories) {
+    const categorieEl = createCategorieEle(categorieItemTemplate, categorie)
+    categoriesElsContainer.appendChild(categorieEl)
   }
   checkMessageOverdue(overdueContainer)
   console.log('Task list is loaded!')

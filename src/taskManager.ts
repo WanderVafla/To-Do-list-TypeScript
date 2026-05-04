@@ -1,6 +1,6 @@
 import { getTask, postTask } from './api'
 import { createTaskEll } from './elements'
-import type { Task, TaskPostType } from './types'
+import type { Task, TaskArguments, TaskPostType } from './types'
 import { getDaysDueDiff } from './utils'
 /* 
   A current day and month should always be in a two-digit format: 
@@ -41,14 +41,6 @@ export const checkMessageOverdue = (overdueContainer: HTMLParagraphElement) => {
   overdueContainer.textContent = text
 }
 
-export interface TaskArguments {
-  input: HTMLInputElement
-  todosContainer: HTMLDivElement
-  todoTemplate: HTMLTemplateElement
-  dateInput: HTMLInputElement
-  overdueContainer: HTMLParagraphElement
-}
-
 export const addTask = async (args: TaskArguments) => {
   if (!args.input.value.trim()) {
     alert('Your task is empty!')
@@ -74,4 +66,17 @@ export const addTask = async (args: TaskArguments) => {
   checkMessageOverdue(args.overdueContainer)
 
   args.input.value = ''
+}
+
+export const rgbToHex = (rgb: string): string => {
+  const regex = /\d{1,3}.\s\d{1,3}.\s\d{1,3}/g
+  const parsetColorRgb = String(regex.exec(rgb))
+    .split(', ')
+    .map((color) =>
+      Number(color).toString(16).length === 1
+        ? `0${Number(color).toString(16)}`
+        : Number(color).toString(16),
+    )
+    .join('')
+  return parsetColorRgb
 }

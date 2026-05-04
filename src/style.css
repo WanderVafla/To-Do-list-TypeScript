@@ -143,3 +143,24 @@ button {
   margin-top: 1rem;
   align-self: center;
 }
+
+#categories-dialog:open {
+  display: flex;
+  align-self: center;
+  flex-direction: column;
+}
+
+#categories-dialog-control-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.categorie-element {
+  padding: 1rem;
+  display: flex;
+}
+
+.categorie-element {
+  padding: 1rem;
+  display: flex;
+}
