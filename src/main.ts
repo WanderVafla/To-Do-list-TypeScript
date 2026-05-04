@@ -14,7 +14,6 @@ import { createCategorieEle, createTaskEll } from './elements'
 import {
   addTask,
   checkMessageOverdue,
-  rgbToHex,
   setTasksArr,
   tasksArr,
   updateTasksArr,
@@ -24,7 +23,7 @@ import type {
   TaskArguments,
   TaskPostType,
 } from './types'
-import { checkColorDark, getCurrentDate } from './utils'
+import { checkColorDark, getCurrentDate, rgbToHex } from './utils'
 
 const input = document.querySelector<HTMLInputElement>('#todo-input')
 const sendButton = document.querySelector<HTMLButtonElement>('#add-todo-button')
