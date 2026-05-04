@@ -158,7 +158,7 @@ export async function postNewCategorie(
     }
     if (request.status === 201) {
       if (request.body) {
-        const newItem: Promise<Task> = await request.json()
+        const newItem: CategorieItemType = await request.json()
         return Array.isArray(newItem) ? newItem[0] : newItem
       }
       return
