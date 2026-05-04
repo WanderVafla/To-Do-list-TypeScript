@@ -58,8 +58,11 @@ const categorieNameInput = document.querySelector<HTMLInputElement>(
 const categoryColorInput = document.querySelector<HTMLInputElement>(
   '#category-color-input',
 )
+// const categoryColorText = document.querySelector<HTMLLabelElement>(
+//   'label[for="category-color-input"]',
+// )
 const categoryColorText = document.querySelector<HTMLLabelElement>(
-  'label[for="category-color-input"]',
+  '#category-color-text',
 )
 if (
   !input ||
@@ -76,7 +79,7 @@ if (
   !categorieItemTemplate ||
   !addCategorieButton ||
   !categorieNameInput ||
-  !categoryColorInput ||
+  !categoryColorInput || 
   !categoryColorText
 ) {
   throw new Error('Warning some html are missing')
