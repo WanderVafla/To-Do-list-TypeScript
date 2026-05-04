@@ -160,7 +160,6 @@ const toggleVisibilityEls = (
   hideOpionel?: HTMLElement,
 ): boolean => {
   const children = parent.querySelectorAll<HTMLElement>('*')
-  console.log(buttonTarget.parentElement)
   const parentTarget = buttonTarget.parentElement
   if (container.style.display === 'none') {
     buttonTarget.textContent = 'save'
@@ -210,7 +209,7 @@ categoriesElsContainer.addEventListener('click', (event) => {
     if (!colorInput || !colorEditDiv || !colorText || !nameEditDiv) {
       throw new Error('Error color input')
     }
-
+    const regexHex = /^#?([A-Fa-f0-9]{2}){3}$/
     const visibility = toggleVisibilityEls(
       parent,
       colorEditDiv,
@@ -227,19 +226,28 @@ categoriesElsContainer.addEventListener('click', (event) => {
       )
       colorText.addEventListener(
         'focusout',
-        () => (colorInput.value = colorText.textContent),
+        () => {
+          if (regexHex.test(colorText.textContent)) {
+            colorInput.value = colorText.textContent
+          }
+        },
       )
       return
     }
-
+    
     target.textContent = 'edit'
     // TODO: add regex for check if text is hex color
-    if (colorInput.value.trim()) {
+    
+    
+    
+    if (regexHex.test(colorText.textContent)) {
+      console.log('a');
+      
       const newColor: Partial<CategorieItemPostType> = {
         color: colorInput.value,
       }
       parent.style.backgroundColor = colorInput.value
-
+      
       patchCategorie(parent.id, newColor)
     }
   } else if (target.dataset.action === 'remove-categorie') {
