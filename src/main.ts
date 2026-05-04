@@ -156,10 +156,6 @@ const toggleVisibilityEls = (
   buttonTarget: HTMLButtonElement,
   hideOpionel?: HTMLElement,
 ): boolean => {
-  interface StateElemet {
-    name: string | undefined
-    display: string
-  }
   const children = parent.querySelectorAll<HTMLElement>('*')
   console.log(buttonTarget.parentElement)
   const parentTarget = buttonTarget.parentElement
@@ -173,18 +169,19 @@ const toggleVisibilityEls = (
         }
       }
     })
-    container.style.display = 'flex'
+    container.style.removeProperty('display')
     container.querySelectorAll<HTMLElement>('*').forEach((element) => {
-      element.style.display = 'block'
+      element.style.removeProperty('display')
     })
     return true
   }
   children.forEach((element) => {
-    if (element !== hideOpionel && element !== parentTarget) {
-      element.style.display = 'block'
-    }
+    element.style.removeProperty('display')
   })
   container.style.display = 'none'
+  if (hideOpionel) {
+    hideOpionel.style.display = 'none'
+  }
   return false
 }
 
