@@ -1,6 +1,6 @@
 import type {
-  CategoryItemType,
   CategoryItemPostType,
+  CategoryItemType,
   Task,
   TaskPostType,
 } from './types'
