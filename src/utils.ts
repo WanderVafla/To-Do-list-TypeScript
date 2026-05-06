@@ -26,10 +26,10 @@ export const isColorLight = (rgb: string): boolean => {
 }
 
 export const rgbToHex = (rgb: string): string => {
-  const regex = /\d{1,3}.\s\d{1,3}.\s\d{1,3}/g
-  const parsedColorRgb = String(regex.exec(rgb))
-    .split(', ')
+  const match = rgb.match(/\d+/g)
+  if (!match || match.length < 3) return ''
+  return match
+    .slice(0, 3)
     .map((color) => Number(color).toString(16).padStart(2, '0'))
     .join('')
-  return parsedColorRgb
 }
