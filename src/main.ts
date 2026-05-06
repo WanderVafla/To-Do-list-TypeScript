@@ -279,7 +279,7 @@ categoriesElsContainer.addEventListener('click', (event) => {
   }
 })
 
-addCategorieButton.addEventListener('click', async () => {
+const addNewCategory = async () => {
   if (categorieNameInput.value.trim()) {
     const categorieName = categorieNameInput.value
     const categoriePostType: CategorieItemPostType = {
@@ -293,6 +293,13 @@ addCategorieButton.addEventListener('click', async () => {
     )
     categoriesElsContainer.appendChild(categorieEl)
     categorieNameInput.value = ''
+  }
+}
+
+addCategorieButton.addEventListener('click', addNewCategory)
+categorieNameInput.addEventListener('keypress', (event) => {
+  if (event.key === 'Enter') {
+    addNewCategory()
   }
 })
 categoryColorText.textContent = categoryColorInput.value
