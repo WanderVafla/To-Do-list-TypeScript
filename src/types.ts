@@ -16,7 +16,7 @@ export interface CategoryItemPostType {
 }
 
 // Database give auto id
-export interface CategorieItemType extends CategoryItemPostType {
+export interface CategoryItemType extends CategoryItemPostType {
   id: number
 }
 

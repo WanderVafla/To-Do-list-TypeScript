@@ -1,5 +1,5 @@
-import type { CategorieItemType, Task } from './types'
-import { getDaysDueDiff, isColorLight } from './utils'
+import type { CategoryItemType, Task } from './types'
+import { isColorLight, getDaysDueDiff } from './utils'
 
 /* 
   Template is in index.html with id="todo-template"
@@ -63,7 +63,7 @@ export const createTaskEll = (
 
 export const createCategorieEle = (
   template: HTMLTemplateElement,
-  categorieItemType: CategorieItemType,
+  categoryItemType: CategoryItemType,
 ): HTMLSpanElement => {
   const clonTemp = template.content.cloneNode(true) as DocumentFragment
   const container =
@@ -75,9 +75,9 @@ export const createCategorieEle = (
   if (!title || !colorInput || !container) {
     throw new Error('Error when creating categorie element')
   }
-  container.id = categorieItemType.id.toString()
-  title.textContent = categorieItemType.title
-  container.style.backgroundColor = categorieItemType.color
+  container.id = categoryItemType.id.toString()
+  title.textContent = categoryItemType.title
+  container.style.backgroundColor = categoryItemType.color
   if (isColorLight(container.style.backgroundColor)) {
     container.style.color = 'black'
   } else {

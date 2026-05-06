@@ -1,5 +1,5 @@
 import type {
-  CategorieItemType,
+  CategoryItemType,
   CategoryItemPostType,
   Task,
   TaskPostType,
@@ -106,7 +106,7 @@ export async function patchTask(id: string, taskUpdate: Partial<TaskPostType>) {
   }
 }
 
-export async function getCategories(): Promise<CategorieItemType[]> {
+export async function getCategories(): Promise<CategoryItemType[]> {
   try {
     const request = await fetch(`${categorieUrl}?order=id.desc`, {
       method: 'GET',
@@ -160,7 +160,7 @@ export async function postNewCategorie(
     }
     if (request.status === 201) {
       if (request.body) {
-        const newItem: CategorieItemType = await request.json()
+        const newItem: CategoryItemType = await request.json()
         return Array.isArray(newItem) ? newItem[0] : newItem
       }
       return
