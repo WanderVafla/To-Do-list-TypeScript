@@ -50,15 +50,14 @@
     <template id="category-element-template">
       <span class="category-element">
         <p class="category-name">Name Category</p>
-        <div class="color-edit-container" style="display: none;">
-            <input class="category-color-input" type="color" aria-label="Category color in hex">
+        <div class="edit-container">
+          <div class="color-picker">
             <input class="category-color-text" type="text" aria-label="Enter new color in hex code">
-        </div>
-        <div class="name-edit-container" style="display: none;">
+            <input class="category-color-input" type="color" aria-label="Category color in hex">
+          </div>
           <input class="category-name-input" type="text" aria-label="rename category">
         </div>
         <span class="buttons-action-category">
-          <button data-action="rename-category" type="button">rename</button>
           <button data-action="edit-color" type="button">edit</button>
           <button data-action="remove-category" type="button">remove</button>
         </span>

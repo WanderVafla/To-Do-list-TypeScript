@@ -145,60 +145,34 @@ closeCategoriesButton.addEventListener('click', () => {
   buttonTarget: button action we need them for toggle state
   hideOptional: other container what we not want to hide
   */
-const toggleVisibilityEls = (
-  parent: HTMLElement,
-  container: HTMLElement,
-  buttonTarget: HTMLButtonElement,
-  hideOptional?: HTMLElement,
-): boolean => {
-  const children = parent.querySelectorAll<HTMLElement>('*')
-  const parentTarget = buttonTarget.parentElement
-  if (container.style.display === 'none') {
-    buttonTarget.textContent = 'save'
-
-    children.forEach((element) => {
-      if (element !== buttonTarget) {
-        if (parentTarget !== parent && element !== parentTarget) {
-          element.style.display = 'none'
-        }
-      }
-    })
-    container.style.removeProperty('display')
-    container.querySelectorAll<HTMLElement>('*').forEach((element) => {
-      element.style.removeProperty('display')
-    })
-    return true
-  }
-  children.forEach((element) => {
-    element.style.removeProperty('display')
-  })
-  container.style.display = 'none'
-  if (hideOptional) {
-    hideOptional.style.display = 'none'
-  }
-  return false
-}
-
 categoriesElsContainer.addEventListener('click', (event) => {
   const target = event.target as HTMLButtonElement
   const parent = target.closest<HTMLSpanElement>('.category-element')
   if (!parent) {
     throw new Error('Error parent container')
   }
-  const colorEditDiv = parent.querySelector<HTMLDivElement>(
-    '.color-edit-container',
+  const editDiv = parent.querySelector<HTMLDivElement>(
+    '.edit-container',
   )
-  const nameEditDiv = parent.querySelector<HTMLDivElement>(
-    '.name-edit-container',
-  )
+  const nameCategory =
+    parent.querySelector<HTMLParagraphElement>('.category-name')
   if (target.dataset.action === 'edit-color') {
+    const nameEditInput = parent.querySelector<HTMLInputElement>(
+      '.category-name-input',
+    )
     const colorInput = parent.querySelector<HTMLInputElement>(
       '.category-color-input',
     )
     const colorInputText = parent.querySelector<HTMLInputElement>(
       '.category-color-text',
     )
-    if (!colorInput || !colorEditDiv || !colorInputText || !nameEditDiv) {
+    if (
+      !colorInput ||
+      !editDiv ||
+      !colorInputText ||
+      !nameEditInput ||
+      !nameCategory
+    ) {
       throw new Error('Error color input')
     }
     const regexHex = /^#?([A-Fa-f0-9]{2}){3}$/
@@ -208,16 +182,12 @@ categoriesElsContainer.addEventListener('click', (event) => {
         colorInput.value = colorInputText.value
       }
     }
-    const visibility = toggleVisibilityEls(
-      parent,
-      colorEditDiv,
-      target,
-      nameEditDiv,
-    )
-    if (visibility) {
+    const NAME_CLASS_HIDING_ELEMENTS = 'is-editing-color'
+    if (!parent.classList.contains(NAME_CLASS_HIDING_ELEMENTS)) {
       target.textContent = 'save'
       colorInput.value = `#${rgbToHex(parent.style.backgroundColor)}`
       colorInputText.value = `#${rgbToHex(parent.style.backgroundColor)}`
+      nameEditInput.value = nameCategory.textContent
       if (isColorLight(parent.style.backgroundColor)) {
         colorInputText.style.color = 'black'
       } else {
@@ -225,15 +195,17 @@ categoriesElsContainer.addEventListener('click', (event) => {
       }
       colorInput.addEventListener('input', changeInputColor)
       colorInputText.addEventListener('focusout', changeTextColor)
+      parent.classList.add(NAME_CLASS_HIDING_ELEMENTS)
+
       return
     }
-
     colorInput.removeEventListener('input', changeInputColor)
     colorInputText.removeEventListener('focusout', changeTextColor)
-
-    target.textContent = 'edit'
+    parent.classList.remove(NAME_CLASS_HIDING_ELEMENTS)
+    nameCategory.textContent = nameEditInput.value
     if (regexHex.test(colorInputText.value)) {
-      const newColor: Partial<CategoryItemPostType> = {
+      const newDataCategory: Partial<CategoryItemPostType> = {
+        title: nameEditInput.value,
         color: colorInput.value,
       }
       parent.style.backgroundColor = colorInput.value
@@ -244,37 +216,12 @@ categoriesElsContainer.addEventListener('click', (event) => {
         parent.style.color = 'white'
         colorInputText.style.color = 'white'
       }
-      patchCategory(parent.id, newColor)
+      target.textContent = 'edit'
+      patchCategory(parent.id, newDataCategory)
     }
   } else if (target.dataset.action === 'remove-category') {
     parent.remove()
     deleteCategory(parent.id)
-  } else if (target.dataset.action === 'rename-category') {
-    const nameEditInput = parent.querySelector<HTMLInputElement>(
-      '.category-name-input',
-    )
-    const nameCategory =
-      parent.querySelector<HTMLParagraphElement>('.category-name')
-    if (!nameEditDiv || !nameEditInput || !nameCategory || !colorEditDiv) {
-      throw new Error('Error rename input')
-    }
-    const visibility = toggleVisibilityEls(
-      parent,
-      nameEditDiv,
-      target,
-      colorEditDiv,
-    )
-    if (visibility) {
-      target.textContent = 'save'
-      nameEditInput.value = nameCategory.textContent
-      return
-    }
-    const newName: Partial<CategoryItemPostType> = {
-      title: nameEditInput.value,
-    }
-    target.textContent = 'rename'
-    nameCategory.textContent = nameEditInput.value
-    patchCategory(parent.id, newName)
   }
 })
 
@@ -287,10 +234,7 @@ const addNewCategory = async () => {
     }
     const addedCategory = await postNewCategory(categoryPostType)
     if (!addedCategory) return
-    const categoryEl = createCategoryEle(
-      categoryItemTemplate,
-      addedCategory,
-    )
+    const categoryEl = createCategoryEle(categoryItemTemplate, addedCategory)
     categoriesElsContainer.insertAdjacentElement('afterbegin', categoryEl)
     categoryNameInput.value = ''
   }
