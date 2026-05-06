@@ -1,6 +1,6 @@
 import type {
-  CategoryItemPostType,
   CategorieItemType,
+  CategoryItemPostType,
   Task,
   TaskPostType,
 } from './types'
@@ -108,7 +108,9 @@ export async function patchTask(id: string, taskUpdate: Partial<TaskPostType>) {
 
 export async function getCategories(): Promise<CategorieItemType[]> {
   try {
-    const request = await fetch(`${categorieUrl}?order=id.desc`, { method: 'GET' })
+    const request = await fetch(`${categorieUrl}?order=id.desc`, {
+      method: 'GET',
+    })
     if (!request.ok) {
       throw new Error('Error GET request!')
     }

@@ -18,11 +18,7 @@ import {
   tasksArr,
   updateTasksArr,
 } from './taskManager'
-import type {
-  CategoryItemPostType,
-  TaskArguments,
-  TaskPostType,
-} from './types'
+import type { CategoryItemPostType, TaskArguments, TaskPostType } from './types'
 import { getCurrentDate, isColorLight, rgbToHex } from './utils'
 
 const input = document.querySelector<HTMLInputElement>('#todo-input')
