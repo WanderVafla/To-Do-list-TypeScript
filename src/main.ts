@@ -41,11 +41,11 @@ const categoriesDialog =
 const categoriesElsContainer = document.querySelector<HTMLDivElement>(
   '#categories-elements',
 )
-const categorieItemTemplate = document.querySelector<HTMLTemplateElement>(
-  '#categorie-element-template',
+const categoryItemTemplate = document.querySelector<HTMLTemplateElement>(
+  '#category-element-template',
 )
 const addCategorieButton = document.querySelector<HTMLButtonElement>(
-  '#add-categorie-button',
+  '#add-category-button',
 )
 const categorieNameInput = document.querySelector<HTMLInputElement>(
   '#category-name-input',
@@ -68,7 +68,7 @@ if (
   !closeCategoriesButton ||
   !categoriesDialog ||
   !categoriesElsContainer ||
-  !categorieItemTemplate ||
+  !categoryItemTemplate ||
   !addCategorieButton ||
   !categorieNameInput ||
   !categoryColorInput ||
@@ -135,12 +135,12 @@ closeCategoriesButton.addEventListener('click', () => {
   categoriesDialog.close()
 })
 /* 
-  Visisbility of categorie elements when you change name of color
-  there is two hided containers for each categorie item 
+  Visisbility of category elements when you change name of color
+  there is two hided containers for each category item 
   firs: for change color
   second: for chenge name
 
-  parent: for hide all elements into categorie item
+  parent: for hide all elements into category item
   container: for do visible container what we need
   buttonTarget: button action we need them for toggle state
   hideOptionel: other container what we not want to hide
@@ -181,7 +181,7 @@ const toggleVisibilityEls = (
 
 categoriesElsContainer.addEventListener('click', (event) => {
   const target = event.target as HTMLButtonElement
-  const parent = target.closest<HTMLSpanElement>('.categorie-element')
+  const parent = target.closest<HTMLSpanElement>('.category-element')
   if (!parent) {
     throw new Error('Error parent container')
   }
@@ -246,15 +246,15 @@ categoriesElsContainer.addEventListener('click', (event) => {
       }
       patchCategorie(parent.id, newColor)
     }
-  } else if (target.dataset.action === 'remove-categorie') {
+  } else if (target.dataset.action === 'remove-category') {
     parent.remove()
     deleteCategory(parent.id)
-  } else if (target.dataset.action === 'rename-categorie') {
+  } else if (target.dataset.action === 'rename-category') {
     const nameEditInput = parent.querySelector<HTMLInputElement>(
       '.category-name-input',
     )
     const nameCategorie =
-      parent.querySelector<HTMLParagraphElement>('.categorie-name')
+      parent.querySelector<HTMLParagraphElement>('.category-name')
     if (!nameEditDiv || !nameEditInput || !nameCategorie || !colorEditDiv) {
       throw new Error('Error rename input')
     }
@@ -286,7 +286,7 @@ const addNewCategory = async () => {
     }
     const addedCategorie = postNewCategorie(categoriePostType)
     const categorieEl = createCategorieEle(
-      categorieItemTemplate,
+      categoryItemTemplate,
       await addedCategorie,
     )
     categoriesElsContainer.insertAdjacentElement('afterbegin', categorieEl)
@@ -318,7 +318,7 @@ window.addEventListener('DOMContentLoaded', async () => {
   }
   const categories = await getCategories()
   for (const category of categories) {
-    const categorieEl = createCategorieEle(categorieItemTemplate, category)
+    const categorieEl = createCategorieEle(categoryItemTemplate, category)
     categoriesElsContainer.appendChild(categorieEl)
   }
   checkMessageOverdue(overdueContainer)

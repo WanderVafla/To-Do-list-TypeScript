@@ -67,13 +67,13 @@ export const createCategorieEle = (
 ): HTMLSpanElement => {
   const clonTemp = template.content.cloneNode(true) as DocumentFragment
   const container =
-    clonTemp.querySelector<HTMLSpanElement>('.categorie-element')
-  const title = clonTemp.querySelector<HTMLParagraphElement>('.categorie-name')
+    clonTemp.querySelector<HTMLSpanElement>('.category-element')
+  const title = clonTemp.querySelector<HTMLParagraphElement>('.category-name')
   const colorInput = clonTemp.querySelector<HTMLInputElement>(
     '.category-color-input',
   )
   if (!title || !colorInput || !container) {
-    throw new Error('Error when creating categorie element')
+    throw new Error('Error when creating category element')
   }
   container.id = categoryItemType.id.toString()
   title.textContent = categoryItemType.title

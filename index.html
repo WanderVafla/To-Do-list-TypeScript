@@ -21,14 +21,19 @@
     </main>
     <dialog id="categories-dialog">
       <div id="categories-dialog-buttons-container">
-        <button id="add-categorie-button" type="button" aria-label="Add categories">+</button>
+        <button id="add-category-button" type="button" aria-label="Add categories">+</button>
         <button id="close-categories-button" type="button" aria-label="Close categories">x</button>
       </div>
       <div id="adding-container" style="display: flex;">
         <input id="category-name-input" type="text" aria-label="Input name category">
 
+<<<<<<< HEAD
         <div id="categorie-color-container">
         <input id="category-color-input" type="color" value="#ffffff" aria-label="color categorie in hex">
+=======
+        <div id="category-color-container">
+        <input id="category-color-input" type="color" value="#ffffff" aria-label="color category in hex">
+>>>>>>> ae82653 (refactor: standardize terminology from "categorie" to "category" across HTML, TypeScript, and CSS files)
           <input id="category-color-text" type="text" aria-label="Enter color in hex">
         </div>
       </div>
@@ -47,9 +52,9 @@
       </div>
     </template>
       
-    <template id="categorie-element-template">
-      <span class="categorie-element">
-        <p class="categorie-name">Name Category</p>
+    <template id="category-element-template">
+      <span class="category-element">
+        <p class="category-name">Name Category</p>
         <div class="color-edit-container" style="display: none;">
             <input class="category-color-input" type="color" aria-label="color category in hex">
             <input class="category-color-text" type="text" aria-label="Enter new color in hex">
@@ -57,10 +62,10 @@
         <div class="name-edit-container" style="display: none;">
           <input class="category-name-input" type="text" aria-label="rename category">
         </div>
-        <span class="buttons-action-categorie">
-          <button data-action="rename-categorie" type="button">rename</button>
+        <span class="buttons-action-category">
+          <button data-action="rename-category" type="button">rename</button>
           <button data-action="edit-color" type="button">edit</button>
-          <button data-action="remove-categorie" type="button">remove</button>
+          <button data-action="remove-category" type="button">remove</button>
         </span>
       </span>
     </template>
