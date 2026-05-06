@@ -29,8 +29,8 @@ export interface TaskArguments {
 }
 
 export interface CategoryArguments {
-  categoryItemTemplate: HTMLTemplateElement,
-  categoryNameInput: HTMLInputElement,
-  categoryColorInput: HTMLInputElement,
+  categoryItemTemplate: HTMLTemplateElement
+  categoryNameInput: HTMLInputElement
+  categoryColorInput: HTMLInputElement
   categoriesElsContainer: HTMLDivElement
 }

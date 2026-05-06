@@ -1,6 +1,12 @@
 import { getTask, postNewCategory, postTask } from './api'
 import { createCategoryEle, createTaskEl } from './elements'
-import type { CategoryArguments, CategoryItemPostType, Task, TaskArguments, TaskPostType } from './types'
+import type {
+  CategoryArguments,
+  CategoryItemPostType,
+  Task,
+  TaskArguments,
+  TaskPostType,
+} from './types'
 import { getDaysDueDiff } from './utils'
 /* 
   A current day and month should always be in a two-digit format: 
@@ -70,8 +76,14 @@ export const addNewCategory = async (categoryArguments: CategoryArguments) => {
     }
     const addedCategory = await postNewCategory(categoryPostType)
     if (!addedCategory) return
-    const categoryEl = createCategoryEle(categoryArguments.categoryItemTemplate, addedCategory)
-    categoryArguments.categoriesElsContainer.insertAdjacentElement('afterbegin', categoryEl)
+    const categoryEl = createCategoryEle(
+      categoryArguments.categoryItemTemplate,
+      addedCategory,
+    )
+    categoryArguments.categoriesElsContainer.insertAdjacentElement(
+      'afterbegin',
+      categoryEl,
+    )
     categoryArguments.categoryNameInput.value = ''
   }
 }

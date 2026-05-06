@@ -18,7 +18,12 @@ import {
   tasksArr,
   updateTasksArr,
 } from './taskManager'
-import type { CategoryArguments, CategoryItemPostType, TaskArguments, TaskPostType } from './types'
+import type {
+  CategoryArguments,
+  CategoryItemPostType,
+  TaskArguments,
+  TaskPostType,
+} from './types'
 import { getCurrentDate, rgbToHex, setColorContrast } from './utils'
 
 const input = document.querySelector<HTMLInputElement>('#todo-input')
@@ -146,8 +151,6 @@ closeCategoriesButton.addEventListener('click', () => {
   hideOptional: other container what we not want to hide
   */
 
-
-
 categoriesElsContainer.addEventListener('click', (event) => {
   const target = event.target as HTMLButtonElement
   const parent = target.closest<HTMLSpanElement>('.category-element')
@@ -229,10 +232,12 @@ const categoryArguments: CategoryArguments = {
   categoryItemTemplate,
   categoryNameInput,
   categoryColorInput,
-  categoriesElsContainer
+  categoriesElsContainer,
 }
 
-addCategoryButton.addEventListener('click', () => addNewCategory(categoryArguments))
+addCategoryButton.addEventListener('click', () =>
+  addNewCategory(categoryArguments),
+)
 categoryNameInput.addEventListener('keypress', (event) => {
   if (event.key === 'Enter') {
     addNewCategory(categoryArguments)
