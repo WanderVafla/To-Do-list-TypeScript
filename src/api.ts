@@ -142,9 +142,7 @@ export async function deleteCategory(id: string) {
   }
 }
 
-export async function postNewCategory(
-  categoryPostType: CategoryItemPostType,
-) {
+export async function postNewCategory(categoryPostType: CategoryItemPostType) {
   try {
     const request = await fetch(categoryUrl, {
       method: 'POST',
