@@ -50,7 +50,8 @@ p {
   justify-content: center;
 }
 
-#todo-input, #category-name-input {
+#todo-input,
+#category-name-input {
   display: flex;
   border: 3px solid var(--help-color);
   border-radius: 10px;
@@ -59,7 +60,8 @@ p {
   font-size: large;
 }
 
-#category-color-text, .category-color-text {
+#category-color-text,
+.category-color-text {
   /* field-sizing: content; */
   background-color: transparent;
   width: 6rem;

@@ -205,8 +205,6 @@ categoriesElsContainer.addEventListener('click', (event) => {
     const changeInputColor = () => (colorInputText.value = colorInput.value)
     const changeTextColor = () => {
       if (regexHex.test(colorInputText.value)) {
-        console.log("a");
-        
         colorInput.value = colorInputText.value
       }
     }
@@ -235,8 +233,6 @@ categoriesElsContainer.addEventListener('click', (event) => {
 
     target.textContent = 'edit'
     if (regexHex.test(colorInputText.value)) {
-      console.log('a')
-
       const newColor: Partial<CategoryItemPostType> = {
         color: colorInput.value,
       }
