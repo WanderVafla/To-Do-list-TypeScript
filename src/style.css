@@ -239,6 +239,9 @@ button {
   border-width: 3px;
 }
 
+.is-editing-color > .buttons-action-category > *:not([data-action="edit"]) {
+  display: none;
+}
 
 .is-editing-color > .edit-container {
   display: flex;

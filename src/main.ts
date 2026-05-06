@@ -145,18 +145,24 @@ closeCategoriesButton.addEventListener('click', () => {
   buttonTarget: button action we need them for toggle state
   hideOptional: other container what we not want to hide
   */
+
+const setColorContrast = (color: string) => {
+  if (isColorLight(color)) {
+    return 'black'
+  }
+  return 'white'
+}
+
 categoriesElsContainer.addEventListener('click', (event) => {
   const target = event.target as HTMLButtonElement
   const parent = target.closest<HTMLSpanElement>('.category-element')
   if (!parent) {
     throw new Error('Error parent container')
   }
-  const editDiv = parent.querySelector<HTMLDivElement>(
-    '.edit-container',
-  )
+  const editDiv = parent.querySelector<HTMLDivElement>('.edit-container')
   const nameCategory =
     parent.querySelector<HTMLParagraphElement>('.category-name')
-  if (target.dataset.action === 'edit-color') {
+  if (target.dataset.action === 'edit') {
     const nameEditInput = parent.querySelector<HTMLInputElement>(
       '.category-name-input',
     )
@@ -183,16 +189,14 @@ categoriesElsContainer.addEventListener('click', (event) => {
       }
     }
     const NAME_CLASS_HIDING_ELEMENTS = 'is-editing-color'
+    const colorParent = parent.style.backgroundColor
     if (!parent.classList.contains(NAME_CLASS_HIDING_ELEMENTS)) {
+      // Set the paramettre of edit container
       target.textContent = 'save'
       colorInput.value = `#${rgbToHex(parent.style.backgroundColor)}`
       colorInputText.value = `#${rgbToHex(parent.style.backgroundColor)}`
       nameEditInput.value = nameCategory.textContent
-      if (isColorLight(parent.style.backgroundColor)) {
-        colorInputText.style.color = 'black'
-      } else {
-        colorInputText.style.color = 'white'
-      }
+      colorInputText.style.color = setColorContrast(colorParent)
       colorInput.addEventListener('input', changeInputColor)
       colorInputText.addEventListener('focusout', changeTextColor)
       parent.classList.add(NAME_CLASS_HIDING_ELEMENTS)
@@ -209,13 +213,8 @@ categoriesElsContainer.addEventListener('click', (event) => {
         color: colorInput.value,
       }
       parent.style.backgroundColor = colorInput.value
-      if (isColorLight(parent.style.backgroundColor)) {
-        parent.style.color = 'black'
-        colorInputText.style.color = 'black'
-      } else {
-        parent.style.color = 'white'
-        colorInputText.style.color = 'white'
-      }
+      parent.style.color = setColorContrast(colorParent)
+      colorInputText.style.color = setColorContrast(colorParent)
       target.textContent = 'edit'
       patchCategory(parent.id, newDataCategory)
     }
