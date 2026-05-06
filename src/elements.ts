@@ -20,6 +20,8 @@ export const createTaskEl = (
   template: HTMLTemplateElement,
   task: Task,
 ): HTMLDivElement => {
+  console.log(task.due_date);
+  
   const clonTemp = template.content.cloneNode(true) as DocumentFragment
   const parentDiv = clonTemp.querySelector<HTMLDivElement>('.todo-element')
   const taskTextSpan = clonTemp.querySelector<HTMLSpanElement>(
@@ -36,27 +38,28 @@ export const createTaskEl = (
   parentDiv.dataset.completed = String(task.done)
   checkbox.checked = task.done
   taskTextSpan.textContent = task.title
-  if (task.due_date) {
-    const dateEl = document.createElement('time')
-    dateEl.dateTime = task.due_date
-    dateEl.textContent = task.due_date
-    dueDateP.appendChild(dateEl)
+     if (task.due_date) {
 
-    const diffDays = getDaysDueDiff(task.due_date)
-    if (diffDays !== null) {
-      if (diffDays < 0) {
-        parentDiv.dataset.urgency = 'critical'
-      } else if (diffDays === 0 || diffDays === 1) {
-        parentDiv.dataset.urgency = 'high'
-      } else if (diffDays >= 2 && diffDays <= 4) {
-        parentDiv.dataset.urgency = 'medium'
-      } else {
-        parentDiv.dataset.urgency = 'low'
-      }
-    } else {
-      dueDateP.textContent = 'no due date'
-    }
-  }
+       const dateEl = document.createElement('time')
+       dateEl.dateTime = task.due_date
+       dateEl.textContent = task.due_date
+       dueDateP.appendChild(dateEl)
+       
+         const diffDays = getDaysDueDiff(task.due_date)
+         if (diffDays) {
+           if (diffDays < 0) {
+             parentDiv.dataset.urgency = 'critical'
+            } else if (diffDays === 0 || diffDays === 1) {
+              parentDiv.dataset.urgency = 'high'
+            } else if (diffDays >= 2 && diffDays <= 4) {
+              parentDiv.dataset.urgency = 'medium'
+            } else {
+              parentDiv.dataset.urgency = 'low'
+            }
+          }
+        } else {
+          dueDateP.textContent = 'no due date'
+        }
 
   return parentDiv
 }
