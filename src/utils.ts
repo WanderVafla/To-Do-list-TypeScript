@@ -33,3 +33,10 @@ export const rgbToHex = (rgb: string): string => {
     .map((color) => Number(color).toString(16).padStart(2, '0'))
     .join('')
 }
+
+export const setColorContrast = (color: string) => {
+  if (isColorLight(color)) {
+    return 'black'
+  }
+  return 'white'
+}

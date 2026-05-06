@@ -8,18 +8,18 @@ import {
   getTask,
   patchCategory,
   patchTask,
-  postNewCategory,
 } from './api'
 import { createCategoryEle, createTaskEl } from './elements'
 import {
+  addNewCategory,
   addTask,
   checkMessageOverdue,
   setTasksArr,
   tasksArr,
   updateTasksArr,
 } from './taskManager'
-import type { CategoryItemPostType, TaskArguments, TaskPostType } from './types'
-import { getCurrentDate, isColorLight, rgbToHex } from './utils'
+import type { CategoryArguments, CategoryItemPostType, TaskArguments, TaskPostType } from './types'
+import { getCurrentDate, rgbToHex, setColorContrast } from './utils'
 
 const input = document.querySelector<HTMLInputElement>('#todo-input')
 const sendButton = document.querySelector<HTMLButtonElement>('#add-todo-button')
@@ -146,12 +146,7 @@ closeCategoriesButton.addEventListener('click', () => {
   hideOptional: other container what we not want to hide
   */
 
-const setColorContrast = (color: string) => {
-  if (isColorLight(color)) {
-    return 'black'
-  }
-  return 'white'
-}
+
 
 categoriesElsContainer.addEventListener('click', (event) => {
   const target = event.target as HTMLButtonElement
@@ -182,29 +177,33 @@ categoriesElsContainer.addEventListener('click', (event) => {
       throw new Error('Error color input')
     }
     const regexHex = /^#?([A-Fa-f0-9]{2}){3}$/
-    const changeInputColor = () => (colorInputText.value = colorInput.value)
-    const changeTextColor = () => {
+    let colorParent = parent.style.backgroundColor
+    const changeTextColor = () => (colorInputText.value = colorInput.value)
+    const changeInputColor = () => {
       if (regexHex.test(colorInputText.value)) {
         colorInput.value = colorInputText.value
+        return
       }
+      colorInputText.value = rgbToHex(colorParent)
     }
     const NAME_CLASS_HIDING_ELEMENTS = 'is-editing-color'
-    const colorParent = parent.style.backgroundColor
     if (!parent.classList.contains(NAME_CLASS_HIDING_ELEMENTS)) {
       // Set the paramettre of edit container
       target.textContent = 'save'
-      colorInput.value = `#${rgbToHex(parent.style.backgroundColor)}`
-      colorInputText.value = `#${rgbToHex(parent.style.backgroundColor)}`
+      colorInput.value = `#${rgbToHex(colorParent)}`
+      colorInputText.value = `#${rgbToHex(colorParent)}`
       nameEditInput.value = nameCategory.textContent
       colorInputText.style.color = setColorContrast(colorParent)
-      colorInput.addEventListener('input', changeInputColor)
-      colorInputText.addEventListener('focusout', changeTextColor)
+      parent.style.color = setColorContrast(colorParent)
+      colorInput.addEventListener('input', changeTextColor)
+      colorInputText.addEventListener('focusout', changeInputColor)
       parent.classList.add(NAME_CLASS_HIDING_ELEMENTS)
 
       return
     }
-    colorInput.removeEventListener('input', changeInputColor)
-    colorInputText.removeEventListener('focusout', changeTextColor)
+    // Update container after saving the changements
+    colorInput.removeEventListener('input', changeTextColor)
+    colorInputText.removeEventListener('focusout', changeInputColor)
     parent.classList.remove(NAME_CLASS_HIDING_ELEMENTS)
     nameCategory.textContent = nameEditInput.value
     if (regexHex.test(colorInputText.value)) {
@@ -213,6 +212,8 @@ categoriesElsContainer.addEventListener('click', (event) => {
         color: colorInput.value,
       }
       parent.style.backgroundColor = colorInput.value
+      // Update variable
+      colorParent = parent.style.backgroundColor
       parent.style.color = setColorContrast(colorParent)
       colorInputText.style.color = setColorContrast(colorParent)
       target.textContent = 'edit'
@@ -223,26 +224,18 @@ categoriesElsContainer.addEventListener('click', (event) => {
     deleteCategory(parent.id)
   }
 })
-
-const addNewCategory = async () => {
-  if (categoryNameInput.value.trim()) {
-    const categoryName = categoryNameInput.value
-    const categoryPostType: CategoryItemPostType = {
-      title: categoryName,
-      color: categoryColorInput.value,
-    }
-    const addedCategory = await postNewCategory(categoryPostType)
-    if (!addedCategory) return
-    const categoryEl = createCategoryEle(categoryItemTemplate, addedCategory)
-    categoriesElsContainer.insertAdjacentElement('afterbegin', categoryEl)
-    categoryNameInput.value = ''
-  }
+// DOM elements that we need to create new category item
+const categoryArguments: CategoryArguments = {
+  categoryItemTemplate,
+  categoryNameInput,
+  categoryColorInput,
+  categoriesElsContainer
 }
 
-addCategoryButton.addEventListener('click', addNewCategory)
+addCategoryButton.addEventListener('click', () => addNewCategory(categoryArguments))
 categoryNameInput.addEventListener('keypress', (event) => {
   if (event.key === 'Enter') {
-    addNewCategory()
+    addNewCategory(categoryArguments)
   }
 })
 categoryColorInputText.value = categoryColorInput.value

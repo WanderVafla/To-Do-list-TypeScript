@@ -1,6 +1,6 @@
-import { getTask, postTask } from './api'
-import { createTaskEl } from './elements'
-import type { Task, TaskArguments, TaskPostType } from './types'
+import { getTask, postNewCategory, postTask } from './api'
+import { createCategoryEle, createTaskEl } from './elements'
+import type { CategoryArguments, CategoryItemPostType, Task, TaskArguments, TaskPostType } from './types'
 import { getDaysDueDiff } from './utils'
 /* 
   A current day and month should always be in a two-digit format: 
@@ -59,4 +59,19 @@ export const addTask = async (args: TaskArguments) => {
   checkMessageOverdue(args.overdueContainer)
 
   args.input.value = ''
+}
+
+export const addNewCategory = async (categoryArguments: CategoryArguments) => {
+  if (categoryArguments.categoryNameInput.value.trim()) {
+    const categoryName = categoryArguments.categoryNameInput.value
+    const categoryPostType: CategoryItemPostType = {
+      title: categoryName,
+      color: categoryArguments.categoryColorInput.value,
+    }
+    const addedCategory = await postNewCategory(categoryPostType)
+    if (!addedCategory) return
+    const categoryEl = createCategoryEle(categoryArguments.categoryItemTemplate, addedCategory)
+    categoryArguments.categoriesElsContainer.insertAdjacentElement('afterbegin', categoryEl)
+    categoryArguments.categoryNameInput.value = ''
+  }
 }

@@ -27,3 +27,10 @@ export interface TaskArguments {
   dateInput: HTMLInputElement
   overdueContainer: HTMLParagraphElement
 }
+
+export interface CategoryArguments {
+  categoryItemTemplate: HTMLTemplateElement,
+  categoryNameInput: HTMLInputElement,
+  categoryColorInput: HTMLInputElement,
+  categoriesElsContainer: HTMLDivElement
+}
