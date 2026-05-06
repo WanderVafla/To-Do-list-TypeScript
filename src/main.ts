@@ -285,10 +285,11 @@ const addNewCategory = async () => {
       title: categoryName,
       color: categoryColorInput.value,
     }
-    const addedCategory = postNewCategory(categoryPostType)
+    const addedCategory = await postNewCategory(categoryPostType)
+    if (!addedCategory) return
     const categoryEl = createCategoryEle(
       categoryItemTemplate,
-      await addedCategory,
+      addedCategory,
     )
     categoriesElsContainer.insertAdjacentElement('afterbegin', categoryEl)
     categoryNameInput.value = ''
