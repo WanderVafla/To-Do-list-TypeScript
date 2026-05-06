@@ -51,7 +51,8 @@ p {
 }
 
 #todo-input,
-#category-name-input {
+#category-name-input,
+.category-name-input {
   display: flex;
   border: 3px solid var(--help-color);
   border-radius: 10px;
