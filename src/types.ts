@@ -10,13 +10,13 @@ export interface Task extends TaskPostType {
   id: number
 }
 
-export interface CategorieItemPostType {
+export interface CategoryItemPostType {
   title: string
   color: string
 }
 
 // Database give auto id
-export interface CategorieItemType extends CategorieItemPostType {
+export interface CategorieItemType extends CategoryItemPostType {
   id: number
 }
 

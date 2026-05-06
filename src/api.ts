@@ -1,5 +1,5 @@
 import type {
-  CategorieItemPostType,
+  CategoryItemPostType,
   CategorieItemType,
   Task,
   TaskPostType,
@@ -141,7 +141,7 @@ export async function deleteCategory(id: string) {
 }
 
 export async function postNewCategorie(
-  categoriePostType: CategorieItemPostType,
+  categoriePostType: CategoryItemPostType,
 ) {
   try {
     const request = await fetch(categorieUrl, {
@@ -170,7 +170,7 @@ export async function postNewCategorie(
 
 export async function patchCategorie(
   id: string,
-  categorieUpdate: Partial<CategorieItemPostType>,
+  categorieUpdate: Partial<CategoryItemPostType>,
 ) {
   try {
     const urdId = `${categorieUrl}?id=eq.${id}`

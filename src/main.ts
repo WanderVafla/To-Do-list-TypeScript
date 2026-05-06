@@ -19,7 +19,7 @@ import {
   updateTasksArr,
 } from './taskManager'
 import type {
-  CategorieItemPostType,
+  CategoryItemPostType,
   TaskArguments,
   TaskPostType,
 } from './types'
@@ -237,7 +237,7 @@ categoriesElsContainer.addEventListener('click', (event) => {
     if (regexHex.test(colorText.textContent)) {
       console.log('a')
 
-      const newColor: Partial<CategorieItemPostType> = {
+      const newColor: Partial<CategoryItemPostType> = {
         color: colorInput.value,
       }
       parent.style.backgroundColor = colorInput.value
@@ -271,7 +271,7 @@ categoriesElsContainer.addEventListener('click', (event) => {
       nameEditInput.value = nameCategorie.textContent
       return
     }
-    const newName: Partial<CategorieItemPostType> = {
+    const newName: Partial<CategoryItemPostType> = {
       title: nameEditInput.value,
     }
     nameCategorie.textContent = nameEditInput.value
@@ -282,7 +282,7 @@ categoriesElsContainer.addEventListener('click', (event) => {
 const addNewCategory = async () => {
   if (categorieNameInput.value.trim()) {
     const categorieName = categorieNameInput.value
-    const categoriePostType: CategorieItemPostType = {
+    const categoriePostType: CategoryItemPostType = {
       title: categorieName,
       color: categoryColorInput.value,
     }
