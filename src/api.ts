@@ -10,7 +10,7 @@ const categorieUrl = 'https://api.todos.in.jt-lab.ch/categories'
 
 export async function getTask(): Promise<Task[]> {
   try {
-    const request = await fetch(todoUrl, { method: 'GET' })
+    const request = await fetch(`${todoUrl}?order=id.asc`, { method: 'GET' })
     if (!request.ok) {
       throw new Error('Error GET request!')
     }
@@ -108,7 +108,7 @@ export async function patchTask(id: string, taskUpdate: Partial<TaskPostType>) {
 
 export async function getCategories(): Promise<CategorieItemType[]> {
   try {
-    const request = await fetch(categorieUrl, { method: 'GET' })
+    const request = await fetch(`${categorieUrl}?order=id.desc`, { method: 'GET' })
     if (!request.ok) {
       throw new Error('Error GET request!')
     }

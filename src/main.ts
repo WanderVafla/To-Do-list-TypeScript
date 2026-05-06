@@ -288,7 +288,7 @@ const addNewCategory = async () => {
       categorieItemTemplate,
       await addedCategorie,
     )
-    categoriesElsContainer.appendChild(categorieEl)
+    categoriesElsContainer.insertAdjacentElement('afterbegin', categorieEl)
     categorieNameInput.value = ''
   }
 }
