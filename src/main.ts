@@ -204,6 +204,7 @@ categoriesElsContainer.addEventListener('click', (event) => {
 
       return
     }
+
     // Update container after saving the changements
     colorInput.removeEventListener('input', changeTextColor)
     colorInputText.removeEventListener('focusout', changeInputColor)
