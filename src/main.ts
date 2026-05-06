@@ -311,9 +311,9 @@ window.addEventListener('DOMContentLoaded', async () => {
       createTaskEll(todoTemplate, task),
     )
   }
-  const catigories = await getCategories()
-  for (const categorie of catigories) {
-    const categorieEl = createCategorieEle(categorieItemTemplate, categorie)
+  const categories = await getCategories()
+  for (const category of categories) {
+    const categorieEl = createCategorieEle(categorieItemTemplate, category)
     categoriesElsContainer.appendChild(categorieEl)
   }
   checkMessageOverdue(overdueContainer)

@@ -215,3 +215,8 @@ button {
   align-items: center;
   gap: 1rem;
 }
+
+#categorie-color-container > span {
+  font-size: 20px;
+  letter-spacing: 3px;
+}
