@@ -5,7 +5,32 @@ export interface TaskPostType {
   done: boolean
 }
 
+// Database give auto id
 export interface Task extends TaskPostType {
   id: number
 }
+
+export interface CategoryItemPostType {
+  title: string
+  color: string
+}
+
 // Database give auto id
+export interface CategoryItemType extends CategoryItemPostType {
+  id: number
+}
+
+export interface TaskArguments {
+  input: HTMLInputElement
+  todosContainer: HTMLDivElement
+  todoTemplate: HTMLTemplateElement
+  dateInput: HTMLInputElement
+  overdueContainer: HTMLParagraphElement
+}
+
+export interface CategoryArguments {
+  categoryItemTemplate: HTMLTemplateElement
+  categoryNameInput: HTMLInputElement
+  categoryColorInput: HTMLInputElement
+  categoriesElsContainer: HTMLDivElement
+}

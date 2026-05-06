@@ -1,19 +1,18 @@
-import { getTask, postTask } from './api'
-import { createTaskEll } from './elements'
-import type { Task, TaskPostType } from './types'
+import { getTask, postNewCategory, postTask } from './api'
+import { createCategoryEle, createTaskEl } from './elements'
+import type {
+  CategoryArguments,
+  CategoryItemPostType,
+  Task,
+  TaskArguments,
+  TaskPostType,
+} from './types'
 import { getDaysDueDiff } from './utils'
 /* 
   A current day and month should always be in a two-digit format: 
   result: 2026-2-5 > 2026-02-05
 */
 export let tasksArr: Task[] = []
-
-// export interface Task {
-//   id: string
-//   name: string
-//   completed: boolean
-//   due: string
-// }
 
 export const setTasksArr = (array: Task[]) => {
   tasksArr = array
@@ -41,14 +40,6 @@ export const checkMessageOverdue = (overdueContainer: HTMLParagraphElement) => {
   overdueContainer.textContent = text
 }
 
-export interface TaskArguments {
-  input: HTMLInputElement
-  todosContainer: HTMLDivElement
-  todoTemplate: HTMLTemplateElement
-  dateInput: HTMLInputElement
-  overdueContainer: HTMLParagraphElement
-}
-
 export const addTask = async (args: TaskArguments) => {
   if (!args.input.value.trim()) {
     alert('Your task is empty!')
@@ -69,9 +60,30 @@ export const addTask = async (args: TaskArguments) => {
   updateTasksArr()
   args.todosContainer.insertAdjacentElement(
     'afterbegin',
-    createTaskEll(args.todoTemplate, addedItem),
+    createTaskEl(args.todoTemplate, addedItem),
   )
   checkMessageOverdue(args.overdueContainer)
 
   args.input.value = ''
+}
+
+export const addNewCategory = async (categoryArguments: CategoryArguments) => {
+  if (categoryArguments.categoryNameInput.value.trim()) {
+    const categoryName = categoryArguments.categoryNameInput.value
+    const categoryPostType: CategoryItemPostType = {
+      title: categoryName,
+      color: categoryArguments.categoryColorInput.value,
+    }
+    const addedCategory = await postNewCategory(categoryPostType)
+    if (!addedCategory) return
+    const categoryEl = createCategoryEle(
+      categoryArguments.categoryItemTemplate,
+      addedCategory,
+    )
+    categoryArguments.categoriesElsContainer.insertAdjacentElement(
+      'afterbegin',
+      categoryEl,
+    )
+    categoryArguments.categoryNameInput.value = ''
+  }
 }
