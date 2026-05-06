@@ -23,7 +23,7 @@ import type {
   TaskArguments,
   TaskPostType,
 } from './types'
-import { checkColorDark, getCurrentDate, rgbToHex } from './utils'
+import { getCurrentDate, isColorLight, rgbToHex } from './utils'
 
 const input = document.querySelector<HTMLInputElement>('#todo-input')
 const sendButton = document.querySelector<HTMLButtonElement>('#add-todo-button')
@@ -241,7 +241,7 @@ categoriesElsContainer.addEventListener('click', (event) => {
         color: colorInput.value,
       }
       parent.style.backgroundColor = colorInput.value
-      if (checkColorDark(parent.style.backgroundColor)) {
+      if (isColorLight(parent.style.backgroundColor)) {
         parent.style.color = 'black'
       } else {
         parent.style.color = 'white'

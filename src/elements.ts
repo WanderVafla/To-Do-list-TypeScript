@@ -1,5 +1,5 @@
 import type { CategorieItemType, Task } from './types'
-import { checkColorDark, getDaysDueDiff } from './utils'
+import { getDaysDueDiff, isColorLight } from './utils'
 
 /* 
   Template is in index.html with id="todo-template"
@@ -78,7 +78,7 @@ export const createCategorieEle = (
   container.id = categorieItemType.id.toString()
   title.textContent = categorieItemType.title
   container.style.backgroundColor = categorieItemType.color
-  if (checkColorDark(container.style.backgroundColor)) {
+  if (isColorLight(container.style.backgroundColor)) {
     container.style.color = 'black'
   } else {
     container.style.color = 'white'
