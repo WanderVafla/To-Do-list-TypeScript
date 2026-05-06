@@ -53,7 +53,7 @@ const categorieNameInput = document.querySelector<HTMLInputElement>(
 const categoryColorInput = document.querySelector<HTMLInputElement>(
   '#category-color-input',
 )
-const categoryColorText = document.querySelector<HTMLLabelElement>(
+const categoryColorInputText = document.querySelector<HTMLInputElement>(
   '#category-color-text',
 )
 if (
@@ -72,7 +72,7 @@ if (
   !addCategorieButton ||
   !categorieNameInput ||
   !categoryColorInput ||
-  !categoryColorText
+  !categoryColorInputText
 ) {
   throw new Error('Warning some html are missing')
 }
@@ -195,17 +195,19 @@ categoriesElsContainer.addEventListener('click', (event) => {
     const colorInput = parent.querySelector<HTMLInputElement>(
       '.category-color-input',
     )
-    const colorText = parent.querySelector<HTMLParagraphElement>(
+    const colorInputText = parent.querySelector<HTMLInputElement>(
       '.category-color-text',
     )
-    if (!colorInput || !colorEditDiv || !colorText || !nameEditDiv) {
+    if (!colorInput || !colorEditDiv || !colorInputText || !nameEditDiv) {
       throw new Error('Error color input')
     }
     const regexHex = /^#?([A-Fa-f0-9]{2}){3}$/
-    const changeInputColor = () => (colorText.textContent = colorInput.value)
+    const changeInputColor = () => (colorInputText.value = colorInput.value)
     const changeTextColor = () => {
-      if (regexHex.test(colorText.textContent)) {
-        colorInput.value = colorText.textContent
+      if (regexHex.test(colorInputText.value)) {
+        console.log("a");
+        
+        colorInput.value = colorInputText.value
       }
     }
     const visibility = toggleVisibilityEls(
@@ -217,17 +219,22 @@ categoriesElsContainer.addEventListener('click', (event) => {
     if (visibility) {
       target.textContent = 'save'
       colorInput.value = `#${rgbToHex(parent.style.backgroundColor)}`
-      colorText.textContent = `#${rgbToHex(parent.style.backgroundColor)}`
+      colorInputText.value = `#${rgbToHex(parent.style.backgroundColor)}`
+      if (isColorLight(parent.style.backgroundColor)) {
+        colorInputText.style.color = 'black'
+      } else {
+        colorInputText.style.color = 'white'
+      }
       colorInput.addEventListener('input', changeInputColor)
-      colorText.addEventListener('focusout', () => changeTextColor)
+      colorInputText.addEventListener('focusout', changeTextColor)
       return
     }
 
     colorInput.removeEventListener('input', changeInputColor)
-    colorText.removeEventListener('focusout', changeTextColor)
+    colorInputText.removeEventListener('focusout', changeTextColor)
 
     target.textContent = 'edit'
-    if (regexHex.test(colorText.textContent)) {
+    if (regexHex.test(colorInputText.value)) {
       console.log('a')
 
       const newColor: Partial<CategoryItemPostType> = {
@@ -236,8 +243,10 @@ categoriesElsContainer.addEventListener('click', (event) => {
       parent.style.backgroundColor = colorInput.value
       if (isColorLight(parent.style.backgroundColor)) {
         parent.style.color = 'black'
+        colorInputText.style.color = 'black'
       } else {
         parent.style.color = 'white'
+        colorInputText.style.color = 'white'
       }
       patchCategorie(parent.id, newColor)
     }
@@ -295,12 +304,12 @@ categorieNameInput.addEventListener('keypress', (event) => {
     addNewCategory()
   }
 })
-categoryColorText.textContent = categoryColorInput.value
+categoryColorInputText.value = categoryColorInput.value
 categoryColorInput.addEventListener('input', () => {
-  categoryColorText.textContent = categoryColorInput.value
+  categoryColorInputText.value = categoryColorInput.value
 })
-categoryColorText.addEventListener('blur', () => {
-  categoryColorInput.value = categoryColorText.textContent
+categoryColorInputText.addEventListener('blur', () => {
+  categoryColorInput.value = categoryColorInputText.value
 })
 window.addEventListener('DOMContentLoaded', async () => {
   const tasks = await getTask()
