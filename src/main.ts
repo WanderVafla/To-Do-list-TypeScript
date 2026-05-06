@@ -272,6 +272,7 @@ categoriesElsContainer.addEventListener('click', (event) => {
     const newName: Partial<CategoryItemPostType> = {
       title: nameEditInput.value,
     }
+    target.textContent = 'rename'
     nameCategorie.textContent = nameEditInput.value
     patchCategorie(parent.id, newName)
   }
