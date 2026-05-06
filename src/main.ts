@@ -231,7 +231,7 @@ categoriesElsContainer.addEventListener('click', (event) => {
     }
 
     colorInput.removeEventListener('input', changeInputColor)
-    colorInput.removeEventListener('focusout', changeTextColor)
+    colorText.removeEventListener('focusout', changeTextColor)
 
     target.textContent = 'edit'
     if (regexHex.test(colorText.textContent)) {
