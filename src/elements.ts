@@ -61,7 +61,7 @@ export const createTaskEll = (
   return parentDiv
 }
 
-export const createCategorieEle = (
+export const createCategoryEle = (
   template: HTMLTemplateElement,
   categoryItemType: CategoryItemType,
 ): HTMLSpanElement => {

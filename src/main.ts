@@ -10,7 +10,7 @@ import {
   patchTask,
   postNewCategorie,
 } from './api'
-import { createCategorieEle, createTaskEll } from './elements'
+import { createCategoryEle, createTaskEll } from './elements'
 import {
   addTask,
   checkMessageOverdue,
@@ -285,7 +285,7 @@ const addNewCategory = async () => {
       color: categoryColorInput.value,
     }
     const addedCategorie = postNewCategorie(categoriePostType)
-    const categorieEl = createCategorieEle(
+    const categorieEl = createCategoryEle(
       categoryItemTemplate,
       await addedCategorie,
     )
@@ -318,7 +318,7 @@ window.addEventListener('DOMContentLoaded', async () => {
   }
   const categories = await getCategories()
   for (const category of categories) {
-    const categorieEl = createCategorieEle(categoryItemTemplate, category)
+    const categorieEl = createCategoryEle(categoryItemTemplate, category)
     categoriesElsContainer.appendChild(categorieEl)
   }
   checkMessageOverdue(overdueContainer)
