@@ -1,5 +1,5 @@
 import { getTask, postTask } from './api'
-import { createTaskEll } from './elements'
+import { createTaskEl } from './elements'
 import type { Task, TaskArguments, TaskPostType } from './types'
 import { getDaysDueDiff } from './utils'
 /* 
@@ -7,13 +7,6 @@ import { getDaysDueDiff } from './utils'
   result: 2026-2-5 > 2026-02-05
 */
 export let tasksArr: Task[] = []
-
-// export interface Task {
-//   id: string
-//   name: string
-//   completed: boolean
-//   due: string
-// }
 
 export const setTasksArr = (array: Task[]) => {
   tasksArr = array
@@ -61,7 +54,7 @@ export const addTask = async (args: TaskArguments) => {
   updateTasksArr()
   args.todosContainer.insertAdjacentElement(
     'afterbegin',
-    createTaskEll(args.todoTemplate, addedItem),
+    createTaskEl(args.todoTemplate, addedItem),
   )
   checkMessageOverdue(args.overdueContainer)
 

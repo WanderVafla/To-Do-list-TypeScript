@@ -16,7 +16,7 @@ import { getDaysDueDiff, isColorLight } from './utils'
     </p>
   </div>
 */
-export const createTaskEll = (
+export const createTaskEl = (
   template: HTMLTemplateElement,
   task: Task,
 ): HTMLDivElement => {

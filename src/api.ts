@@ -6,7 +6,7 @@ import type {
 } from './types'
 
 const todoUrl = 'https://api.todos.in.jt-lab.ch/todos'
-const categorieUrl = 'https://api.todos.in.jt-lab.ch/categories'
+const categoryUrl = 'https://api.todos.in.jt-lab.ch/categories'
 
 export async function getTask(): Promise<Task[]> {
   try {
@@ -50,8 +50,8 @@ export async function postTask(task: TaskPostType) {
 
 export async function deleteTask(id: string) {
   try {
-    const urdId = `${todoUrl}?id=eq.${id}`
-    const request = await fetch(urdId, {
+    const urlId = `${todoUrl}?id=eq.${id}`
+    const request = await fetch(urlId, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
@@ -87,9 +87,9 @@ export async function deleteAllTask() {
 
 export async function patchTask(id: string, taskUpdate: Partial<TaskPostType>) {
   try {
-    const urdId = `${todoUrl}?id=eq.${id}`
+    const urlId = `${todoUrl}?id=eq.${id}`
 
-    const request = await fetch(urdId, {
+    const request = await fetch(urlId, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
@@ -108,7 +108,7 @@ export async function patchTask(id: string, taskUpdate: Partial<TaskPostType>) {
 
 export async function getCategories(): Promise<CategoryItemType[]> {
   try {
-    const request = await fetch(`${categorieUrl}?order=id.desc`, {
+    const request = await fetch(`${categoryUrl}?order=id.desc`, {
       method: 'GET',
     })
     if (!request.ok) {
@@ -125,8 +125,8 @@ export async function getCategories(): Promise<CategoryItemType[]> {
 
 export async function deleteCategory(id: string) {
   try {
-    const urdId = `${categorieUrl}?id=eq.${id}`
-    const request = await fetch(urdId, {
+    const urlId = `${categoryUrl}?id=eq.${id}`
+    const request = await fetch(urlId, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
@@ -142,17 +142,17 @@ export async function deleteCategory(id: string) {
   }
 }
 
-export async function postNewCategorie(
-  categoriePostType: CategoryItemPostType,
+export async function postNewCategory(
+  categoryPostType: CategoryItemPostType,
 ) {
   try {
-    const request = await fetch(categorieUrl, {
+    const request = await fetch(categoryUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         Prefer: 'return=representation',
       },
-      body: JSON.stringify(categoriePostType),
+      body: JSON.stringify(categoryPostType),
     })
 
     if (!request.ok) {
@@ -170,19 +170,19 @@ export async function postNewCategorie(
   }
 }
 
-export async function patchCategorie(
+export async function patchCategory(
   id: string,
-  categorieUpdate: Partial<CategoryItemPostType>,
+  categoryUpdate: Partial<CategoryItemPostType>,
 ) {
   try {
-    const urdId = `${categorieUrl}?id=eq.${id}`
+    const urlId = `${categoryUrl}?id=eq.${id}`
 
-    const request = await fetch(urdId, {
+    const request = await fetch(urlId, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(categorieUpdate),
+      body: JSON.stringify(categoryUpdate),
     })
     if (request.status === 204) {
       return
