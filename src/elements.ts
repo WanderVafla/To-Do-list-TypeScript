@@ -96,13 +96,13 @@ export const createCategoryEle = (
 }
 
 export const createCategoryTodoItemEle = (
-  categoty: CategoryItemType,
+  category: CategoryItemType,
 ): HTMLSpanElement => {
   const categoryItem = document.createElement('span') as HTMLSpanElement
-  categoryItem.textContent = categoty.title
-  categoryItem.id = categoty.id.toString()
+  categoryItem.textContent = category.title
+  categoryItem.id = category.id.toString()
   categoryItem.className = 'category-item-element'
-  categoryItem.style.backgroundColor = categoty.color
+  categoryItem.style.backgroundColor = category.color
   categoryItem.style.color = setColorContrast(
     categoryItem.style.backgroundColor,
   )

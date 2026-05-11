@@ -140,13 +140,13 @@ todosContainer.addEventListener('click', async (event) => {
   } else if (target.dataset.action === 'choice-category') {
     const categoriesItemContainer =
       choiceCategoryDialog.querySelector<HTMLDivElement>(
-        '#task-categoty-container',
+        '#task-category-container',
       )
     if (!categoriesItemContainer) {
       throw new Error('Not exist container for items category!')
     }
     if (choiceCategoryDialog.open) {
-      target.querySelector<HTMLDivElement>('#task-categoty-container')
+      target.querySelector<HTMLDivElement>('#task-category-container')
       categoriesItemContainer.querySelectorAll('*').forEach((element) => {
         element.remove()
       })
