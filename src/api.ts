@@ -211,6 +211,26 @@ export async function getCategoriesTodos(): Promise<CategoryTodoType[]> {
   }
 }
 
+export async function deleteCategoryTodo(category_id: number, todo_id: number) {
+  try {
+    const urlId = `${categoriesTodosUrl}?category_id=eq.${category_id}&todo_id=eq.${todo_id}`
+    const request = await fetch(urlId, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+    if (request.status === 204) {
+      return
+    }
+    const errorData = await request.json()
+    console.error(errorData)
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+
 export async function postNewCategoryTodo(categoryTodoType: CategoryTodoType) {
   try {
     const request = await fetch(categoriesTodosUrl, {
