@@ -1,4 +1,4 @@
-import { DOM_ELEMENT, ERRORS, TASK } from './constants'
+import { COLOR, DOM_ELEMENT, ERRORS, TASK } from './constants'
 import type { CategoryItemType, Task } from './types'
 import { getDaysDueDiff, setColorContrast } from './utils'
 
@@ -42,6 +42,7 @@ export const createTaskEl = (
   ) {
     throw new Error(ERRORS.DOM.ContainerNotFound)
   }
+  borderTodoParent.style.background = COLOR.default_task_border_color
   parentDiv.id = task.id.toString()
   parentDiv.dataset.completed = String(task.done)
   checkbox.checked = task.done

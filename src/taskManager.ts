@@ -6,7 +6,7 @@ import {
   postNewCategoryTodo,
   postTask,
 } from './api'
-import { BUTTON_ACTION, COLOR, ERRORS, LOG_MESSAGE } from './constants'
+import { BUTTON_ACTION, ERRORS, LOG_MESSAGE } from './constants'
 import { createCategoryEle, createTaskEl } from './elements'
 import type {
   CategoryArguments,
@@ -167,7 +167,5 @@ export function setColorCategoryToTask(
     const titles = colorsTitles.map((item) => item.title).join(', ')
     borderElement.style.background = `linear-gradient(to right, ${colors})`
     buttonChoiceCategory.textContent = titles
-  } else {
-    borderElement.style.background = COLOR.default_task_border_color
   }
 }
