@@ -269,15 +269,16 @@ button {
   background-color: var(--help-color);
 }
 
-#choice-category-dialog {
+#choice-category-dialog[open] {
+  display: flex;
   align-self: center;
   flex-direction: column;
   border-radius: var(--border-radius-standard);
 }
 
-#task-categoty-container {
-  padding: 1rem;
+#task-category-container {
   display: flex;
+  padding: 1rem;
   flex-direction: column;
   gap: 1rem;
   max-height: 40em;
