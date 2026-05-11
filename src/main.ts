@@ -146,7 +146,6 @@ todosContainer.addEventListener('click', async (event) => {
       throw new Error('Not exist container for items category!')
     }
     if (choiceCategoryDialog.open) {
-      target.querySelector<HTMLDivElement>('#task-category-container')
       categoriesItemContainer.querySelectorAll('*').forEach((element) => {
         element.remove()
       })
