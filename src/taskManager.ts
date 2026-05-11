@@ -45,7 +45,7 @@ export const getItemCategoriesTodos = (
   id: number,
 ): CategoryTodoType | undefined => {
   return categoriesTodos.find((item) =>
-    item.todo_id === id || item.category_id === id ? item : '',
+    item.todo_id === id || item.category_id === id
   )
 }
 
