@@ -23,7 +23,7 @@ import {
   setTaskCategory,
   tasksArr,
   updateCategoriesTodos,
-  updateCotegories,
+  updateCategories,
   updateTasksArr,
 } from './taskManager'
 import type {
@@ -314,7 +314,7 @@ categoryColorInputText.addEventListener('blur', () => {
 })
 window.addEventListener('DOMContentLoaded', async () => {
   await updateTasksArr()
-  await updateCotegories()
+  await updateCategories()
   await updateCategoriesTodos()
   for (const category of categories) {
     const categoryEl = createCategoryEle(categoryItemTemplate, category)

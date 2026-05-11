@@ -33,7 +33,7 @@ export const updateTasksArr = async () => {
   tasksArr = await getTask()
 }
 
-export async function updateCotegories() {
+export async function updateCategories() {
   categories = await getCategories()
 }
 
