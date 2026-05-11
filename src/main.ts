@@ -22,8 +22,8 @@ import {
   setColorCategoryToTask,
   setTaskCategory,
   tasksArr,
-  updateCategoriesTodos,
   updateCategories,
+  updateCategoriesTodos,
   updateTasksArr,
 } from './taskManager'
 import type {
