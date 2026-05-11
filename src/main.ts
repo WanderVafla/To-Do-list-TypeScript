@@ -5,22 +5,35 @@ import {
   deleteCategory,
   deleteTask,
   getCategories,
+  getCategoriesTodos,
   getTask,
   patchCategory,
   patchTask,
 } from './api'
-import { createCategoryEle, createTaskEl } from './elements'
+import {
+  createCategoryEle,
+  createCategoryTodoItemEle,
+  createTaskEl,
+} from './elements'
 import {
   addNewCategory,
   addTask,
+  categories,
+  categoriesTodos,
   checkMessageOverdue,
+  getItemCategoriesTodos,
+  setColorCatergoryToTask,
+  setTaskCategory,
   setTasksArr,
   tasksArr,
+  updateCategoriesTodos,
+  updateCotegories,
   updateTasksArr,
 } from './taskManager'
 import type {
   CategoryArguments,
   CategoryItemPostType,
+  CategoryItemType,
   TaskArguments,
   TaskPostType,
 } from './types'
@@ -61,6 +74,9 @@ const categoryColorInput = document.querySelector<HTMLInputElement>(
 const categoryColorInputText = document.querySelector<HTMLInputElement>(
   '#category-color-text',
 )
+const choiceCategoryDialog = document.querySelector<HTMLDialogElement>(
+  '#choice-category-dialog',
+)
 if (
   !input ||
   !sendButton ||
@@ -77,7 +93,8 @@ if (
   !addCategoryButton ||
   !categoryNameInput ||
   !categoryColorInput ||
-  !categoryColorInputText
+  !categoryColorInputText ||
+  !choiceCategoryDialog
 ) {
   throw new Error('Warning some html are missing')
 }
@@ -115,18 +132,54 @@ todosContainer.addEventListener('change', (event) => {
     }
   }
 })
-// Remove
-todosContainer.addEventListener('click', (event) => {
+todosContainer.addEventListener('click', async (event) => {
   const target = event.target as HTMLButtonElement
+  const parent = target.closest<HTMLDivElement>('.todo-element')
+  if (!parent) {
+    throw new Error('Not finded parent element!')
+  }
   if (target.dataset.action === 'remove') {
-    const parent = target.closest<HTMLDivElement>('.todo-element')
-    if (parent) {
-      parent.remove()
-      deleteTask(parent.id.toString()).then((_) => updateTasksArr())
-      checkMessageOverdue(overdueContainer)
+    parent.remove()
+    deleteTask(parent.id.toString()).then((_) => updateTasksArr())
+    checkMessageOverdue(overdueContainer)
+  } else if (target.dataset.action === 'choice-category') {
+    const categoriesItemContainer =
+      choiceCategoryDialog.querySelector<HTMLDivElement>(
+        '#task-categoty-container',
+      )
+    if (!categoriesItemContainer) {
+      throw new Error('Not exist container for items category!')
     }
+    if (choiceCategoryDialog.open) {
+      target.querySelector<HTMLDivElement>('#task-categoty-container')
+      categoriesItemContainer.querySelectorAll('*').forEach((element) => {
+        element.remove()
+      })
+      choiceCategoryDialog.close()
+      return
+    }
+    for (const categoty of categories) {
+      
+      const categoryEle = createCategoryTodoItemEle(categoty) 
+      categoriesItemContainer.insertAdjacentElement(
+        'afterbegin', categoryEle,
+      )
+    }
+    choiceCategoryDialog.dataset.task = parent.id
+    choiceCategoryDialog.show()
   }
 })
+
+choiceCategoryDialog.addEventListener('click', (event) => {
+  console.log('a')
+
+  const target = event.target as HTMLSpanElement
+  setTaskCategory(Number(target.id), Number(choiceCategoryDialog.dataset.task))
+  console.log(Number(target.id), Number(choiceCategoryDialog.dataset.task))
+
+  console.log('Category and task linked')
+})
+
 // Remove all
 deleteAllButton.addEventListener('click', () => {
   todosContainer.replaceChildren()
@@ -252,21 +305,22 @@ categoryColorInputText.addEventListener('blur', () => {
   categoryColorInput.value = categoryColorInputText.value
 })
 window.addEventListener('DOMContentLoaded', async () => {
-  const tasks = await getTask()
-  setTasksArr(tasks)
-  for (const task of tasksArr) {
-    todosContainer.insertAdjacentElement(
-      'afterbegin',
-      createTaskEl(todoTemplate, task),
-    )
-  }
-  const categories = await getCategories()
-  for (const category of categories) {
-    const categoryEl = createCategoryEle(categoryItemTemplate, category)
-    categoriesElsContainer.appendChild(categoryEl)
-  }
-  checkMessageOverdue(overdueContainer)
-  console.log('Task list is loaded!')
-})
+  await updateTasksArr()
+  await updateCotegories()
+  await updateCategoriesTodos()
+    for (const category of categories) {
+      const categoryEl = createCategoryEle(categoryItemTemplate, category)
+      categoriesElsContainer.appendChild(categoryEl)
+    }
+    for (const task of tasksArr) {
+      const taskEle = setColorCatergoryToTask(task, todoTemplate)
+      todosContainer.insertAdjacentElement(
+        'afterbegin',
+        taskEle,
+      )
+    }
+    checkMessageOverdue(overdueContainer)
+    console.log('Task list is loaded!')
+  })
 
 console.log('Hello from typescript')

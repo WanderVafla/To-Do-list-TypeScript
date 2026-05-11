@@ -1,12 +1,14 @@
 import type {
   CategoryItemPostType,
   CategoryItemType,
+  CategoryTodoType,
   Task,
   TaskPostType,
 } from './types'
 
 const todoUrl = 'https://api.todos.in.jt-lab.ch/todos'
 const categoryUrl = 'https://api.todos.in.jt-lab.ch/categories'
+const categoriesTodosUrl = 'https://api.todos.in.jt-lab.ch/categories_todos'
 
 export async function getTask(): Promise<Task[]> {
   try {
@@ -187,6 +189,49 @@ export async function patchCategory(
     }
     const response = await request.json()
     console.error(response)
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+export async function getCategoriesTodos(): Promise<CategoryTodoType[]> {
+  try {
+    const request = await fetch(categoriesTodosUrl, {
+      method: 'GET',
+    })
+    if (!request.ok) {
+      throw new Error('Error GET request!')
+    }
+    const response = await request.json()
+
+    return response
+  } catch (error) {
+    console.error(error)
+    return []
+  }
+}
+
+export async function postNewCategoryTodo(categoryTodoType: CategoryTodoType) {
+  try {
+    const request = await fetch(categoriesTodosUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Prefer: 'return=representation',
+      },
+      body: JSON.stringify(categoryTodoType),
+    })
+
+    if (!request.ok) {
+      throw new Error('Error POST request!')
+    }
+    if (request.status === 201) {
+      if (request.body) {
+        const newItem: CategoryTodoType = await request.json()
+        return Array.isArray(newItem) ? newItem[0] : newItem
+      }
+      return
+    }
   } catch (error) {
     console.error(error)
   }

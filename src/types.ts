@@ -20,6 +20,11 @@ export interface CategoryItemType extends CategoryItemPostType {
   id: number
 }
 
+export interface CategoryTodoType {
+  category_id: number
+  todo_id: number
+}
+
 export interface TaskArguments {
   input: HTMLInputElement
   todosContainer: HTMLDivElement
