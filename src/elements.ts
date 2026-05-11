@@ -106,9 +106,6 @@ export const createCategoryTodoItemEle = (
   categoryItem.style.color = setColorContrast(
     categoryItem.style.backgroundColor,
   )
-  console.log(
-    `${categoryItem.textContent} ${setColorContrast(categoryItem.style.backgroundColor)}`,
-  )
 
   return categoryItem
 }

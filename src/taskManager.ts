@@ -138,7 +138,6 @@ export function setColorCatergoryToTask(
     throw new Error('Not have a button of choice of categories!')
   }
   if (targetTodoId.length === 1) {
-    // console.log(targetTodoId)
 
     const targetCategory = categories.find(
       (item) => item.id === targetTodoId[0].category_id,

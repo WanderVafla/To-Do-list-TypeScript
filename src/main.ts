@@ -178,9 +178,7 @@ choiceCategoryDialog.addEventListener('click', (event) => {
       Number(target.id),
       Number(choiceCategoryDialog.dataset.task),
     )
-    console.log(Number(target.id), Number(choiceCategoryDialog.dataset.task))
 
-    console.log('Category and task linked')
     return
   }
   deleteCategoryTodo(
