@@ -6,6 +6,7 @@ import {
   postNewCategoryTodo,
   postTask,
 } from './api'
+import { BUTTON_ACTION, COLOR, ERRORS, LOG_MESSAGE } from './constants'
 import { createCategoryEle, createTaskEl } from './elements'
 import type {
   CategoryArguments,
@@ -69,7 +70,7 @@ export const checkMessageOverdue = (overdueContainer: HTMLParagraphElement) => {
 
 export const addTask = async (args: TaskArguments) => {
   if (!args.input.value.trim()) {
-    alert('Your task is empty!')
+    alert(LOG_MESSAGE.alert_empty_input)
     args.input.value = ''
     return
   }
@@ -82,7 +83,7 @@ export const addTask = async (args: TaskArguments) => {
 
   const addedItem: Task | undefined = await postTask(task)
   if (!addedItem) {
-    return console.error('Item is undefined!')
+    throw new Error(ERRORS.STATE.StateEmpty)
   }
   updateTasksArr()
   args.todosContainer.insertAdjacentElement(
@@ -132,10 +133,10 @@ export function setColorCategoryToTask(
   // const taskEle = createTaskEl(template, task)
   const targetTodoId = categoriesTodos.filter((item) => item.todo_id === id)
   const buttonChoiceCategory = borderElement.querySelector<HTMLButtonElement>(
-    'button[data-action="choice-category"]',
+    `button[data-action="${BUTTON_ACTION.choice_category}"]`,
   )
   if (!buttonChoiceCategory) {
-    throw new Error('Not have a button of choice of categories!')
+    throw new Error(ERRORS.DOM.ContainerNotFound)
   }
   if (targetTodoId.length === 1) {
     const targetCategory = categories.find(
@@ -167,6 +168,6 @@ export function setColorCategoryToTask(
     borderElement.style.background = `linear-gradient(to right, ${colors})`
     buttonChoiceCategory.textContent = titles
   } else {
-    borderElement.style.background = 'grey'
+    borderElement.style.background = COLOR.default_task_border_color
   }
 }

@@ -9,6 +9,15 @@ import {
   patchTask,
 } from './api'
 import {
+  BUTTON_ACTION,
+  CATEGORY,
+  ERRORS,
+  LOG_MESSAGE,
+  NAME_CLASS_HIDING_ELEMENTS,
+  REGEX,
+  TEXT_BUTTONS,
+} from './constants'
+import {
   createCategoryEle,
   createCategoryTodoItemEle,
   createTaskEl,
@@ -91,7 +100,7 @@ if (
   !categoryColorInputText ||
   !choiceCategoryDialog
 ) {
-  throw new Error('Warning some html are missing')
+  throw new Error(ERRORS.DOM.RootNotFound)
 }
 // Set minimal date for input calendar
 dateInput.min = getCurrentDate()
@@ -132,19 +141,19 @@ todosContainer.addEventListener('click', async (event) => {
   const border = target.closest<HTMLDivElement>('.border-todo-element')
   const parent = target.closest<HTMLDivElement>('.todo-element')
   if (!parent || !border) {
-    throw new Error('Could not find parent element!')
+    throw new Error(ERRORS.DOM.ContainerNotFound)
   }
-  if (target.dataset.action === 'remove') {
+  if (target.dataset.action === BUTTON_ACTION.remove) {
     border.remove()
     deleteTask(parent.id.toString()).then((_) => updateTasksArr())
     checkMessageOverdue(overdueContainer)
-  } else if (target.dataset.action === 'choice-category') {
+  } else if (target.dataset.action === BUTTON_ACTION.choice_category) {
     const categoriesItemContainer =
       choiceCategoryDialog.querySelector<HTMLDivElement>(
         '#task-category-container',
       )
     if (!categoriesItemContainer) {
-      throw new Error('Not exist container for items category!')
+      throw new Error(ERRORS.DOM.ContainerNotFound)
     }
     if (choiceCategoryDialog.open) {
       categoriesItemContainer.querySelectorAll('*').forEach((element) => {
@@ -163,7 +172,7 @@ todosContainer.addEventListener('click', async (event) => {
         (item) => item.category_id === category.id,
       )
       if (selectedCategories && foundCategory) {
-        categoryEle.dataset.choiced = 'True'
+        categoryEle.dataset.choiced = CATEGORY.DATASET.choiced
       }
       categoriesItemContainer.insertAdjacentElement('afterbegin', categoryEle)
     }
@@ -173,7 +182,7 @@ todosContainer.addEventListener('click', async (event) => {
 
 choiceCategoryDialog.addEventListener('click', (event) => {
   const target = event.target as HTMLSpanElement
-  if (target && target.dataset.choiced !== 'True') {
+  if (target && target.dataset.choiced !== CATEGORY.DATASET.choiced) {
     setTaskCategory(
       Number(target.id),
       Number(choiceCategoryDialog.dataset.task),
@@ -208,12 +217,12 @@ categoriesElsContainer.addEventListener('click', (event) => {
   const target = event.target as HTMLButtonElement
   const parent = target.closest<HTMLSpanElement>('.category-element')
   if (!parent) {
-    throw new Error('Error parent container')
+    throw new Error(ERRORS.DOM.ContainerNotFound)
   }
   const editDiv = parent.querySelector<HTMLDivElement>('.edit-container')
   const nameCategory =
     parent.querySelector<HTMLParagraphElement>('.category-name')
-  if (target.dataset.action === 'edit') {
+  if (target.dataset.action === BUTTON_ACTION.edit) {
     const nameEditInput = parent.querySelector<HTMLInputElement>(
       '.category-name-input',
     )
@@ -230,30 +239,29 @@ categoriesElsContainer.addEventListener('click', (event) => {
       !nameEditInput ||
       !nameCategory
     ) {
-      throw new Error('Error color input')
+      throw new Error(ERRORS.DOM.ContainerNotFound)
     }
-    const regexHex = /^#?([A-Fa-f0-9]{2}){3}$/
     let colorParent = parent.style.backgroundColor
     // const changeTextColor = () => (colorInputText.value = colorInput.value)
     // const changeInputColor = () => {
-    //   if (regexHex.test(colorInputText.value)) {
+    //   if (REGEX.HEX.test(colorInputText.value)) {
     //     colorInput.value = colorInputText.value
     //     return
     //   }
     //   colorInputText.value = rgbToHex(colorParent)
     // }
-    const NAME_CLASS_HIDING_ELEMENTS = 'is-editing-color'
+
     if (!parent.classList.contains(NAME_CLASS_HIDING_ELEMENTS)) {
       activeTextColorHandler = () => (colorInputText.value = colorInput.value)
       activeInputColorHandler = () => {
-        if (regexHex.test(colorInputText.value)) {
+        if (REGEX.hex.test(colorInputText.value)) {
           colorInput.value = colorInputText.value
           return
         }
         colorInputText.value = rgbToHex(colorParent)
       }
       // Set the paramettre of edit container
-      target.textContent = 'save'
+      target.textContent = TEXT_BUTTONS.saveButton
       colorInput.value = `#${rgbToHex(colorParent)}`
       colorInputText.value = `#${rgbToHex(colorParent)}`
       nameEditInput.value = nameCategory.textContent
@@ -271,7 +279,7 @@ categoriesElsContainer.addEventListener('click', (event) => {
     colorInputText.removeEventListener('focusout', activeInputColorHandler)
     parent.classList.remove(NAME_CLASS_HIDING_ELEMENTS)
     nameCategory.textContent = nameEditInput.value
-    if (regexHex.test(colorInputText.value)) {
+    if (REGEX.hex.test(colorInputText.value)) {
       const newDataCategory: Partial<CategoryItemPostType> = {
         title: nameEditInput.value,
         color: colorInput.value,
@@ -281,10 +289,10 @@ categoriesElsContainer.addEventListener('click', (event) => {
       colorParent = parent.style.backgroundColor
       parent.style.color = setColorContrast(colorParent)
       colorInputText.style.color = setColorContrast(colorParent)
-      target.textContent = 'edit'
+      target.textContent = TEXT_BUTTONS.editButton
       patchCategory(parent.id, newDataCategory)
     }
-  } else if (target.dataset.action === 'remove-category') {
+  } else if (target.dataset.action === BUTTON_ACTION.remove) {
     parent.remove()
     deleteCategory(parent.id)
   }
@@ -326,7 +334,7 @@ window.addEventListener('DOMContentLoaded', async () => {
     todosContainer.insertAdjacentElement('afterbegin', taskEle.border)
   }
   checkMessageOverdue(overdueContainer)
-  console.log('Task list is loaded!')
+  console.log(LOG_MESSAGE.task_loaded)
 })
 
-console.log('Hello from typescript')
+console.log(LOG_MESSAGE.loaded_typescript)

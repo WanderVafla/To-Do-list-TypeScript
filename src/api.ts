@@ -1,3 +1,4 @@
+import { ERRORS, URLS } from './constants'
 import type {
   CategoryItemPostType,
   CategoryItemType,
@@ -6,15 +7,11 @@ import type {
   TaskPostType,
 } from './types'
 
-const todoUrl = 'https://api.todos.in.jt-lab.ch/todos'
-const categoryUrl = 'https://api.todos.in.jt-lab.ch/categories'
-const categoriesTodosUrl = 'https://api.todos.in.jt-lab.ch/categories_todos'
-
 export async function getTask(): Promise<Task[]> {
   try {
-    const request = await fetch(`${todoUrl}?order=id.asc`, { method: 'GET' })
+    const request = await fetch(`${URLS.todos}?order=id.asc`, { method: 'GET' })
     if (!request.ok) {
-      throw new Error('Error GET request!')
+      throw new Error(ERRORS.API_REQUEST.get)
     }
     const response = await request.json()
     return response
@@ -26,7 +23,7 @@ export async function getTask(): Promise<Task[]> {
 
 export async function postTask(task: TaskPostType) {
   try {
-    const request = await fetch(todoUrl, {
+    const request = await fetch(URLS.todos, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -36,7 +33,7 @@ export async function postTask(task: TaskPostType) {
     })
 
     if (!request.ok) {
-      throw new Error('Error POST request!')
+      throw new Error(ERRORS.API_REQUEST.post)
     }
     if (request.status === 201) {
       if (request.body) {
@@ -52,7 +49,7 @@ export async function postTask(task: TaskPostType) {
 
 export async function deleteTask(id: string) {
   try {
-    const urlId = `${todoUrl}?id=eq.${id}`
+    const urlId = `${URLS.todos}?id=eq.${id}`
     const request = await fetch(urlId, {
       method: 'DELETE',
       headers: {
@@ -71,7 +68,7 @@ export async function deleteTask(id: string) {
 
 export async function deleteAllTask() {
   try {
-    const request = await fetch(todoUrl, {
+    const request = await fetch(URLS.todos, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
@@ -89,7 +86,7 @@ export async function deleteAllTask() {
 
 export async function patchTask(id: string, taskUpdate: Partial<TaskPostType>) {
   try {
-    const urlId = `${todoUrl}?id=eq.${id}`
+    const urlId = `${URLS.todos}?id=eq.${id}`
 
     const request = await fetch(urlId, {
       method: 'PATCH',
@@ -110,11 +107,11 @@ export async function patchTask(id: string, taskUpdate: Partial<TaskPostType>) {
 
 export async function getCategories(): Promise<CategoryItemType[]> {
   try {
-    const request = await fetch(`${categoryUrl}?order=id.desc`, {
+    const request = await fetch(`${URLS.category}?order=id.desc`, {
       method: 'GET',
     })
     if (!request.ok) {
-      throw new Error('Error GET request!')
+      throw new Error(ERRORS.API_REQUEST.get)
     }
     const response = await request.json()
 
@@ -127,7 +124,7 @@ export async function getCategories(): Promise<CategoryItemType[]> {
 
 export async function deleteCategory(id: string) {
   try {
-    const urlId = `${categoryUrl}?id=eq.${id}`
+    const urlId = `${URLS.category}?id=eq.${id}`
     const request = await fetch(urlId, {
       method: 'DELETE',
       headers: {
@@ -146,7 +143,7 @@ export async function deleteCategory(id: string) {
 
 export async function postNewCategory(categoryPostType: CategoryItemPostType) {
   try {
-    const request = await fetch(categoryUrl, {
+    const request = await fetch(URLS.category, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -156,7 +153,7 @@ export async function postNewCategory(categoryPostType: CategoryItemPostType) {
     })
 
     if (!request.ok) {
-      throw new Error('Error POST request!')
+      throw new Error(ERRORS.API_REQUEST.post)
     }
     if (request.status === 201) {
       if (request.body) {
@@ -175,7 +172,7 @@ export async function patchCategory(
   categoryUpdate: Partial<CategoryItemPostType>,
 ) {
   try {
-    const urlId = `${categoryUrl}?id=eq.${id}`
+    const urlId = `${URLS.category}?id=eq.${id}`
 
     const request = await fetch(urlId, {
       method: 'PATCH',
@@ -196,11 +193,11 @@ export async function patchCategory(
 
 export async function getCategoriesTodos(): Promise<CategoryTodoType[]> {
   try {
-    const request = await fetch(categoriesTodosUrl, {
+    const request = await fetch(URLS.categories_todos, {
       method: 'GET',
     })
     if (!request.ok) {
-      throw new Error('Error GET request!')
+      throw new Error(ERRORS.API_REQUEST.get)
     }
     const response = await request.json()
 
@@ -213,7 +210,7 @@ export async function getCategoriesTodos(): Promise<CategoryTodoType[]> {
 
 export async function deleteCategoryTodo(category_id: number, todo_id: number) {
   try {
-    const urlId = `${categoriesTodosUrl}?category_id=eq.${category_id}&todo_id=eq.${todo_id}`
+    const urlId = `${URLS.categories_todos}?category_id=eq.${category_id}&todo_id=eq.${todo_id}`
     const request = await fetch(urlId, {
       method: 'DELETE',
       headers: {
@@ -232,7 +229,7 @@ export async function deleteCategoryTodo(category_id: number, todo_id: number) {
 
 export async function postNewCategoryTodo(categoryTodoType: CategoryTodoType) {
   try {
-    const request = await fetch(categoriesTodosUrl, {
+    const request = await fetch(URLS.categories_todos, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -242,7 +239,7 @@ export async function postNewCategoryTodo(categoryTodoType: CategoryTodoType) {
     })
 
     if (!request.ok) {
-      throw new Error('Error POST request!')
+      throw new Error(ERRORS.API_REQUEST.post)
     }
     if (request.status === 201) {
       if (request.body) {

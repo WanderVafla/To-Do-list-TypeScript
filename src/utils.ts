@@ -1,3 +1,5 @@
+import { COLOR, REGEX } from './constants'
+
 export const getCurrentDate = (): string => {
   const date = new Date()
   const dateYear = date.getFullYear()
@@ -18,7 +20,7 @@ export const getDaysDueDiff = (due: string): number | null => {
 }
 
 export const isColorLight = (rgb: string): boolean => {
-  const match = rgb.match(/\d+/g)
+  const match = rgb.match(REGEX.rgb_only_numbers)
   if (!match || match.length < 3) return false
   const [r, g, b] = match.map(Number)
   const luminance = (0.299 * r + 0.587 * g + 0.144 * b) / 255
@@ -27,7 +29,7 @@ export const isColorLight = (rgb: string): boolean => {
 }
 
 export const rgbToHex = (rgb: string): string => {
-  const match = rgb.match(/\d+/g)
+  const match = rgb.match(REGEX.rgb_only_numbers)
   if (!match || match.length < 3) return ''
   return match
     .slice(0, 3)
@@ -35,9 +37,9 @@ export const rgbToHex = (rgb: string): string => {
     .join('')
 }
 
-export const setColorContrast = (color: string): 'black' | 'white' => {
+export const setColorContrast = (color: string) => {
   if (isColorLight(color)) {
-    return 'black'
+    return COLOR.CONTRAST.dark
   }
-  return 'white'
+  return COLOR.CONTRAST.light
 }
