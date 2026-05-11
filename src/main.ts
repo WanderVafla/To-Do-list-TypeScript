@@ -16,6 +16,7 @@ import {
   addNewCategory,
   addTask,
   categories,
+  categoriesTodos,
   checkMessageOverdue,
   setColorCatergoryToTask,
   setTaskCategory,
@@ -151,14 +152,20 @@ todosContainer.addEventListener('click', async (event) => {
       choiceCategoryDialog.close()
       return
     }
-    for (const categoty of categories) {
-      
-      const categoryEle = createCategoryTodoItemEle(categoty) 
-      categoriesItemContainer.insertAdjacentElement(
-        'afterbegin', categoryEle,
-      )
-    }
     choiceCategoryDialog.dataset.task = parent.id
+    const selectedCategories = categoriesTodos.filter(
+      (item) => item.todo_id === Number(choiceCategoryDialog.dataset.task),
+    )
+    for (const category of categories) {
+      const categoryEle = createCategoryTodoItemEle(category)
+      const foundCategory = selectedCategories.find(
+        (item) => item.category_id === category.id,
+      )
+      if (selectedCategories && foundCategory) {
+        categoryEle.dataset.choiced = 'True'
+      }
+      categoriesItemContainer.insertAdjacentElement('afterbegin', categoryEle)
+    }
     choiceCategoryDialog.show()
   }
 })
@@ -299,20 +306,17 @@ window.addEventListener('DOMContentLoaded', async () => {
   await updateTasksArr()
   await updateCotegories()
   await updateCategoriesTodos()
-    for (const category of categories) {
-      const categoryEl = createCategoryEle(categoryItemTemplate, category)
-      categoriesElsContainer.appendChild(categoryEl)
-    }
-    for (const task of tasksArr) {
-      const taskEle = createTaskEl(todoTemplate, task)
-      setColorCatergoryToTask(taskEle.border, Number(taskEle.parent.id))
-      todosContainer.insertAdjacentElement(
-        'afterbegin',
-        taskEle.border,
-      )
-    }
-    checkMessageOverdue(overdueContainer)
-    console.log('Task list is loaded!')
-  })
+  for (const category of categories) {
+    const categoryEl = createCategoryEle(categoryItemTemplate, category)
+    categoriesElsContainer.appendChild(categoryEl)
+  }
+  for (const task of tasksArr) {
+    const taskEle = createTaskEl(todoTemplate, task)
+    setColorCatergoryToTask(taskEle.border, Number(taskEle.parent.id))
+    todosContainer.insertAdjacentElement('afterbegin', taskEle.border)
+  }
+  checkMessageOverdue(overdueContainer)
+  console.log('Task list is loaded!')
+})
 
 console.log('Hello from typescript')

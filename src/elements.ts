@@ -1,5 +1,5 @@
 import type { CategoryItemType, Task } from './types'
-import { getDaysDueDiff, isColorLight } from './utils'
+import { getDaysDueDiff, isColorLight, setColorContrast } from './utils'
 
 /* 
   Template is in index.html with id="todo-template"
@@ -19,11 +19,11 @@ import { getDaysDueDiff, isColorLight } from './utils'
 export const createTaskEl = (
   template: HTMLTemplateElement,
   task: Task,
-): {border: HTMLDivElement
-    parent: HTMLDivElement
- } => {
+): { border: HTMLDivElement; parent: HTMLDivElement } => {
   const clonTemp = template.content.cloneNode(true) as DocumentFragment
-  const borderTodoParent = clonTemp.querySelector<HTMLDivElement>('.border-todo-element')
+  const borderTodoParent = clonTemp.querySelector<HTMLDivElement>(
+    '.border-todo-element',
+  )
   const parentDiv = clonTemp.querySelector<HTMLDivElement>('.todo-element')
   const taskTextSpan = clonTemp.querySelector<HTMLSpanElement>(
     '.todo-element__text',
@@ -32,7 +32,13 @@ export const createTaskEl = (
   const checkbox = clonTemp.querySelector<HTMLInputElement>(
     '[name="task-checkbox"]',
   )
-  if (!borderTodoParent || !taskTextSpan || !parentDiv || !checkbox || !dueDateP) {
+  if (
+    !borderTodoParent ||
+    !taskTextSpan ||
+    !parentDiv ||
+    !checkbox ||
+    !dueDateP
+  ) {
     throw new Error('Warning some html of todo-template are missing')
   }
   parentDiv.id = task.id.toString()
@@ -61,7 +67,7 @@ export const createTaskEl = (
     dueDateP.textContent = 'no due date'
   }
 
-  return {border: borderTodoParent,parent: parentDiv }
+  return { border: borderTodoParent, parent: parentDiv }
 }
 
 export const createCategoryEle = (
@@ -97,5 +103,12 @@ export const createCategoryTodoItemEle = (
   categoryItem.id = categoty.id.toString()
   categoryItem.className = 'category-item-element'
   categoryItem.style.backgroundColor = categoty.color
+  categoryItem.style.color = setColorContrast(
+    categoryItem.style.backgroundColor,
+  )
+  console.log(
+    `${categoryItem.textContent} ${setColorContrast(categoryItem.style.backgroundColor)}`,
+  )
+
   return categoryItem
 }

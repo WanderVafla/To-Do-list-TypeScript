@@ -1,4 +1,11 @@
-import { getCategories, getCategoriesTodos, getTask, postNewCategory, postNewCategoryTodo, postTask } from './api'
+import {
+  getCategories,
+  getCategoriesTodos,
+  getTask,
+  postNewCategory,
+  postNewCategoryTodo,
+  postTask,
+} from './api'
 import { createCategoryEle, createTaskEl } from './elements'
 import type {
   CategoryArguments,
@@ -24,22 +31,22 @@ export const setTasksArr = (array: Task[]) => {
 
 export const updateTasksArr = async () => {
   tasksArr = await getTask()
-  
-  
 }
 
 export async function updateCotegories() {
   categories = await getCategories()
-  
 }
 
 export const updateCategoriesTodos = async () => {
   categoriesTodos = await getCategoriesTodos()
-  
 }
 
-export const getItemCategoriesTodos = (id: number): CategoryTodoType | undefined => {
-  return categoriesTodos.find(item => item.todo_id === id || item.category_id === id ? item : '')
+export const getItemCategoriesTodos = (
+  id: number,
+): CategoryTodoType | undefined => {
+  return categoriesTodos.find((item) =>
+    item.todo_id === id || item.category_id === id ? item : '',
+  )
 }
 
 export const updateStorage = async (overdueContainer: HTMLParagraphElement) => {
@@ -116,46 +123,52 @@ export const setTaskCategory = async (category_id: number, todo_id: number) => {
   await postNewCategoryTodo(categoryTodoType)
 }
 
-export const setBorderColorTask = () => {
+export const setBorderColorTask = () => {}
 
-}
-
-export function setColorCatergoryToTask(borderElement: HTMLDivElement | HTMLSpanElement, id: number) {
+export function setColorCatergoryToTask(
+  borderElement: HTMLDivElement | HTMLSpanElement,
+  id: number,
+) {
   // const taskEle = createTaskEl(template, task)
-  const targetTodoId = categoriesTodos.filter(item => item.todo_id === id)
-  const buttonChoiceCategory = borderElement.querySelector<HTMLButtonElement>('button[data-action="choice-category"]')
+  const targetTodoId = categoriesTodos.filter((item) => item.todo_id === id)
+  const buttonChoiceCategory = borderElement.querySelector<HTMLButtonElement>(
+    'button[data-action="choice-category"]',
+  )
   if (!buttonChoiceCategory) {
-    throw new Error("Not have a button of choice of categories!")
+    throw new Error('Not have a button of choice of categories!')
   }
-    if (targetTodoId.length === 1) {
-      // console.log(targetTodoId)
-      
-      const targetCategory = categories.find(item => item.id === targetTodoId[0].category_id)
-      if (targetCategory) {        
-        borderElement.style.background = targetCategory.color
-        buttonChoiceCategory.textContent = targetCategory.title
+  if (targetTodoId.length === 1) {
+    // console.log(targetTodoId)
 
-      }
-    } else if (targetTodoId.length > 1) {
-      type colorTitleCategory = {
-        color: string,
-        title: string
-      }
-      const colorsTitles: colorTitleCategory[] = []
-      for (const todoId of targetTodoId) {
-        const categoryItem = categories.find(item => item.id === todoId.category_id)
-        if (categoryItem) {
-          colorsTitles.push({
-            color: categoryItem.color,
-            title: categoryItem.title
-          })
-        }
-      }
-      const colors = colorsTitles.map(item => item.color).join(', ')
-      const titles = colorsTitles.map(item => item.title).join(', ')
-      borderElement.style.background = `linear-gradient(to right, ${colors})`
-      buttonChoiceCategory.textContent = titles
-    } else {
-      borderElement.style.background = 'grey'
+    const targetCategory = categories.find(
+      (item) => item.id === targetTodoId[0].category_id,
+    )
+    if (targetCategory) {
+      borderElement.style.background = targetCategory.color
+      buttonChoiceCategory.textContent = targetCategory.title
     }
+  } else if (targetTodoId.length > 1) {
+    type colorTitleCategory = {
+      color: string
+      title: string
+    }
+    const colorsTitles: colorTitleCategory[] = []
+    for (const todoId of targetTodoId) {
+      const categoryItem = categories.find(
+        (item) => item.id === todoId.category_id,
+      )
+      if (categoryItem) {
+        colorsTitles.push({
+          color: categoryItem.color,
+          title: categoryItem.title,
+        })
+      }
+    }
+    const colors = colorsTitles.map((item) => item.color).join(', ')
+    const titles = colorsTitles.map((item) => item.title).join(', ')
+    borderElement.style.background = `linear-gradient(to right, ${colors})`
+    buttonChoiceCategory.textContent = titles
+  } else {
+    borderElement.style.background = 'grey'
+  }
 }

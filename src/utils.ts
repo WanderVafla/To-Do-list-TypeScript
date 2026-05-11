@@ -22,6 +22,7 @@ export const isColorLight = (rgb: string): boolean => {
   if (!match || match.length < 3) return false
   const [r, g, b] = match.map(Number)
   const luminance = (0.299 * r + 0.587 * g + 0.144 * b) / 255
+
   return luminance > 0.5
 }
 
@@ -34,7 +35,7 @@ export const rgbToHex = (rgb: string): string => {
     .join('')
 }
 
-export const setColorContrast = (color: string) => {
+export const setColorContrast = (color: string): 'black' | 'white' => {
   if (isColorLight(color)) {
     return 'black'
   }
