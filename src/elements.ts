@@ -21,6 +21,7 @@ export const createTaskEl = (
   task: Task,
 ): HTMLDivElement => {
   const clonTemp = template.content.cloneNode(true) as DocumentFragment
+  const borderTodoParent = clonTemp.querySelector<HTMLDivElement>('.border-todo-element')
   const parentDiv = clonTemp.querySelector<HTMLDivElement>('.todo-element')
   const taskTextSpan = clonTemp.querySelector<HTMLSpanElement>(
     '.todo-element__text',
@@ -29,7 +30,7 @@ export const createTaskEl = (
   const checkbox = clonTemp.querySelector<HTMLInputElement>(
     '[name="task-checkbox"]',
   )
-  if (!taskTextSpan || !parentDiv || !checkbox || !dueDateP) {
+  if (!borderTodoParent || !taskTextSpan || !parentDiv || !checkbox || !dueDateP) {
     throw new Error('Warning some html of todo-template are missing')
   }
   parentDiv.id = task.id.toString()
@@ -58,7 +59,7 @@ export const createTaskEl = (
     dueDateP.textContent = 'no due date'
   }
 
-  return parentDiv
+  return borderTodoParent
 }
 
 export const createCategoryEle = (

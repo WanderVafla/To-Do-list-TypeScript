@@ -84,6 +84,9 @@ button {
 }
 
 #todo-elements {
+  display: flex;
+  gap: 5px;
+  flex-direction: column;
   padding: 5px;
   border: 5px solid var(--help-color);
   border-radius: 30px;
@@ -95,24 +98,28 @@ button {
 
 .todo-element {
   display: flex;
-  margin: 5px;
   padding: 5px;
+  /* marging for change border size */
+  margin: 0.3rem;
   min-height: 30px;
   max-height: 50px;
-  border-radius: var(--border-radius-standard);
   background-color: var(--primary-color);
   color: var(--second-color);
   font-size: large;
   justify-content: space-between;
-  border-width: 0.5rem;
-  border-style: solid;
-  /* border-image-source: linear-gradient(90deg,rgba(103, 184, 219, 1) 0%, rgba(87, 199, 133, 1) 50%, rgba(237, 221, 83, 1) 100%); */
 }
 
 .todo-element__label {
   align-content: center;
   max-width: 500px;
   flex: 1;
+}
+
+.border-todo-element {
+  border-radius: var(--border-radius-standard);
+  position: relative;
+  background: linear-gradient(to right, red, black);
+  padding: 3px;
 }
 
 #overdue-message {

@@ -40,16 +40,19 @@
     </dialog>
 
     <template id="todo-template">
+      <div class="border-todo-element">
       <div class="todo-element">
-        <label class="todo-element__label">
-          <input type="checkbox" name="task-checkbox">
-          <span class="todo-element__text"></span>
-        </label>
-        <button type="button" class="choice-task-category-button" data-action="choice-category">no category</button>
-        <p class="due-date"></p>
-        <button type="button" data-action="remove">Remove</button>
-      </div>
-    </template>
+
+          <label class="todo-element__label">
+            <input type="checkbox" name="task-checkbox">
+            <span class="todo-element__text"></span>
+          </label>
+          <button type="button" class="choice-task-category-button" data-action="choice-category">no category</button>
+          <p class="due-date"></p>
+          <button type="button" data-action="remove">Remove</button>
+        </div>
+        </div>
+      </template>
       
     <template id="category-element-template">
       <span class="category-element">
