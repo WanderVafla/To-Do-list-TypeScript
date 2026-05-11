@@ -202,17 +202,9 @@ openCategoriesButton.addEventListener('click', () => {
 closeCategoriesButton.addEventListener('click', () => {
   categoriesDialog.close()
 })
-/* 
-  Visibility of category elements when you change name of color
-  there is two hided containers for each category item 
-  first: for change color
-  second: for change name
 
-  parent: for hide all elements into category item
-  container: for do visible container what we need
-  buttonTarget: button action we need them for toggle state
-  hideOptional: other container what we not want to hide
-  */
+let activeTextColorHandler: () => void
+let activeInputColorHandler: () => void
 
 categoriesElsContainer.addEventListener('click', (event) => {
   const target = event.target as HTMLButtonElement
@@ -244,16 +236,24 @@ categoriesElsContainer.addEventListener('click', (event) => {
     }
     const regexHex = /^#?([A-Fa-f0-9]{2}){3}$/
     let colorParent = parent.style.backgroundColor
-    const changeTextColor = () => (colorInputText.value = colorInput.value)
-    const changeInputColor = () => {
-      if (regexHex.test(colorInputText.value)) {
-        colorInput.value = colorInputText.value
-        return
-      }
-      colorInputText.value = rgbToHex(colorParent)
-    }
+    // const changeTextColor = () => (colorInputText.value = colorInput.value)
+    // const changeInputColor = () => {
+    //   if (regexHex.test(colorInputText.value)) {
+    //     colorInput.value = colorInputText.value
+    //     return
+    //   }
+    //   colorInputText.value = rgbToHex(colorParent)
+    // }
     const NAME_CLASS_HIDING_ELEMENTS = 'is-editing-color'
     if (!parent.classList.contains(NAME_CLASS_HIDING_ELEMENTS)) {
+      activeTextColorHandler = () => (colorInputText.value = colorInput.value)
+      activeInputColorHandler = () => {
+        if (regexHex.test(colorInputText.value)) {
+          colorInput.value = colorInputText.value
+          return
+        }
+        colorInputText.value = rgbToHex(colorParent)
+      }
       // Set the paramettre of edit container
       target.textContent = 'save'
       colorInput.value = `#${rgbToHex(colorParent)}`
@@ -261,16 +261,16 @@ categoriesElsContainer.addEventListener('click', (event) => {
       nameEditInput.value = nameCategory.textContent
       colorInputText.style.color = setColorContrast(colorParent)
       parent.style.color = setColorContrast(colorParent)
-      colorInput.addEventListener('input', changeTextColor)
-      colorInputText.addEventListener('focusout', changeInputColor)
+      colorInput.addEventListener('input', activeTextColorHandler)
+      colorInputText.addEventListener('focusout', activeInputColorHandler)
       parent.classList.add(NAME_CLASS_HIDING_ELEMENTS)
 
       return
     }
 
     // Update container after saving the changements
-    colorInput.removeEventListener('input', changeTextColor)
-    colorInputText.removeEventListener('focusout', changeInputColor)
+    colorInput.removeEventListener('input', activeTextColorHandler)
+    colorInputText.removeEventListener('focusout', activeInputColorHandler)
     parent.classList.remove(NAME_CLASS_HIDING_ELEMENTS)
     nameCategory.textContent = nameEditInput.value
     if (regexHex.test(colorInputText.value)) {
