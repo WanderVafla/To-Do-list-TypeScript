@@ -4,27 +4,20 @@ import {
   deleteAllTask,
   deleteCategory,
   deleteTask,
-  getCategories,
-  getCategoriesTodos,
-  getTask,
   patchCategory,
   patchTask,
 } from './api'
 import {
   createCategoryEle,
   createCategoryTodoItemEle,
-  createTaskEl,
 } from './elements'
 import {
   addNewCategory,
   addTask,
   categories,
-  categoriesTodos,
   checkMessageOverdue,
-  getItemCategoriesTodos,
   setColorCatergoryToTask,
   setTaskCategory,
-  setTasksArr,
   tasksArr,
   updateCategoriesTodos,
   updateCotegories,
@@ -33,7 +26,6 @@ import {
 import type {
   CategoryArguments,
   CategoryItemPostType,
-  CategoryItemType,
   TaskArguments,
   TaskPostType,
 } from './types'
