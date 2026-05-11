@@ -123,25 +123,39 @@ export const setBorderColorTask = () => {
 export function setColorCatergoryToTask(borderElement: HTMLDivElement | HTMLSpanElement, id: number) {
   // const taskEle = createTaskEl(template, task)
   const targetTodoId = categoriesTodos.filter(item => item.todo_id === id)
+  const buttonChoiceCategory = borderElement.querySelector<HTMLButtonElement>('button[data-action="choice-category"]')
+  if (!buttonChoiceCategory) {
+    throw new Error("Not have a button of choice of categories!")
+  }
     if (targetTodoId.length === 1) {
       // console.log(targetTodoId)
       
       const targetCategory = categories.find(item => item.id === targetTodoId[0].category_id)
       if (targetCategory) {        
         borderElement.style.background = targetCategory.color
-        const buttonChoiceCategory = borderElement.querySelector<HTMLButtonElement>('button[data-action="choice-category"]')
-        if (buttonChoiceCategory) {
-          buttonChoiceCategory.textContent = targetCategory.title
-        }
+        buttonChoiceCategory.textContent = targetCategory.title
+
       }
     } else if (targetTodoId.length > 1) {
-      const colors: string[] = []
+      type colorTitleCategory = {
+        color: string,
+        title: string
+      }
+      const colorsTitles: colorTitleCategory[] = []
       for (const todoId of targetTodoId) {
         const categoryItem = categories.find(item => item.id === todoId.category_id)
         if (categoryItem) {
-          colors.push(categoryItem.color)
+          colorsTitles.push({
+            color: categoryItem.color,
+            title: categoryItem.title
+          })
         }
       }
-      borderElement.style.background = `linear-gradient(to right, ${colors.join(', ')})`.toString()
+      const colors = colorsTitles.map(item => item.color).join(', ')
+      const titles = colorsTitles.map(item => item.title).join(', ')
+      borderElement.style.background = `linear-gradient(to right, ${colors})`
+      buttonChoiceCategory.textContent = titles
+    } else {
+      borderElement.style.background = 'grey'
     }
 }
