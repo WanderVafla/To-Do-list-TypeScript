@@ -118,7 +118,6 @@ button {
 .border-todo-element {
   border-radius: var(--border-radius-standard);
   position: relative;
-  background: linear-gradient(to right, red, black);
   padding: 3px;
 }
 

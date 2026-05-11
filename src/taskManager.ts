@@ -123,22 +123,18 @@ export const setBorderColorTask = () => {
 export function setColorCatergoryToTask(task: Task, template: HTMLTemplateElement): HTMLElement {
   const taskEle = createTaskEl(template, task)
   const targetTodoId = categoriesTodos.filter(item => item.todo_id === task.id)
-    if (targetTodoId.length > 0) {
+    if (targetTodoId.length === 1) {
       // console.log(targetTodoId)
       
       const targetCategory = categories.find(item => item.id === targetTodoId[0].category_id)
-      if (targetCategory) {
-        // console.log(targetCategory);
-        
-        taskEle.style.borderColor = targetCategory.color
-
+      if (targetCategory) {        
+        taskEle.style.background = targetCategory.color
         const buttonChoiceCategory = taskEle.querySelector<HTMLButtonElement>('button[data-action="choice-category"]')
         if (buttonChoiceCategory) {
           buttonChoiceCategory.textContent = targetCategory.title
         }
       }
     } else if (targetTodoId.length > 1) {
-      const deiveseColors = 100 / targetTodoId.length
       const colors: string[] = []
       for (const todoId of targetTodoId) {
         const categoryItem = categories.find(item => item.id === todoId.category_id)
@@ -146,12 +142,7 @@ export function setColorCatergoryToTask(task: Task, template: HTMLTemplateElemen
           colors.push(categoryItem.color)
         }
       }
-      taskEle.style.border = 'linear-gradient(90deg,rgba(103, 184, 219, 1) 0%, rgba(87, 199, 133, 1) 50%, rgba(237, 221, 83, 1) 100%)'
-      console.log(colors);
-      
-      // const targetCategory = categories.forEach(item => {
-      //   if (item.id === )
-      // })
+      taskEle.style.background = `linear-gradient(to right, ${colors.join(', ')})`.toString()
     }
     return taskEle
 }

@@ -163,8 +163,6 @@ todosContainer.addEventListener('click', async (event) => {
 })
 
 choiceCategoryDialog.addEventListener('click', (event) => {
-  console.log('a')
-
   const target = event.target as HTMLSpanElement
   setTaskCategory(Number(target.id), Number(choiceCategoryDialog.dataset.task))
   console.log(Number(target.id), Number(choiceCategoryDialog.dataset.task))
