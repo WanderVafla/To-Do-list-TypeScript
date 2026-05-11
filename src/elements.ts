@@ -112,3 +112,28 @@ export const createCategoryTodoItemEle = (
 
   return categoryItem
 }
+
+export const createCategoryEle = (
+  template: HTMLTemplateElement,
+  categoryItemType: CategoryItemType,
+): HTMLSpanElement => {
+  const clonTemp = template.content.cloneNode(true) as DocumentFragment
+  const container = clonTemp.querySelector<HTMLSpanElement>('.category-element')
+  const title = clonTemp.querySelector<HTMLParagraphElement>('.category-name')
+  const colorInput = clonTemp.querySelector<HTMLInputElement>(
+    '.category-color-input',
+  )
+  if (!title || !colorInput || !container) {
+    throw new Error('Error when creating category element')
+  }
+  container.id = categoryItemType.id.toString()
+  title.textContent = categoryItemType.title
+  container.style.backgroundColor = categoryItemType.color
+  if (isColorLight(container.style.backgroundColor)) {
+    container.style.color = 'black'
+  } else {
+    container.style.color = 'white'
+  }
+
+  return container
+}

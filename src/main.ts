@@ -327,6 +327,11 @@ window.addEventListener('DOMContentLoaded', async () => {
     setColorCatergoryToTask(taskEle.border, Number(taskEle.parent.id))
     todosContainer.insertAdjacentElement('afterbegin', taskEle.border)
   }
+  const categories = await getCategories()
+  for (const category of categories) {
+    const categoryEl = createCategoryEle(categoryItemTemplate, category)
+    categoriesElsContainer.appendChild(categoryEl)
+  }
   checkMessageOverdue(overdueContainer)
   console.log('Task list is loaded!')
 })
