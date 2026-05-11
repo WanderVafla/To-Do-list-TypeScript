@@ -174,15 +174,20 @@ todosContainer.addEventListener('click', async (event) => {
 choiceCategoryDialog.addEventListener('click', (event) => {
   const target = event.target as HTMLSpanElement
   if (target && target.dataset.choiced !== 'True') {
-
-    setTaskCategory(Number(target.id), Number(choiceCategoryDialog.dataset.task))
+    setTaskCategory(
+      Number(target.id),
+      Number(choiceCategoryDialog.dataset.task),
+    )
     console.log(Number(target.id), Number(choiceCategoryDialog.dataset.task))
-    
+
     console.log('Category and task linked')
     return
   }
-    deleteCategoryTodo(Number(target.id), Number(choiceCategoryDialog.dataset.task))
-    return
+  deleteCategoryTodo(
+    Number(target.id),
+    Number(choiceCategoryDialog.dataset.task),
+  )
+  return
 })
 
 // Remove all

@@ -230,7 +230,6 @@ export async function deleteCategoryTodo(category_id: number, todo_id: number) {
   }
 }
 
-
 export async function postNewCategoryTodo(categoryTodoType: CategoryTodoType) {
   try {
     const request = await fetch(categoriesTodosUrl, {
