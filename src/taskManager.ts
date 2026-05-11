@@ -125,7 +125,7 @@ export const setTaskCategory = async (category_id: number, todo_id: number) => {
 
 export const setBorderColorTask = () => {}
 
-export function setColorCatergoryToTask(
+export function setColorCategoryToTask(
   borderElement: HTMLDivElement | HTMLSpanElement,
   id: number,
 ) {
