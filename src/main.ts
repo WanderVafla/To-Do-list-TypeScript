@@ -131,7 +131,7 @@ todosContainer.addEventListener('click', async (event) => {
   const target = event.target as HTMLButtonElement
   const parent = target.closest<HTMLDivElement>('.todo-element')
   if (!parent) {
-    throw new Error('Not finded parent element!')
+    throw new Error('Could not find parent element!')
   }
   if (target.dataset.action === 'remove') {
     parent.remove()
