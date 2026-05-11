@@ -129,12 +129,13 @@ todosContainer.addEventListener('change', (event) => {
 })
 todosContainer.addEventListener('click', async (event) => {
   const target = event.target as HTMLButtonElement
+  const border = target.closest<HTMLDivElement>('.border-todo-element')
   const parent = target.closest<HTMLDivElement>('.todo-element')
-  if (!parent) {
+  if (!parent || !border) {
     throw new Error('Could not find parent element!')
   }
   if (target.dataset.action === 'remove') {
-    parent.remove()
+    border.remove()
     deleteTask(parent.id.toString()).then((_) => updateTasksArr())
     checkMessageOverdue(overdueContainer)
   } else if (target.dataset.action === 'choice-category') {
