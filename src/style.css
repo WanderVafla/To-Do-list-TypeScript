@@ -99,7 +99,7 @@ button {
 .todo-element {
   display: flex;
   padding: 5px;
-  /* marging for change border size */
+  /* margin for change border size */
   margin: 0.3rem;
   min-height: 30px;
   max-height: 50px;
