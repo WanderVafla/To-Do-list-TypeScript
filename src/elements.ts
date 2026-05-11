@@ -19,7 +19,9 @@ import { getDaysDueDiff, isColorLight } from './utils'
 export const createTaskEl = (
   template: HTMLTemplateElement,
   task: Task,
-): HTMLDivElement => {
+): {border: HTMLDivElement
+    parent: HTMLDivElement
+ } => {
   const clonTemp = template.content.cloneNode(true) as DocumentFragment
   const borderTodoParent = clonTemp.querySelector<HTMLDivElement>('.border-todo-element')
   const parentDiv = clonTemp.querySelector<HTMLDivElement>('.todo-element')
@@ -59,7 +61,7 @@ export const createTaskEl = (
     dueDateP.textContent = 'no due date'
   }
 
-  return borderTodoParent
+  return {border: borderTodoParent,parent: parentDiv }
 }
 
 export const createCategoryEle = (

@@ -80,7 +80,7 @@ export const addTask = async (args: TaskArguments) => {
   updateTasksArr()
   args.todosContainer.insertAdjacentElement(
     'afterbegin',
-    createTaskEl(args.todoTemplate, addedItem),
+    createTaskEl(args.todoTemplate, addedItem).border,
   )
   checkMessageOverdue(args.overdueContainer)
 
@@ -120,16 +120,16 @@ export const setBorderColorTask = () => {
 
 }
 
-export function setColorCatergoryToTask(task: Task, template: HTMLTemplateElement): HTMLElement {
-  const taskEle = createTaskEl(template, task)
-  const targetTodoId = categoriesTodos.filter(item => item.todo_id === task.id)
+export function setColorCatergoryToTask(borderElement: HTMLDivElement | HTMLSpanElement, id: number) {
+  // const taskEle = createTaskEl(template, task)
+  const targetTodoId = categoriesTodos.filter(item => item.todo_id === id)
     if (targetTodoId.length === 1) {
       // console.log(targetTodoId)
       
       const targetCategory = categories.find(item => item.id === targetTodoId[0].category_id)
       if (targetCategory) {        
-        taskEle.style.background = targetCategory.color
-        const buttonChoiceCategory = taskEle.querySelector<HTMLButtonElement>('button[data-action="choice-category"]')
+        borderElement.style.background = targetCategory.color
+        const buttonChoiceCategory = borderElement.querySelector<HTMLButtonElement>('button[data-action="choice-category"]')
         if (buttonChoiceCategory) {
           buttonChoiceCategory.textContent = targetCategory.title
         }
@@ -142,7 +142,6 @@ export function setColorCatergoryToTask(task: Task, template: HTMLTemplateElemen
           colors.push(categoryItem.color)
         }
       }
-      taskEle.style.background = `linear-gradient(to right, ${colors.join(', ')})`.toString()
+      borderElement.style.background = `linear-gradient(to right, ${colors.join(', ')})`.toString()
     }
-    return taskEle
 }

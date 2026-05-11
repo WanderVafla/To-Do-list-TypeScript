@@ -10,6 +10,7 @@ import {
 import {
   createCategoryEle,
   createCategoryTodoItemEle,
+  createTaskEl,
 } from './elements'
 import {
   addNewCategory,
@@ -303,10 +304,11 @@ window.addEventListener('DOMContentLoaded', async () => {
       categoriesElsContainer.appendChild(categoryEl)
     }
     for (const task of tasksArr) {
-      const taskEle = setColorCatergoryToTask(task, todoTemplate)
+      const taskEle = createTaskEl(todoTemplate, task)
+      setColorCatergoryToTask(taskEle.border, Number(taskEle.parent.id))
       todosContainer.insertAdjacentElement(
         'afterbegin',
-        taskEle,
+        taskEle.border,
       )
     }
     checkMessageOverdue(overdueContainer)
