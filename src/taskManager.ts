@@ -18,6 +18,10 @@ import type {
   TaskPostType,
 } from './types'
 import { getDaysDueDiff } from './utils'
+
+const overdueContainer =
+  document.querySelector<HTMLParagraphElement>('#overdue-message')
+
 /* 
   A current day and month should always be in a two-digit format: 
   result: 2026-2-5 > 2026-02-05
@@ -50,12 +54,15 @@ export const getItemCategoriesTodos = (
   )
 }
 
-export const updateStorage = async (overdueContainer: HTMLParagraphElement) => {
+export const updateStorage = async () => {
   tasksArr = await getTask()
-  checkMessageOverdue(overdueContainer)
+  checkMessageOverdue()
 }
 
-export const checkMessageOverdue = (overdueContainer: HTMLParagraphElement) => {
+export const checkMessageOverdue = () => {
+  if (!overdueContainer) {
+    throw new Error(ERRORS.DOM.ContainerNotFound)
+  }
   let text = ''
   for (const task of tasksArr) {
     if (task.due_date) {
@@ -88,9 +95,9 @@ export const addTask = async (args: TaskArguments) => {
   updateTasksArr()
   args.todosContainer.insertAdjacentElement(
     'afterbegin',
-    createTaskEl(args.todoTemplate, addedItem).border,
+    createTaskEl(addedItem).border,
   )
-  checkMessageOverdue(args.overdueContainer)
+  checkMessageOverdue()
 
   args.input.value = ''
 }
@@ -104,10 +111,7 @@ export const addNewCategory = async (categoryArguments: CategoryArguments) => {
     }
     const addedCategory = await postNewCategory(categoryPostType)
     if (!addedCategory) return
-    const categoryEl = createCategoryEle(
-      categoryArguments.categoryItemTemplate,
-      addedCategory,
-    )
+    const categoryEl = createCategoryEle(addedCategory)
     categoryArguments.categoriesElsContainer.insertAdjacentElement(
       'afterbegin',
       categoryEl,

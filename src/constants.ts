@@ -46,6 +46,7 @@ export const ERRORS = {
   DOM: {
     ContainerNotFound: 'Required UI container was not found in the DOM',
     RootNotFound: 'Application root element is missing. The app cannot mount',
+    TemplateNotFound: 'Template not found',
   },
 
   API_REQUEST: {
