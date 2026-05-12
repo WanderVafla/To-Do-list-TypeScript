@@ -55,16 +55,95 @@ closeCategoriesButton.addEventListener('click', () => {
 let activeTextColorHandler: () => void
 let activeInputColorHandler: () => void
 
+const setParametersEditContainer = (
+  parent: HTMLSpanElement,
+  colorParent: string,
+) => {
+  const nameCategory =
+    parent.querySelector<HTMLParagraphElement>('.category-name')
+  const nameEditInput = parent.querySelector<HTMLInputElement>(
+    '.category-name-input',
+  )
+  const colorInput = parent.querySelector<HTMLInputElement>(
+    '.category-color-input',
+  )
+  const colorInputText = parent.querySelector<HTMLInputElement>(
+    '.category-color-text',
+  )
+  if (!colorInput || !colorInputText || !nameEditInput || !nameCategory) {
+    throw new Error(ERRORS.DOM.ContainerNotFound)
+  }
+  // give functionality for envents listeners
+  activeTextColorHandler = () => (colorInputText.value = colorInput.value)
+  activeInputColorHandler = () => {
+    if (REGEX.hex.test(colorInputText.value)) {
+      colorInput.value = colorInputText.value
+      return
+    }
+    colorInputText.value = rgbToHex(colorParent)
+  }
+  // Set the paramettre of edit container
+  colorInput.value = `#${rgbToHex(colorParent)}`
+  colorInputText.value = `#${rgbToHex(colorParent)}`
+  nameEditInput.value = nameCategory.textContent
+  colorInputText.style.color = setColorContrast(colorParent)
+  parent.style.color = setColorContrast(colorParent)
+  colorInput.addEventListener('input', activeTextColorHandler)
+  colorInputText.addEventListener('focusout', activeInputColorHandler)
+
+  return
+}
+
+const setParamenterFromEditToParent = (
+  parent: HTMLSpanElement,
+  button_targeted: HTMLButtonElement,
+) => {
+  const nameCategory =
+    parent.querySelector<HTMLParagraphElement>('.category-name')
+  const nameEditInput = parent.querySelector<HTMLInputElement>(
+    '.category-name-input',
+  )
+  const colorInput = parent.querySelector<HTMLInputElement>(
+    '.category-color-input',
+  )
+  const colorInputText = parent.querySelector<HTMLInputElement>(
+    '.category-color-text',
+  )
+  if (!colorInput || !colorInputText || !nameEditInput || !nameCategory) {
+    throw new Error(ERRORS.DOM.ContainerNotFound)
+  }
+
+  colorInput.removeEventListener('input', activeTextColorHandler)
+  colorInputText.removeEventListener('focusout', activeInputColorHandler)
+  parent.classList.remove(NAME_CLASS_HIDING_ELEMENTS)
+  nameCategory.textContent = nameEditInput.value
+  if (REGEX.hex.test(colorInputText.value)) {
+    const newDataCategory: Partial<CategoryItemPostType> = {
+      title: nameEditInput.value,
+      color: colorInput.value,
+    }
+    parent.style.backgroundColor = colorInput.value
+    // Update variable
+    const colorParent = parent.style.backgroundColor
+    parent.style.color = setColorContrast(colorParent)
+    colorInputText.style.color = setColorContrast(colorParent)
+    // target.textContent = TEXT_BUTTONS.editButton
+    patchCategory(parent.id, newDataCategory)
+  } else if (button_targeted.dataset.action === BUTTON_ACTION.remove) {
+    parent.remove()
+    deleteCategory(parent.id)
+  }
+}
+
 categoriesElsContainer.addEventListener('click', (event) => {
   const target = event.target as HTMLButtonElement
   const parent = target.closest<HTMLSpanElement>('.category-element')
   if (!parent) {
     throw new Error(ERRORS.DOM.ContainerNotFound)
   }
-  const editDiv = parent.querySelector<HTMLDivElement>('.edit-container')
-  const nameCategory =
-    parent.querySelector<HTMLParagraphElement>('.category-name')
   if (target.dataset.action === BUTTON_ACTION.edit) {
+    const nameCategory =
+      parent.querySelector<HTMLParagraphElement>('.category-name')
     const nameEditInput = parent.querySelector<HTMLInputElement>(
       '.category-name-input',
     )
@@ -74,61 +153,19 @@ categoriesElsContainer.addEventListener('click', (event) => {
     const colorInputText = parent.querySelector<HTMLInputElement>(
       '.category-color-text',
     )
-    if (
-      !colorInput ||
-      !editDiv ||
-      !colorInputText ||
-      !nameEditInput ||
-      !nameCategory
-    ) {
+    if (!colorInput || !colorInputText || !nameEditInput || !nameCategory) {
       throw new Error(ERRORS.DOM.ContainerNotFound)
     }
-    let colorParent = parent.style.backgroundColor
+    const colorParent = parent.style.backgroundColor
 
     if (!parent.classList.contains(NAME_CLASS_HIDING_ELEMENTS)) {
-      activeTextColorHandler = () => (colorInputText.value = colorInput.value)
-      activeInputColorHandler = () => {
-        if (REGEX.hex.test(colorInputText.value)) {
-          colorInput.value = colorInputText.value
-          return
-        }
-        colorInputText.value = rgbToHex(colorParent)
-      }
-      // Set the paramettre of edit container
       target.textContent = TEXT_BUTTONS.saveButton
-      colorInput.value = `#${rgbToHex(colorParent)}`
-      colorInputText.value = `#${rgbToHex(colorParent)}`
-      nameEditInput.value = nameCategory.textContent
-      colorInputText.style.color = setColorContrast(colorParent)
-      parent.style.color = setColorContrast(colorParent)
-      colorInput.addEventListener('input', activeTextColorHandler)
-      colorInputText.addEventListener('focusout', activeInputColorHandler)
       parent.classList.add(NAME_CLASS_HIDING_ELEMENTS)
-
+      setParametersEditContainer(parent, colorParent)
       return
     }
-
-    // Update container after saving the changements
-    colorInput.removeEventListener('input', activeTextColorHandler)
-    colorInputText.removeEventListener('focusout', activeInputColorHandler)
-    parent.classList.remove(NAME_CLASS_HIDING_ELEMENTS)
-    nameCategory.textContent = nameEditInput.value
-    if (REGEX.hex.test(colorInputText.value)) {
-      const newDataCategory: Partial<CategoryItemPostType> = {
-        title: nameEditInput.value,
-        color: colorInput.value,
-      }
-      parent.style.backgroundColor = colorInput.value
-      // Update variable
-      colorParent = parent.style.backgroundColor
-      parent.style.color = setColorContrast(colorParent)
-      colorInputText.style.color = setColorContrast(colorParent)
-      target.textContent = TEXT_BUTTONS.editButton
-      patchCategory(parent.id, newDataCategory)
-    }
-  } else if (target.dataset.action === BUTTON_ACTION.remove) {
-    parent.remove()
-    deleteCategory(parent.id)
+    setParamenterFromEditToParent(parent, target)
+    return
   }
 })
 
