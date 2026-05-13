@@ -20,16 +20,18 @@ export interface CategoryItemType extends CategoryItemPostType {
   id: number
 }
 
+export interface CategoryTodoType {
+  category_id: number
+  todo_id: number
+}
+
 export interface TaskArguments {
   input: HTMLInputElement
   todosContainer: HTMLDivElement
-  todoTemplate: HTMLTemplateElement
   dateInput: HTMLInputElement
-  overdueContainer: HTMLParagraphElement
 }
 
 export interface CategoryArguments {
-  categoryItemTemplate: HTMLTemplateElement
   categoryNameInput: HTMLInputElement
   categoryColorInput: HTMLInputElement
   categoriesElsContainer: HTMLDivElement

@@ -35,21 +35,29 @@
       <div id="categories-elements">
         </div>
     </dialog>
+    <dialog id="choice-category-dialog">
+      <button data-action="close" type="button">x</button>
+      <div id="task-category-container"></div>
+    </dialog>
 
     <template id="todo-template">
+      <div class="border-todo-element">
       <div class="todo-element">
-        <label class="todo-element__label">
-          <input type="checkbox" name="task-checkbox">
-          <span class="todo-element__text"></span>
-        </label>
-        <p class="due-date"></p>
-        <button type="button" data-action="remove">Remove</button>
-      </div>
-    </template>
+
+          <label class="todo-element__label">
+            <input type="checkbox" name="task-checkbox">
+            <span class="todo-element__text"></span>
+          </label>
+          <button type="button" class="choice-task-category-button" data-action="choice-category"></button>
+          <p class="due-date"></p>
+          <button type="button" data-action="remove">Remove</button>
+        </div>
+        </div>
+      </template>
       
     <template id="category-element-template">
       <span class="category-element">
-        <p class="category-name">Name Category</p>
+        <p class="category-name"></p>
         <div class="edit-container">
           <div class="color-picker">
             <input class="category-color-text" type="text" aria-label="Enter new color in hex code">

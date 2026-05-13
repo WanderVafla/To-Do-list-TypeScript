@@ -1,5 +1,6 @@
+import { COLOR, DOM_ELEMENT, ERRORS, TASK } from './constants'
 import type { CategoryItemType, Task } from './types'
-import { getDaysDueDiff, isColorLight } from './utils'
+import { getDaysDueDiff, setColorContrast } from './utils'
 
 /* 
   Template is in index.html with id="todo-template"
@@ -19,8 +20,11 @@ import { getDaysDueDiff, isColorLight } from './utils'
 export const createTaskEl = (
   template: HTMLTemplateElement,
   task: Task,
-): HTMLDivElement => {
+): { border: HTMLDivElement; parent: HTMLDivElement } => {
   const clonTemp = template.content.cloneNode(true) as DocumentFragment
+  const borderTodoParent = clonTemp.querySelector<HTMLDivElement>(
+    '.border-todo-element',
+  )
   const parentDiv = clonTemp.querySelector<HTMLDivElement>('.todo-element')
   const taskTextSpan = clonTemp.querySelector<HTMLSpanElement>(
     '.todo-element__text',
@@ -29,13 +33,26 @@ export const createTaskEl = (
   const checkbox = clonTemp.querySelector<HTMLInputElement>(
     '[name="task-checkbox"]',
   )
-  if (!taskTextSpan || !parentDiv || !checkbox || !dueDateP) {
-    throw new Error('Warning some html of todo-template are missing')
+  const choiceCategoryButton = clonTemp.querySelector<HTMLButtonElement>(
+    '.choice-task-category-button',
+  )
+  if (
+    !borderTodoParent ||
+    !taskTextSpan ||
+    !parentDiv ||
+    !checkbox ||
+    !dueDateP ||
+    !choiceCategoryButton
+  ) {
+    throw new Error(ERRORS.DOM.ContainerNotFound)
   }
+  borderTodoParent.style.background = COLOR.default_task_border_color
   parentDiv.id = task.id.toString()
   parentDiv.dataset.completed = String(task.done)
   checkbox.checked = task.done
   taskTextSpan.textContent = task.title
+  choiceCategoryButton.textContent = TASK.TEXT.no_category
+
   if (task.due_date) {
     const dateEl = document.createElement('time')
     dateEl.dateTime = task.due_date
@@ -45,26 +62,32 @@ export const createTaskEl = (
     const diffDays = getDaysDueDiff(task.due_date)
     if (diffDays !== null) {
       if (diffDays < 0) {
-        parentDiv.dataset.urgency = 'critical'
+        parentDiv.dataset.urgency = TASK.DATASET.URGENCY.critical
       } else if (diffDays === 0 || diffDays === 1) {
-        parentDiv.dataset.urgency = 'high'
+        parentDiv.dataset.urgency = TASK.DATASET.URGENCY.high
       } else if (diffDays >= 2 && diffDays <= 4) {
-        parentDiv.dataset.urgency = 'medium'
+        parentDiv.dataset.urgency = TASK.DATASET.URGENCY.medium
       } else {
-        parentDiv.dataset.urgency = 'low'
+        parentDiv.dataset.urgency = TASK.DATASET.URGENCY.low
       }
-    } else {
-      dueDateP.textContent = 'no due date'
     }
+  } else {
+    dueDateP.textContent = TASK.TEXT.no_date
   }
 
-  return parentDiv
+  return { border: borderTodoParent, parent: parentDiv }
 }
 
 export const createCategoryEle = (
-  template: HTMLTemplateElement,
   categoryItemType: CategoryItemType,
 ): HTMLSpanElement => {
+  const template = document.querySelector<HTMLTemplateElement>(
+    '#category-element-template',
+  )
+  if (!template) {
+    throw new Error(ERRORS.DOM.TemplateNotFound)
+  }
+
   const clonTemp = template.content.cloneNode(true) as DocumentFragment
   const container = clonTemp.querySelector<HTMLSpanElement>('.category-element')
   const title = clonTemp.querySelector<HTMLParagraphElement>('.category-name')
@@ -72,16 +95,27 @@ export const createCategoryEle = (
     '.category-color-input',
   )
   if (!title || !colorInput || !container) {
-    throw new Error('Error when creating category element')
+    throw new Error(ERRORS.DOM.ContainerNotFound)
   }
   container.id = categoryItemType.id.toString()
   title.textContent = categoryItemType.title
   container.style.backgroundColor = categoryItemType.color
-  if (isColorLight(container.style.backgroundColor)) {
-    container.style.color = 'black'
-  } else {
-    container.style.color = 'white'
-  }
+  container.style.color = setColorContrast(container.style.backgroundColor)
 
   return container
+}
+
+export const createCategoryTodoItemEle = (
+  category: CategoryItemType,
+): HTMLSpanElement => {
+  const categoryItem = document.createElement('span') as HTMLSpanElement
+  categoryItem.textContent = category.title
+  categoryItem.id = category.id.toString()
+  categoryItem.className = DOM_ELEMENT.TODO_CHOICE_CATEGORY.class_name
+  categoryItem.style.backgroundColor = category.color
+  categoryItem.style.color = setColorContrast(
+    categoryItem.style.backgroundColor,
+  )
+
+  return categoryItem
 }
