@@ -17,6 +17,7 @@ import './categoriesEventsHandler'
 import {
   categoriesElsContainer,
   dateInput,
+  templateTodo,
   todosContainer,
 } from './DOMElements'
 
@@ -27,7 +28,7 @@ if (!dateInput) {
 dateInput.min = getCurrentDate()
 
 window.addEventListener('DOMContentLoaded', async () => {
-  if (!categoriesElsContainer || !todosContainer) {
+  if (!categoriesElsContainer || !todosContainer || !templateTodo) {
     throw new Error(ERRORS.DOM.ContainerNotFound)
   }
 
@@ -39,7 +40,7 @@ window.addEventListener('DOMContentLoaded', async () => {
     categoriesElsContainer.appendChild(categoryEl)
   }
   for (const task of tasksArr) {
-    const taskEle = createTaskEl(task)
+    const taskEle = createTaskEl(templateTodo, task)
     setColorCategoryToTask(taskEle.border, Number(taskEle.parent.id))
     todosContainer.insertAdjacentElement('afterbegin', taskEle.border)
   }

@@ -18,15 +18,9 @@ import { getDaysDueDiff, setColorContrast } from './utils'
   </div>
 */
 export const createTaskEl = (
-  // template: HTMLTemplateElement,
+  template: HTMLTemplateElement,
   task: Task,
 ): { border: HTMLDivElement; parent: HTMLDivElement } => {
-  const template = document.querySelector<HTMLTemplateElement>('#todo-template')
-
-  if (!template) {
-    throw new Error(ERRORS.DOM.TemplateNotFound)
-  }
-
   const clonTemp = template.content.cloneNode(true) as DocumentFragment
   const borderTodoParent = clonTemp.querySelector<HTMLDivElement>(
     '.border-todo-element',

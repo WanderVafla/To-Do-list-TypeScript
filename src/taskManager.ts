@@ -7,7 +7,7 @@ import {
   postTask,
 } from './api'
 import { BUTTON_ACTION, CATEGORY, ERRORS, LOG_MESSAGE } from './constants'
-import { choiceCategoryDialog } from './DOMElements'
+import { choiceCategoryDialog, templateTodo } from './DOMElements'
 import {
   createCategoryEle,
   createCategoryTodoItemEle,
@@ -94,13 +94,13 @@ export const addTask = async (args: TaskArguments) => {
   }
 
   const addedItem: Task | undefined = await postTask(task)
-  if (!addedItem) {
+  if (!addedItem || !templateTodo) {
     throw new Error(ERRORS.STATE.StateEmpty)
   }
   updateTasksArr()
   args.todosContainer.insertAdjacentElement(
     'afterbegin',
-    createTaskEl(addedItem).border,
+    createTaskEl(templateTodo, addedItem).border,
   )
   checkMessageOverdue()
 
