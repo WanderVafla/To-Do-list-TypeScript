@@ -8,5 +8,5 @@ export const todosContainer =
 export const categoriesElsContainer = document.querySelector<HTMLDivElement>(
   '#categories-elements',
 )
-export const templateTodo = document.querySelector<HTMLTemplateElement>('#todo-template')
-
+export const templateTodo =
+  document.querySelector<HTMLTemplateElement>('#todo-template')
