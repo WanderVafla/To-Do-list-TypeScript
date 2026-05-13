@@ -13,6 +13,7 @@ export const TEXT_BUTTONS = {
 export const BUTTON_ACTION = {
   remove: 'remove',
   edit: 'edit',
+  close: 'close',
   remove_categoty: 'remove-category',
   choice_category: 'choice-category',
 }

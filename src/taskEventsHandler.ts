@@ -1,4 +1,4 @@
-import { deleteAllTask, deleteCategoryTodo, deleteTask, patchTask } from './api'
+import { deleteAllTask, deleteTask, patchTask } from './api'
 import { BUTTON_ACTION, CATEGORY, ERRORS } from './constants'
 import { choiceCategoryDialog, dateInput, todosContainer } from './DOMElements'
 import {
@@ -27,6 +27,13 @@ if (
   throw new Error(ERRORS.DOM.RootNotFound)
 }
 const choiceCategory = choiceCategoryDialog
+
+const categoriesItemContainer = choiceCategory.querySelector<HTMLDivElement>(
+  '#task-category-container',
+)
+if (!categoriesItemContainer) {
+  throw new Error(ERRORS.DOM.ContainerNotFound)
+}
 
 const taskArguments: TaskArguments = {
   input,
@@ -86,14 +93,23 @@ todosContainer.addEventListener('click', async (event) => {
   }
 })
 
-choiceCategoryDialog.addEventListener('click', (event) => {
+choiceCategory.addEventListener('click', (event) => {
+  const target = event.target as HTMLButtonElement
+  if (target.dataset.action === BUTTON_ACTION.close) choiceCategory.close()
+})
+
+categoriesItemContainer.addEventListener('click', (event) => {
   const target = event.target as HTMLSpanElement
-  if (target && target.dataset.choiced !== CATEGORY.DATASET.choiced) {
+  if (!target || !choiceCategoryDialog) {
+    throw new Error(ERRORS.DOM.ContainerNotFound)
+  }
+
+  if (target.dataset.choiced !== CATEGORY.DATASET.choiced) {
+    console.log('request')
+
     setTaskCategory(Number(target.id), Number(choiceCategory.dataset.task))
     return
   }
-  deleteCategoryTodo(Number(target.id), Number(choiceCategory.dataset.task))
-  return
 })
 
 deleteAllButton.addEventListener('click', () => {

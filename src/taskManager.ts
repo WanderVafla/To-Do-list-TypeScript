@@ -188,8 +188,8 @@ export const closeAllDialogs = () => {
 export const setCategoriesTodoDialogsChoice = async () => {
   await updateCategories()
 
-  console.log('updated');
-  
+  console.log('updated')
+
   if (!choiceCategoryDialog) {
     throw new Error(ERRORS.DOM.ContainerNotFound)
   }
