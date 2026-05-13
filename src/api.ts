@@ -125,6 +125,7 @@ export async function getCategories(): Promise<CategoryItemType[]> {
 export async function deleteCategory(id: string) {
   try {
     const urlId = `${URLS.category}?id=eq.${id}`
+    await deleteAllCategoriesTogo(Number(id))
     const request = await fetch(urlId, {
       method: 'DELETE',
       headers: {
@@ -205,6 +206,25 @@ export async function getCategoriesTodos(): Promise<CategoryTodoType[]> {
   } catch (error) {
     console.error(error)
     return []
+  }
+}
+
+export async function deleteAllCategoriesTogo(category_id: number) {
+   try {
+    const urlId = `${URLS.categories_todos}?category_id=eq.${category_id}`
+    const request = await fetch(urlId, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+    if (request.status === 204) {
+      return
+    }
+    const errorData = await request.json()
+    console.error(errorData)
+  } catch (error) {
+    console.error(error)
   }
 }
 
