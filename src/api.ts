@@ -229,9 +229,9 @@ export async function deleteAllCategoriesTodo(category_id: number) {
   }
 }
 
-export async function deleteCategoryTodo(category_id: number, todo_id: number) {
+export async function deleteCategoryTodo(categoryTodoType: CategoryTodoType) {
   try {
-    const urlId = `${URLS.categories_todos}?category_id=eq.${category_id}&todo_id=eq.${todo_id}`
+    const urlId = `${URLS.categories_todos}?category_id=eq.${categoryTodoType.category_id}&todo_id=eq.${categoryTodoType.todo_id}`
     const request = await fetch(urlId, {
       method: 'DELETE',
       headers: {

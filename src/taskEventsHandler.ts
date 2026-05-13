@@ -5,6 +5,8 @@ import {
   addTask,
   checkMessageOverdue,
   closeAllDialogs,
+  removeTaskCategory,
+  setBorderTask,
   setCategoriesTodoDialogsChoice,
   setTaskCategory,
   tasksArr,
@@ -98,16 +100,45 @@ choiceCategory.addEventListener('click', (event) => {
   if (target.dataset.action === BUTTON_ACTION.close) choiceCategory.close()
 })
 
-categoriesItemContainer.addEventListener('click', (event) => {
+// const setBorderTask = () => {
+//   if (!todosContainer) {
+//     throw new Error(ERRORS.DOM.ContainerNotFound)
+//   }
+//   const targedTodoElement = todosContainer.querySelector<HTMLDivElement>(`[id="${choiceCategory.dataset.task}"]`)
+//   if (!targedTodoElement) {
+//     throw new Error(ERRORS.DOM.ContainerNotFound)
+//   }
+//   const border = targedTodoElement.closest<HTMLDivElement>('.border-todo-element')
+//     console.log(border);
+    
+//     if (!border) {
+//       throw new Error(ERRORS.DOM.ContainerNotFound)
+//     }
+    
+//     setColorCategoryToTask(border, Number(choiceCategory.dataset.task))
+// }
+
+categoriesItemContainer.addEventListener('click', async (event) => {
   const target = event.target as HTMLSpanElement
+
   if (!target || !choiceCategoryDialog) {
     throw new Error(ERRORS.DOM.ContainerNotFound)
   }
 
   if (target.dataset.choiced !== CATEGORY.DATASET.choiced) {
-    setTaskCategory(Number(target.id), Number(choiceCategory.dataset.task))
+    await setTaskCategory(Number(target.id), Number(choiceCategory.dataset.task))  
+      target.dataset.choiced = CATEGORY.DATASET.choiced
+      console.log(target);
+      setBorderTask()
     return
   }
+   await removeTaskCategory(
+    Number(target.id),
+    Number(choiceCategoryDialog.dataset.task),
+  )
+  delete target.dataset.choiced
+  setBorderTask()
+  return
 })
 
 deleteAllButton.addEventListener('click', () => {
@@ -118,3 +149,4 @@ deleteAllButton.addEventListener('click', () => {
   deleteAllTask().then((_) => updateTasksArr())
   checkMessageOverdue()
 })
+
