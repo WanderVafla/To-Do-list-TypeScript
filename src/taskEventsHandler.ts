@@ -1,13 +1,11 @@
 import { deleteAllTask, deleteCategoryTodo, deleteTask, patchTask } from './api'
 import { BUTTON_ACTION, CATEGORY, ERRORS } from './constants'
-import { dateInput, todosContainer } from './DOMElements'
-import { createCategoryTodoItemEle } from './elements'
+import { choiceCategoryDialog, dateInput, todosContainer } from './DOMElements'
 import {
   addTask,
-  categories,
-  categoriesTodos,
   checkMessageOverdue,
   closeAllDialogs,
+  setCategoriesTodoDialogsChoice,
   setTaskCategory,
   tasksArr,
   updateTasksArr,
@@ -16,11 +14,6 @@ import type { TaskArguments, TaskPostType } from './types'
 
 const sendButton = document.querySelector<HTMLButtonElement>('#add-todo-button')
 const input = document.querySelector<HTMLInputElement>('#todo-input')
-// const todosContainer = document.querySelector<HTMLDivElement>('#todo-elements')
-
-const choiceCategoryDialog = document.querySelector<HTMLDialogElement>(
-  '#choice-category-dialog',
-)
 const deleteAllButton = document.querySelector<HTMLButtonElement>('#delete-all')
 
 if (
@@ -33,6 +26,7 @@ if (
 ) {
   throw new Error(ERRORS.DOM.RootNotFound)
 }
+const choiceCategory = choiceCategoryDialog
 
 const taskArguments: TaskArguments = {
   input,
@@ -74,57 +68,31 @@ todosContainer.addEventListener('click', async (event) => {
   }
   if (target.dataset.action === BUTTON_ACTION.remove) {
     border.remove()
-    
+
     deleteTask(parent.id.toString()).then((_) => updateTasksArr())
     checkMessageOverdue()
   } else if (target.dataset.action === BUTTON_ACTION.choice_category) {
-    const categoriesItemContainer =
-      choiceCategoryDialog.querySelector<HTMLDivElement>(
-        '#task-category-container',
-      )
-    if (!categoriesItemContainer) {
+    if (!choiceCategory) {
       throw new Error(ERRORS.DOM.ContainerNotFound)
     }
-    if (choiceCategoryDialog.open) {
-      categoriesItemContainer.querySelectorAll('*').forEach((element) => {
-        element.remove()
-      })
-      choiceCategoryDialog.close()
+    if (choiceCategory.open) {
+      choiceCategory.close()
       return
     }
-    choiceCategoryDialog.dataset.task = parent.id
-    const selectedCategories = categoriesTodos.filter(
-      (item) => item.todo_id === Number(choiceCategoryDialog.dataset.task),
-    )
-    for (const category of categories) {
-      const categoryEle = createCategoryTodoItemEle(category)
-      const foundCategory = selectedCategories.find(
-        (item) => item.category_id === category.id,
-      )
-      if (selectedCategories && foundCategory) {
-        categoryEle.dataset.choiced = CATEGORY.DATASET.choiced
-      }
-      categoriesItemContainer.insertAdjacentElement('afterbegin', categoryEle)
-    }
+    choiceCategory.dataset.task = parent.id
+    setCategoriesTodoDialogsChoice()
     closeAllDialogs()
-    choiceCategoryDialog.show()
+    choiceCategory.show()
   }
 })
 
 choiceCategoryDialog.addEventListener('click', (event) => {
   const target = event.target as HTMLSpanElement
   if (target && target.dataset.choiced !== CATEGORY.DATASET.choiced) {
-    setTaskCategory(
-      Number(target.id),
-      Number(choiceCategoryDialog.dataset.task),
-    )
-
+    setTaskCategory(Number(target.id), Number(choiceCategory.dataset.task))
     return
   }
-  deleteCategoryTodo(
-    Number(target.id),
-    Number(choiceCategoryDialog.dataset.task),
-  )
+  deleteCategoryTodo(Number(target.id), Number(choiceCategory.dataset.task))
   return
 })
 

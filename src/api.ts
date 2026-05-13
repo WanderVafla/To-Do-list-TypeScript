@@ -210,7 +210,7 @@ export async function getCategoriesTodos(): Promise<CategoryTodoType[]> {
 }
 
 export async function deleteAllCategoriesTogo(category_id: number) {
-   try {
+  try {
     const urlId = `${URLS.categories_todos}?category_id=eq.${category_id}`
     const request = await fetch(urlId, {
       method: 'DELETE',

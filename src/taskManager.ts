@@ -6,8 +6,13 @@ import {
   postNewCategoryTodo,
   postTask,
 } from './api'
-import { BUTTON_ACTION, ERRORS, LOG_MESSAGE } from './constants'
-import { createCategoryEle, createTaskEl } from './elements'
+import { BUTTON_ACTION, CATEGORY, ERRORS, LOG_MESSAGE } from './constants'
+import { choiceCategoryDialog } from './DOMElements'
+import {
+  createCategoryEle,
+  createCategoryTodoItemEle,
+  createTaskEl,
+} from './elements'
 import type {
   CategoryArguments,
   CategoryItemPostType,
@@ -175,5 +180,41 @@ export function setColorCategoryToTask(
 }
 
 export const closeAllDialogs = () => {
-  document.querySelectorAll('dialog').forEach(dialog => {dialog.close()})
+  document.querySelectorAll('dialog').forEach((dialog) => {
+    dialog.close()
+  })
+}
+
+export const setCategoriesTodoDialogsChoice = async () => {
+  await updateCategories()
+
+  console.log('updated');
+  
+  if (!choiceCategoryDialog) {
+    throw new Error(ERRORS.DOM.ContainerNotFound)
+  }
+  const choiceCategory = choiceCategoryDialog
+  const categoriesItemContainer =
+    choiceCategoryDialog.querySelector<HTMLDivElement>(
+      '#task-category-container',
+    )
+  if (!categoriesItemContainer) {
+    throw new Error(ERRORS.DOM.ContainerNotFound)
+  }
+  categoriesItemContainer.querySelectorAll('*').forEach((element) => {
+    element.remove()
+  })
+  const selectedCategories = categoriesTodos.filter(
+    (item) => item.todo_id === Number(choiceCategory.dataset.task),
+  )
+  categories.forEach((category) => {
+    const categoryEle = createCategoryTodoItemEle(category)
+    const foundCategory = selectedCategories.find(
+      (item) => item.category_id === category.id,
+    )
+    if (selectedCategories && foundCategory) {
+      categoryEle.dataset.choiced = CATEGORY.DATASET.choiced
+    }
+    categoriesItemContainer.insertAdjacentElement('afterbegin', categoryEle)
+  })
 }

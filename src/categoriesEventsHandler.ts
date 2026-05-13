@@ -101,9 +101,7 @@ const setParametersEditContainer = (
   return
 }
 
-const setParamenterFromEditToParent = (
-  parent: HTMLSpanElement,
-) => {
+const setParamenterFromEditToParent = (parent: HTMLSpanElement) => {
   const nameCategory =
     parent.querySelector<HTMLParagraphElement>('.category-name')
   const nameEditInput = parent.querySelector<HTMLInputElement>(
@@ -133,9 +131,7 @@ const setParamenterFromEditToParent = (
     const colorParent = parent.style.backgroundColor
     parent.style.color = setColorContrast(colorParent)
     colorInputText.style.color = setColorContrast(colorParent)
-    // target.textContent = TEXT_BUTTONS.editButton
     patchCategory(parent.id, newDataCategory)
-    
   }
 }
 
@@ -170,8 +166,9 @@ categoriesElsContainer.addEventListener('click', (event) => {
     }
     setParamenterFromEditToParent(parent)
     return
-  } if (target.dataset.action === BUTTON_ACTION.remove_categoty) {
-    console.log('removed');
+  }
+  if (target.dataset.action === BUTTON_ACTION.remove_categoty) {
+    console.log('removed')
     parent.remove()
     deleteCategory(parent.id)
   }
