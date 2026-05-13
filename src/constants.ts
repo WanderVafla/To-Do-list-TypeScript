@@ -29,7 +29,7 @@ export const TASK = {
   },
   TEXT: {
     no_date: 'no due date',
-    no_category: 'no category'
+    no_category: 'no category',
   },
 }
 

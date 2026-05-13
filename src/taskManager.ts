@@ -7,8 +7,19 @@ import {
   postNewCategoryTodo,
   postTask,
 } from './api'
-import { BUTTON_ACTION, CATEGORY, COLOR, ERRORS, LOG_MESSAGE, TASK } from './constants'
-import { choiceCategoryDialog, templateTodo, todosContainer } from './DOMElements'
+import {
+  BUTTON_ACTION,
+  CATEGORY,
+  COLOR,
+  ERRORS,
+  LOG_MESSAGE,
+  TASK,
+} from './constants'
+import {
+  choiceCategoryDialog,
+  templateTodo,
+  todosContainer,
+} from './DOMElements'
 import {
   createCategoryEle,
   createCategoryTodoItemEle,
@@ -135,13 +146,16 @@ export const setTaskCategory = async (category_id: number, todo_id: number) => {
   await updateCategoriesTodos()
 }
 
-export const removeTaskCategory = async (category_id: number, todo_id: number) => {
+export const removeTaskCategory = async (
+  category_id: number,
+  todo_id: number,
+) => {
   const categoryTodoType: CategoryTodoType = {
     category_id,
     todo_id,
-    }
-    await deleteCategoryTodo(categoryTodoType)
-    await updateCategoriesTodos()
+  }
+  await deleteCategoryTodo(categoryTodoType)
+  await updateCategoriesTodos()
 }
 
 export const setBorderColorTask = () => {}
@@ -150,7 +164,6 @@ export function setColorCategoryToTask(
   borderElement: HTMLDivElement | HTMLSpanElement,
   todoId: number,
 ) {
-  
   const targetTodoId = categoriesTodos.filter((item) => item.todo_id === todoId)
   const buttonChoiceCategory = borderElement.querySelector<HTMLButtonElement>(
     `button[data-action="${BUTTON_ACTION.choice_category}"]`,
@@ -158,10 +171,8 @@ export function setColorCategoryToTask(
   if (!buttonChoiceCategory) {
     throw new Error(ERRORS.DOM.ContainerNotFound)
   }
-  console.log(todoId);
-  
+
   if (targetTodoId.length === 1) {
-    console.log(targetTodoId);
     const targetCategory = categories.find(
       (item) => item.id === targetTodoId[0].category_id,
     )
@@ -170,8 +181,6 @@ export function setColorCategoryToTask(
       buttonChoiceCategory.textContent = targetCategory.title
     }
   } else if (targetTodoId.length > 1) {
-    console.log(targetTodoId);
-    
     type colorTitleCategory = {
       color: string
       title: string
@@ -243,16 +252,19 @@ export const setBorderTask = () => {
   if (!todosContainer) {
     throw new Error(ERRORS.DOM.ContainerNotFound)
   }
-  const targedTodoElement = todosContainer.querySelector<HTMLDivElement>(`[id="${choiceCategoryDialog.dataset.task}"]`)
+  const targedTodoElement = todosContainer.querySelector<HTMLDivElement>(
+    `[id="${choiceCategoryDialog.dataset.task}"]`,
+  )
   if (!targedTodoElement) {
     throw new Error(ERRORS.DOM.ContainerNotFound)
   }
-  const border = targedTodoElement.closest<HTMLDivElement>('.border-todo-element')
-    console.log(border);
-    
-    if (!border) {
-      throw new Error(ERRORS.DOM.ContainerNotFound)
-    }
-    
-    setColorCategoryToTask(border, Number(choiceCategoryDialog.dataset.task))
+  const border = targedTodoElement.closest<HTMLDivElement>(
+    '.border-todo-element',
+  )
+
+  if (!border) {
+    throw new Error(ERRORS.DOM.ContainerNotFound)
+  }
+
+  setColorCategoryToTask(border, Number(choiceCategoryDialog.dataset.task))
 }
