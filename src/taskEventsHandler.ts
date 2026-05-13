@@ -7,6 +7,7 @@ import {
   categories,
   categoriesTodos,
   checkMessageOverdue,
+  closeAllDialogs,
   setTaskCategory,
   tasksArr,
   updateTasksArr,
@@ -73,6 +74,7 @@ todosContainer.addEventListener('click', async (event) => {
   }
   if (target.dataset.action === BUTTON_ACTION.remove) {
     border.remove()
+    
     deleteTask(parent.id.toString()).then((_) => updateTasksArr())
     checkMessageOverdue()
   } else if (target.dataset.action === BUTTON_ACTION.choice_category) {
@@ -104,6 +106,7 @@ todosContainer.addEventListener('click', async (event) => {
       }
       categoriesItemContainer.insertAdjacentElement('afterbegin', categoryEle)
     }
+    closeAllDialogs()
     choiceCategoryDialog.show()
   }
 })

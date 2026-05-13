@@ -173,3 +173,7 @@ export function setColorCategoryToTask(
     buttonChoiceCategory.textContent = titles
   }
 }
+
+export const closeAllDialogs = () => {
+  document.querySelectorAll('dialog').forEach(dialog => {dialog.close()})
+}

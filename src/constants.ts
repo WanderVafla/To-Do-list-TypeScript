@@ -11,8 +11,9 @@ export const TEXT_BUTTONS = {
 }
 
 export const BUTTON_ACTION = {
+  remove: 'remove',
   edit: 'edit',
-  remove: 'remove-category',
+  remove_categoty: 'remove-category',
   choice_category: 'choice-category',
 }
 

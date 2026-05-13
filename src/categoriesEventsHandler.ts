@@ -7,7 +7,7 @@ import {
   TEXT_BUTTONS,
 } from './constants'
 import { categoriesElsContainer } from './DOMElements'
-import { addNewCategory } from './taskManager'
+import { addNewCategory, closeAllDialogs } from './taskManager'
 import type { CategoryArguments, CategoryItemPostType } from './types'
 import { rgbToHex, setColorContrast } from './utils'
 
@@ -46,8 +46,15 @@ if (
 }
 
 openCategoriesButton.addEventListener('click', () => {
-  categoriesDialog.show()
+  if (!categoriesDialog.open) {
+    closeAllDialogs()
+    categoriesDialog.show()
+    return
+  }
+  categoriesDialog.close()
 })
+// TODO: add new event listener for open button. Check if dialog window is open and close him
+openCategoriesButton.addEventListener('click', () => {})
 closeCategoriesButton.addEventListener('click', () => {
   categoriesDialog.close()
 })
@@ -96,7 +103,6 @@ const setParametersEditContainer = (
 
 const setParamenterFromEditToParent = (
   parent: HTMLSpanElement,
-  button_targeted: HTMLButtonElement,
 ) => {
   const nameCategory =
     parent.querySelector<HTMLParagraphElement>('.category-name')
@@ -129,9 +135,7 @@ const setParamenterFromEditToParent = (
     colorInputText.style.color = setColorContrast(colorParent)
     // target.textContent = TEXT_BUTTONS.editButton
     patchCategory(parent.id, newDataCategory)
-  } else if (button_targeted.dataset.action === BUTTON_ACTION.remove) {
-    parent.remove()
-    deleteCategory(parent.id)
+    
   }
 }
 
@@ -164,8 +168,12 @@ categoriesElsContainer.addEventListener('click', (event) => {
       setParametersEditContainer(parent, colorParent)
       return
     }
-    setParamenterFromEditToParent(parent, target)
+    setParamenterFromEditToParent(parent)
     return
+  } if (target.dataset.action === BUTTON_ACTION.remove_categoty) {
+    console.log('removed');
+    parent.remove()
+    deleteCategory(parent.id)
   }
 })
 
