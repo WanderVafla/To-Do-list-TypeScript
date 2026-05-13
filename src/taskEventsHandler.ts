@@ -105,8 +105,6 @@ categoriesItemContainer.addEventListener('click', (event) => {
   }
 
   if (target.dataset.choiced !== CATEGORY.DATASET.choiced) {
-    console.log('request')
-
     setTaskCategory(Number(target.id), Number(choiceCategory.dataset.task))
     return
   }

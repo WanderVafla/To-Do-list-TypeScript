@@ -53,7 +53,6 @@ openCategoriesButton.addEventListener('click', () => {
   }
   categoriesDialog.close()
 })
-// TODO: add new event listener for open button. Check if dialog window is open and close him
 openCategoriesButton.addEventListener('click', () => {})
 closeCategoriesButton.addEventListener('click', () => {
   categoriesDialog.close()
@@ -168,7 +167,6 @@ categoriesElsContainer.addEventListener('click', (event) => {
     return
   }
   if (target.dataset.action === BUTTON_ACTION.remove_categoty) {
-    console.log('removed')
     parent.remove()
     deleteCategory(parent.id)
   }

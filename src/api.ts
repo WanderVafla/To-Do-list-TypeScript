@@ -37,7 +37,7 @@ export async function postTask(task: TaskPostType) {
     }
     if (request.status === 201) {
       if (request.body) {
-        const newItem: Promise<Task> = await request.json()
+        const newItem: Task | Task[] = await request.json()
         return Array.isArray(newItem) ? newItem[0] : newItem
       }
       return
@@ -158,7 +158,8 @@ export async function postNewCategory(categoryPostType: CategoryItemPostType) {
     }
     if (request.status === 201) {
       if (request.body) {
-        const newItem: CategoryItemType = await request.json()
+        const newItem: CategoryItemType | CategoryItemType[] =
+          await request.json()
         return Array.isArray(newItem) ? newItem[0] : newItem
       }
       return
@@ -263,7 +264,8 @@ export async function postNewCategoryTodo(categoryTodoType: CategoryTodoType) {
     }
     if (request.status === 201) {
       if (request.body) {
-        const newItem: CategoryTodoType = await request.json()
+        const newItem: CategoryTodoType | CategoryTodoType[] =
+          await request.json()
         return Array.isArray(newItem) ? newItem[0] : newItem
       }
       return
