@@ -60,7 +60,7 @@ export const createTaskEl = (
     dueDateP.appendChild(dateEl)
 
     const diffDays = getDaysDueDiff(task.due_date)
-    if (diffDays) {
+    if (diffDays !== null) {
       if (diffDays < 0) {
         parentDiv.dataset.urgency = TASK.DATASET.URGENCY.critical
       } else if (diffDays === 0 || diffDays === 1) {
