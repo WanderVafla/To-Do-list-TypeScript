@@ -33,12 +33,16 @@ export const createTaskEl = (
   const checkbox = clonTemp.querySelector<HTMLInputElement>(
     '[name="task-checkbox"]',
   )
+  const choiceCategoryButton = clonTemp.querySelector<HTMLButtonElement>(
+    '.choice-task-category-button',
+  )
   if (
     !borderTodoParent ||
     !taskTextSpan ||
     !parentDiv ||
     !checkbox ||
-    !dueDateP
+    !dueDateP ||
+    !choiceCategoryButton
   ) {
     throw new Error(ERRORS.DOM.ContainerNotFound)
   }
@@ -47,6 +51,8 @@ export const createTaskEl = (
   parentDiv.dataset.completed = String(task.done)
   checkbox.checked = task.done
   taskTextSpan.textContent = task.title
+  choiceCategoryButton.textContent = TASK.TEXT.no_category
+
   if (task.due_date) {
     const dateEl = document.createElement('time')
     dateEl.dateTime = task.due_date
